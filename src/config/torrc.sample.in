@@ -1,73 +1,68 @@
-## Configuration file for a typical Tor user
-## Last updated 28 February 2019 for Tor 0.3.5.1-alpha.
-## (may or may not work for much older or much newer versions of Tor.)
+## 典型 Tor 用户的配置文件
+## 最后更新于 2019 年 2 月 28 日，适用于 Tor 0.3.5.1-alpha。
+## （可能不适用于更老或更新版本的 Tor。）
 ##
-## Lines that begin with "## " try to explain what's going on. Lines
-## that begin with just "#" are disabled commands: you can enable them
-## by removing the "#" symbol.
+## 以 "## " 开头的行用于解释配置内容。以 "#" 开头的行是被禁用的命令：
+## 你可以通过移除 "#" 符号来启用它们。
 ##
-## See 'man tor', or https://www.torproject.org/docs/tor-manual.html,
-## for more options you can use in this file.
+## 请参阅 'man tor' 或 https://www.torproject.org/docs/tor-manual.html，
+## 了解本文件中可以使用的更多选项。
 ##
-## Tor will look for this file in various places based on your platform:
+## Tor 会根据你的平台在不同位置查找此文件：
 ## https://support.torproject.org/tbb/tbb-editing-torrc/
 
-## Tor opens a SOCKS proxy on port 9050 by default -- even if you don't
-## configure one below. Set "SOCKSPort 0" if you plan to run Tor only
-## as a relay, and not make any local application connections yourself.
-#SOCKSPort 9050 # Default: Bind to localhost:9050 for local connections.
-#SOCKSPort 192.168.0.1:9100 # Bind to this address:port too.
+## Tor 默认在端口 9050 上打开 SOCKS 代理——即使你没有在下面进行配置。
+## 如果你计划仅作为中继运行 Tor，不自行发起本地应用连接，
+## 请设置 "SOCKSPort 0"。
+#SOCKSPort 9050 # 默认值：绑定到 localhost:9050 用于本地连接。
+#SOCKSPort 192.168.0.1:9100 # 同时绑定到此地址:端口。
 
-## Entry policies to allow/deny SOCKS requests based on IP address.
-## First entry that matches wins. If no SOCKSPolicy is set, we accept
-## all (and only) requests that reach a SOCKSPort. Untrusted users who
-## can access your SOCKSPort may be able to learn about the connections
-## you make.
+## 基于 IP 地址允许/拒绝 SOCKS 请求的入口策略。
+## 第一条匹配的规则生效。如果未设置 SOCKSPolicy，则接受所有到达
+## SOCKSPort 的（且仅有的）请求。能够访问你 SOCKSPort 的不受信任用户
+## 可能会了解你建立的连接。
 #SOCKSPolicy accept 192.168.0.0/16
 #SOCKSPolicy accept6 FC00::/7
 #SOCKSPolicy reject *
 
-## Logs go to stdout at level "notice" unless redirected by something
-## else, like one of the below lines. You can have as many Log lines as
-## you want.
+## 日志默认输出到 stdout，级别为 "notice"，除非被其他配置重定向，
+## 例如下面的某些行。你可以设置任意多条 Log 行。
 ##
-## We advise using "notice" in most cases, since anything more verbose
-## may provide sensitive information to an attacker who obtains the logs.
+## 我们建议大多数情况下使用 "notice" 级别，因为更详细的日志可能会
+## 向获取日志的攻击者提供敏感信息。
 ##
-## Send all messages of level 'notice' or higher to @LOCALSTATEDIR@/log/tor/notices.log
+## 将所有 'notice' 级别及更高的消息发送到 @LOCALSTATEDIR@/log/tor/notices.log
 #Log notice file @LOCALSTATEDIR@/log/tor/notices.log
-## Send every possible message to @LOCALSTATEDIR@/log/tor/debug.log
+## 将所有可能的消息发送到 @LOCALSTATEDIR@/log/tor/debug.log
 #Log debug file @LOCALSTATEDIR@/log/tor/debug.log
-## Use the system log instead of Tor's logfiles
+## 使用系统日志代替 Tor 的日志文件
 #Log notice syslog
-## To send all messages to stderr:
+## 将所有消息发送到 stderr：
 #Log debug stderr
 
-## Uncomment this to start the process in the background... or use
-## --runasdaemon 1 on the command line. This is ignored on Windows;
-## see the FAQ entry if you want Tor to run as an NT service.
+## 取消注释此行以在后台启动进程... 或者在命令行使用 --runasdaemon 1。
+## 在 Windows 上此选项被忽略；如果你希望 Tor 作为 NT 服务运行，
+## 请参阅 FAQ 条目。
 #RunAsDaemon 1
 
-## The directory for keeping all the keys/etc. By default, we store
-## things in $HOME/.tor on Unix, and in Application Data\tor on Windows.
+## 用于保存所有密钥等数据的目录。默认情况下，我们在 Unix 上将数据
+## 存储在 $HOME/.tor，在 Windows 上存储在 Application Data\tor。
 #DataDirectory @LOCALSTATEDIR@/lib/tor
 
-## The port on which Tor will listen for local connections from Tor
-## controller applications, as documented in control-spec.txt.
+## Tor 监听来自 Tor 控制器应用程序的本地连接的端口，
+## 如 control-spec.txt 中所述。
 #ControlPort 9051
-## If you enable the controlport, be sure to enable one of these
-## authentication methods, to prevent attackers from accessing it.
+## 如果你启用了控制端口，请务必启用以下某种认证方式，
+## 以防止攻击者访问它。
 #HashedControlPassword 16:872860B76453A77D60CA2BB8C1A7042072093276A3D701AD684053EC4C
 #CookieAuthentication 1
 
-############### This section is just for location-hidden services ###
+############### 本节仅用于隐藏服务（Hidden Services）###
 
-## Once you have configured a hidden service, you can look at the
-## contents of the file ".../hidden_service/hostname" for the address
-## to tell people.
+## 一旦你配置了隐藏服务，你可以查看文件 ".../hidden_service/hostname"
+## 的内容来获取地址，以便告知他人。
 ##
-## HiddenServicePort x y:z says to redirect requests on port x to the
-## address y:z.
+## HiddenServicePort x y:z 表示将端口 x 的请求重定向到地址 y:z。
 
 #HiddenServiceDir @LOCALSTATEDIR@/lib/tor/hidden_service/
 #HiddenServicePort 80 127.0.0.1:80
@@ -76,182 +71,167 @@
 #HiddenServicePort 80 127.0.0.1:80
 #HiddenServicePort 22 127.0.0.1:22
 
-################ This section is just for relays #####################
+################ 本节仅用于中继（Relays）#####################
 #
-## See https://community.torproject.org/relay for details.
+## 详见 https://community.torproject.org/relay。
 
-## Required: what port to advertise for incoming Tor connections.
+## 必需：为传入的 Tor 连接通告的端口。
 #ORPort 9001
-## If you want to listen on a port other than the one advertised in
-## ORPort (e.g. to advertise 443 but bind to 9090), you can do it as
-## follows.  You'll need to do ipchains or other port forwarding
-## yourself to make this work.
+## 如果你想在与 ORPort 通告的端口不同的端口上监听
+## （例如通告 443 但绑定到 9090），可以按如下方式操作。
+## 你需要自行配置 ipchains 或其他端口转发才能实现。
 #ORPort 443 NoListen
 #ORPort 127.0.0.1:9090 NoAdvertise
-## If you want to listen on IPv6 your numeric address must be explicitly
-## between square brackets as follows. You must also listen on IPv4.
+## 如果你想在 IPv6 上监听，你的数字地址必须用方括号明确括起来，
+## 如下所示。你还必须同时监听 IPv4。
 #ORPort [2001:DB8::1]:9050
 
-## The IP address or full DNS name for incoming connections to your
-## relay. Leave commented out and Tor will guess.
+## 传入连接到你中继的 IP 地址或完整 DNS 名称。
+## 保留注释状态，Tor 会自动猜测。
 #Address noname.example.com
 
-## If you have multiple network interfaces, you can specify one for
-## outgoing traffic to use.
-## OutboundBindAddressExit will be used for all exit traffic, while
-## OutboundBindAddressOR will be used for all OR and Dir connections
-## (DNS connections ignore OutboundBindAddress).
-## If you do not wish to differentiate, use OutboundBindAddress to
-## specify the same address for both in a single line.
+## 如果你有多个网络接口，可以指定一个用于出站流量。
+## OutboundBindAddressExit 将用于所有出口流量，
+## 而 OutboundBindAddressOR 将用于所有 OR 和 Dir 连接
+## （DNS 连接忽略 OutboundBindAddress）。
+## 如果你不希望区分，使用 OutboundBindAddress 在一行中
+## 为两者指定相同的地址。
 #OutboundBindAddressExit 10.0.0.4
 #OutboundBindAddressOR 10.0.0.5
 
-## A handle for your relay, so people don't have to refer to it by key.
-## Nicknames must be between 1 and 19 characters inclusive, and must
-## contain only the characters [a-zA-Z0-9].
-## If not set, "Unnamed" will be used.
+## 你的中继的标识名称，这样人们就不必通过密钥来引用它。
+## 昵称必须在 1 到 19 个字符之间，且只能包含字符 [a-zA-Z0-9]。
+## 如果未设置，将使用 "Unnamed"。
 #Nickname ididnteditheconfig
 
-## Define these to limit how much relayed traffic you will allow. Your
-## own traffic is still unthrottled. Note that RelayBandwidthRate must
-## be at least 75 kilobytes per second.
-## Note that units for these config options are bytes (per second), not
-## bits (per second), and that prefixes are binary prefixes, i.e. 2^10,
-## 2^20, etc.
-#RelayBandwidthRate 100 KBytes  # Throttle traffic to 100KB/s (800Kbps)
-#RelayBandwidthBurst 200 KBytes # But allow bursts up to 200KB (1600Kb)
+## 定义这些选项以限制你允许的中继流量。你自己的流量仍然不受限制。
+## 请注意 RelayBandwidthRate 必须至少为每秒 75 千字节。
+## 请注意这些配置选项的单位是字节（每秒），而不是比特（每秒），
+## 且前缀是二进制前缀，即 2^10、2^20 等。
+#RelayBandwidthRate 100 KBytes  # 将流量限制为 100KB/s（800Kbps）
+#RelayBandwidthBurst 200 KBytes # 但允许突发至 200KB（1600Kb）
 
-## Use these to restrict the maximum traffic per day, week, or month.
-## Note that this threshold applies separately to sent and received bytes,
-## not to their sum: setting "40 GB" may allow up to 80 GB total before
-## hibernating.
+## 使用这些选项限制每天、每周或每月的最大流量。
+## 请注意此阈值分别适用于发送和接收的字节数，
+## 而不是它们的总和：设置 "40 GB" 可能在休眠前允许总计 80 GB。
 ##
-## Set a maximum of 40 gigabytes each way per period.
+## 设置每个周期每个方向最大 40 GB。
 #AccountingMax 40 GBytes
-## Each period starts daily at midnight (AccountingMax is per day)
+## 每个周期从每天午夜开始（AccountingMax 按天计算）
 #AccountingStart day 00:00
-## Each period starts on the 3rd of the month at 15:00 (AccountingMax
-## is per month)
+## 每个周期从每月 3 号 15:00 开始（AccountingMax 按月计算）
 #AccountingStart month 3 15:00
 
-## Administrative contact information for this relay or bridge. This line
-## can be used to contact you if your relay or bridge is misconfigured or
-## something else goes wrong. Note that we archive and publish all
-## descriptors containing these lines and that Google indexes them, so
-## spammers might also collect them. You may want to obscure the fact that
-## it's an email address and/or generate a new address for this purpose.
+## 此中继或网桥的管理员联系信息。如果你的中继或网桥配置错误
+## 或出现其他问题，此行可用于联系你。请注意我们会归档并发布
+## 包含这些行的所有描述符，并且 Google 会对其建立索引，
+## 因此垃圾邮件发送者也可能收集它们。你可能希望模糊处理这是一个
+## 电子邮件地址的事实，和/或为此生成一个新地址。
 ##
-## If you are running multiple relays, you MUST set this option.
+## 如果你运行多个中继，你必须设置此选项。
 ##
 #ContactInfo Random Person <nobody AT example dot com>
-## You might also include your PGP or GPG fingerprint if you have one:
+## 你也可以包含你的 PGP 或 GPG 指纹（如果有的话）：
 #ContactInfo 0xFFFFFFFF Random Person <nobody AT example dot com>
 
-## Uncomment this to mirror directory information for others. Please do
-## if you have enough bandwidth.
-#DirPort 9030 # what port to advertise for directory connections
-## If you want to listen on a port other than the one advertised in
-## DirPort (e.g. to advertise 80 but bind to 9091), you can do it as
-## follows.  below too. You'll need to do ipchains or other port
-## forwarding yourself to make this work.
+## 取消注释此项以为他人镜像目录信息。如果你有足够的带宽，请这样做。
+#DirPort 9030 # 为目录连接通告的端口
+## 如果你想在与 DirPort 通告的端口不同的端口上监听
+## （例如通告 80 但绑定到 9091），可以按如下方式操作。
+## 你需要自行配置 ipchains 或其他端口转发才能实现。
 #DirPort 80 NoListen
 #DirPort 127.0.0.1:9091 NoAdvertise
-## Uncomment to return an arbitrary blob of html on your DirPort. Now you
-## can explain what Tor is if anybody wonders why your IP address is
-## contacting them. See contrib/tor-exit-notice.html in Tor's source
-## distribution for a sample.
+## 取消注释以在你的 DirPort 上返回任意 HTML 内容。
+## 现在如果有人想知道为什么你的 IP 地址在联系他们，
+## 你可以解释 Tor 是什么。参见 Tor 源码分发中的
+## contrib/tor-exit-notice.html 获取示例。
 #DirPortFrontPage @CONFDIR@/tor-exit-notice.html
 
-## Uncomment this if you run more than one Tor relay, and add the identity
-## key fingerprint of each Tor relay you control, even if they're on
-## different networks. You declare it here so Tor clients can avoid
-## using more than one of your relays in a single circuit. See
+## 如果你运行多个 Tor 中继，请取消注释此项，并添加你控制的每个
+## Tor 中继的身份密钥指纹，即使它们在不同的网络上。
+## 你在此声明它们，以便 Tor 客户端可以避免在单个电路中使用
+## 你的多个中继。参见
 ## https://support.torproject.org/relay-operators/multiple-relays/
-## However, you should never include a bridge's fingerprint here, as it would
-## break its concealability and potentially reveal its IP/TCP address.
+## 然而，你不应该在此处包含网桥的指纹，因为这会破坏其隐蔽性
+## 并可能暴露其 IP/TCP 地址。
 ##
-## If you are running multiple relays, you MUST set this option.
+## 如果你运行多个中继，你必须设置此选项。
 ##
-## Note: do not use MyFamily on bridge relays.
+## 注意：不要在网桥中继上使用 MyFamily。
 #MyFamily $keyid,$keyid,...
 
-## Uncomment this if you want your relay to be an exit, with the default
-## exit policy (or whatever exit policy you set below).
-## (If ReducedExitPolicy, ExitPolicy, or IPv6Exit are set, relays are exits.
-## If none of these options are set, relays are non-exits.)
+## 取消注释此项，如果你希望你的中继成为出口节点，
+## 使用默认出口策略（或你在下面设置的出口策略）。
+## （如果设置了 ReducedExitPolicy、ExitPolicy 或 IPv6Exit，中继就是出口。
+## 如果这些选项都未设置，中继就是非出口。）
 #ExitRelay 1
 
-## Uncomment this if you want your relay to allow IPv6 exit traffic.
-## (Relays do not allow any exit traffic by default.)
+## 取消注释此项，如果你希望你的中继允许 IPv6 出口流量。
+## （中继默认不允许任何出口流量。）
 #IPv6Exit 1
 
-## Uncomment this if you want your relay to be an exit, with a reduced set
-## of exit ports.
+## 取消注释此项，如果你希望你的中继成为出口节点，
+## 使用一组缩减的出口端口。
 #ReducedExitPolicy 1
 
-## Uncomment these lines if you want your relay to be an exit, with the
-## specified set of exit IPs and ports.
+## 如果你希望你的中继成为出口节点，使用指定的出口 IP 和端口集合，
+## 请取消注释这些行。
 ##
-## A comma-separated list of exit policies. They're considered first
-## to last, and the first match wins.
+## 以逗号分隔的出口策略列表。它们从前往后依次检查，
+## 第一条匹配的规则生效。
 ##
-## If you want to allow the same ports on IPv4 and IPv6, write your rules
-## using accept/reject *. If you want to allow different ports on IPv4 and
-## IPv6, write your IPv6 rules using accept6/reject6 *6, and your IPv4 rules
-## using accept/reject *4.
+## 如果你想在 IPv4 和 IPv6 上允许相同的端口，请使用
+## accept/reject * 编写你的规则。如果你想在 IPv4 和 IPv6 上
+## 允许不同的端口，请使用 accept6/reject6 *6 编写你的 IPv6 规则，
+## 使用 accept/reject *4 编写你的 IPv4 规则。
 ##
-## If you want to _replace_ the default exit policy, end this with either a
-## reject *:* or an accept *:*. Otherwise, you're _augmenting_ (prepending to)
-## the default exit policy. Leave commented to just use the default, which is
-## described in the man page or at
+## 如果你想 _替换_ 默认出口策略，请以 reject *:* 或 accept *:* 结束。
+## 否则，你是在默认出口策略前 _添加_ 规则。
+## 保留注释状态以使用默认策略，该策略在手册页中描述或参见
 ## https://support.torproject.org/relay-operators
 ##
-## Look at https://support.torproject.org/abuse/exit-relay-expectations/
-## for issues you might encounter if you use the default exit policy.
+## 参见 https://support.torproject.org/abuse/exit-relay-expectations/
+## 了解使用默认出口策略时可能遇到的问题。
 ##
-## If certain IPs and ports are blocked externally, e.g. by your firewall,
-## you should update your exit policy to reflect this -- otherwise Tor
-## users will be told that those destinations are down.
+## 如果某些 IP 和端口被外部阻止（例如被你的防火墙阻止），
+## 你应该更新你的出口策略以反映这一点——否则 Tor 用户
+## 将被告知这些目标不可达。
 ##
-## For security, by default Tor rejects connections to private (local)
-## networks, including to the configured primary public IPv4 and IPv6 addresses,
-## and any public IPv4 and IPv6 addresses on any interface on the relay.
-## See the man page entry for ExitPolicyRejectPrivate if you want to allow
-## "exit enclaving".
+## 出于安全考虑，Tor 默认拒绝到私有（本地）网络的连接，
+## 包括到配置的主要公共 IPv4 和 IPv6 地址的连接，
+## 以及中继上任何接口的任何公共 IPv4 和 IPv6 地址。
+## 如果你想允许 "出口隔离"（exit enclaving），
+## 请参阅手册页中 ExitPolicyRejectPrivate 的条目。
 ##
-#ExitPolicy accept *:6660-6667,reject *:* # allow irc ports on IPv4 and IPv6 but no more
-#ExitPolicy accept *:119 # accept nntp ports on IPv4 and IPv6 as well as default exit policy
-#ExitPolicy accept *4:119 # accept nntp ports on IPv4 only as well as default exit policy
-#ExitPolicy accept6 *6:119 # accept nntp ports on IPv6 only as well as default exit policy
-#ExitPolicy reject *:* # no exits allowed
+#ExitPolicy accept *:6660-6667,reject *:* # 在 IPv4 和 IPv6 上允许 IRC 端口，但不允许其他端口
+#ExitPolicy accept *:119 # 在 IPv4 和 IPv6 上允许 NNTP 端口以及默认出口策略
+#ExitPolicy accept *4:119 # 仅在 IPv4 上允许 NNTP 端口以及默认出口策略
+#ExitPolicy accept6 *6:119 # 仅在 IPv6 上允许 NNTP 端口以及默认出口策略
+#ExitPolicy reject *:* # 不允许任何出口
 
-## Uncomment this if you want your exit relay to reevaluate its exit policy on
-## existing connections when the exit policy is modified.
+## 取消注释此项，如果你希望出口中继在出口策略被修改时
+## 对现有连接重新评估其出口策略。
 #ReevaluateExitPolicy 1
 
-## Bridge relays (or "bridges") are Tor relays that aren't listed in the
-## main directory. Since there is no complete public list of them, even an
-## ISP that filters connections to all the known Tor relays probably
-## won't be able to block all the bridges. Also, websites won't treat you
-## differently because they won't know you're running Tor. If you can
-## be a real relay, please do; but if not, be a bridge!
+## 网桥中继（或 "bridges"）是未列在主目录中的 Tor 中继。
+## 由于没有完整的公开列表，即使过滤所有已知 Tor 中继连接的 ISP
+## 也可能无法阻止所有网桥。此外，网站不会区别对待你，
+## 因为它们不知道你正在运行 Tor。如果你能运行普通公开中继，
+## 请这样做；如果不能，请运行网桥！
 ##
-## Warning: when running your Tor as a bridge, make sure than MyFamily is
-## NOT configured.
+## 警告：运行 Tor 作为网桥时，请确保未配置 MyFamily。
 #BridgeRelay 1
-## By default, Tor will advertise your bridge to users through various
-## mechanisms like https://bridges.torproject.org/. If you want to run
-## a private bridge, for example because you'll give out your bridge
-## address manually to your friends, uncomment this line:
+## 默认情况下，Tor 会通过各种机制（如 https://bridges.torproject.org/）
+## 向用户通告你的网桥。如果你想运行私有网桥，
+## 例如因为你将手动向朋友提供你的网桥地址，
+## 请取消注释此行：
 #BridgeDistribution none
 
-## Configuration options can be imported from files or folders using the %include
-## option with the value being a path. This path can have wildcards. Wildcards are
-## expanded first, using lexical order. Then, for each matching file or folder, the following
-## rules are followed: if the path is a file, the options from the file will be parsed as if
-## they were written where the %include option is. If the path is a folder, all files on that
-## folder will be parsed following lexical order. Files starting with a dot are ignored. Files
-## on subfolders are ignored.
-## The %include option can be used recursively.
+## 配置选项可以通过 %include 选项从文件或文件夹导入，
+## 值为路径。此路径可以包含通配符。通配符首先按词法顺序展开。
+## 然后，对于每个匹配的文件或文件夹，遵循以下规则：
+## 如果路径是文件，文件中的选项将被解析，如同写在 %include 选项的位置。
+## 如果路径是文件夹，该文件夹中的所有文件将按词法顺序解析。
+## 以点号开头的文件将被忽略。子文件夹中的文件将被忽略。
+## %include 选项可以递归使用。
 #%include /etc/torrc.d/*.conf
-
