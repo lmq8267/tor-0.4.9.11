@@ -1,0 +1,761 @@
+name: tor-build
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      rel:
+        description: '编译完成后是否发布Release'
+        required: true
+        default: true
+        type: boolean
+      tag:
+        description: '指定Release版本号（留空为源码提交哈希值）'
+        required: false
+        default: ''
+      upx:
+        description: '是否使用upx压缩linux的二进制'
+        required: true
+        default: true
+        type: boolean
+
+env:
+  TZ: Asia/Shanghai
+  OPENSSL_VER: 3.0.15
+  LIBEVENT_VER: 2.1.12-stable
+  ZLIB_VER: 1.3.1
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+
+        - target: apple-darwin
+          os: macos-latest
+
+        - target: x86_64-pc-windows
+          os: ubuntu-latest
+          URL: x86_64-w64-mingw32
+
+        - target: i686-pc-windows
+          os: ubuntu-latest
+          URL: i686-w64-mingw32
+
+        - target: aarch64-linux-musl
+          os: ubuntu-latest
+          URL: aarch64-linux-musl
+
+        - target: x86_64-linux-musl
+          os: ubuntu-latest
+          URL: x86_64-linux-musl
+
+        - target: i686-linux-musl
+          os: ubuntu-latest
+          URL: i686-linux-musl
+
+        - target: armv7-linux-musleabihf
+          os: ubuntu-latest
+          URL: armv7l-linux-musleabihf
+
+        - target: armv7-linux-musleabi
+          os: ubuntu-latest
+          URL: armv7m-linux-musleabi
+
+        - target: arm-linux-musleabihf
+          os: ubuntu-latest
+          URL: arm-linux-musleabihf
+
+        - target: arm-linux-musleabi
+          os: ubuntu-latest
+          URL: arm-linux-musleabi
+
+        - target: mipsel-linux-musl
+          os: ubuntu-latest
+          URL: mipsel-linux-muslsf
+
+        - target: mips-linux-musl
+          os: ubuntu-latest
+          URL: mips-linux-muslsf
+
+        - target: mips64-linux-musl
+          os: ubuntu-latest
+          URL: mips64-linux-musl
+
+        - target: s390x-linux-musl
+          os: ubuntu-latest
+          URL: s390x-linux-musl
+
+
+    runs-on: ${{ matrix.os }}
+    env:
+      URL: ${{ matrix.URL }}
+    steps:
+     - name: Checkout code
+       uses: actions/checkout@main
+
+     - name: 下载linux-musl-gcc
+       if: ${{ runner.os == 'Linux' }}
+       uses: lmq8267/dl-musl@main
+       with:
+        target: ${{ matrix.URL }}
+        static: true
+        gccpath: /tmp
+
+     # =============================================
+     #  Linux / Windows: 缓存 + 编译 zlib
+     # =============================================
+     - name: 🗃 缓存 zlib
+       if: runner.os == 'Linux'
+       id: cache-zlib
+       uses: actions/cache@v5
+       with:
+        path: thirdparty/zlib-${{ matrix.URL }}
+        key: zlib-${{ env.ZLIB_VER }}-${{ matrix.URL }}
+
+     - name: ⛏ 编译 zlib
+       if: ${{ runner.os == 'Linux' && steps.cache-zlib.outputs.cache-hit != 'true' }}
+       shell: bash
+       run: |
+         echo "########## 编译 zlib $ZLIB_VER ##########"
+         cd /tmp
+         if [ ! -d "zlib-$ZLIB_VER" ]; then
+           curl -L -o zlib.tar.gz "https://github.com/madler/zlib/releases/download/v${ZLIB_VER}/zlib-${ZLIB_VER}.tar.gz"
+           tar xzf zlib.tar.gz
+         fi
+         cd "zlib-$ZLIB_VER"
+         make distclean 2>/dev/null || true
+         # Windows 用 mingw, Linux 用 dl-musl 的 CC
+         if [[ "${{ matrix.target }}" == *"windows"* ]]; then
+           ZCC="${URL}-gcc" ; ZAR="${URL}-ar" ; ZRL="${URL}-ranlib"
+         else
+           ZCC="$CC" ; ZAR="$AR" ; ZRL="$RANLIB"
+         fi
+         CFLAGS="-Os -ffunction-sections -fdata-sections" \
+         CC="$ZCC" AR="$ZAR" RANLIB="$ZRL" \
+           ./configure --prefix="${GITHUB_WORKSPACE}/thirdparty/zlib-${URL}" --static
+         make -j$(nproc)
+         make install
+         echo "✅ zlib 编译完成"
+         ls -la "${GITHUB_WORKSPACE}/thirdparty/zlib-${URL}/lib/"*.a
+
+     # =============================================
+     #  Linux / Windows: 缓存 + 编译 OpenSSL
+     # =============================================
+     - name: 🗃 缓存 openssl
+       if: runner.os == 'Linux'
+       id: cache-openssl
+       uses: actions/cache@v5
+       with:
+        path: thirdparty/openssl-${{ matrix.URL }}
+        key: openssl-${{ env.OPENSSL_VER }}-${{ matrix.URL }}
+
+     - name: ⛏ 编译 openssl
+       if: ${{ runner.os == 'Linux' && steps.cache-openssl.outputs.cache-hit != 'true' }}
+       shell: bash
+       run: |
+         echo "########## 编译 openssl $OPENSSL_VER ##########"
+         cd /tmp
+         if [ ! -d "openssl-$OPENSSL_VER" ]; then
+           curl -L -o openssl.tar.gz "https://www.openssl.org/source/openssl-${OPENSSL_VER}.tar.gz"
+           tar xzf openssl.tar.gz
+         fi
+         cd "openssl-$OPENSSL_VER"
+         make clean 2>/dev/null || true
+
+         # 根据目标架构自动选择 OpenSSL target
+         case "$URL" in
+           x86_64-linux-musl)                OT="linux-x86_64" ;;
+           i686-linux-musl)                  OT="linux-generic32" ;;
+           aarch64-linux-musl)               OT="linux-aarch64" ;;
+           armv7l-linux-musleabihf|armv7m-linux-musleabi) OT="linux-armv4" ;;
+           arm-linux-musleabihf|arm-linux-musleabi)       OT="linux-armv4" ;;
+           mipsel-linux-muslsf|mips-linux-muslsf)         OT="linux-mips32" ;;
+           mips64-linux-musl)                OT="linux64-mips64" ;;
+           s390x-linux-musl)                 OT="linux64-s390x no-asm" ;;
+           loongarch64-linux-musl)           OT="linux64-loongarch64" ;;
+           x86_64-w64-mingw32)               OT="mingw64" ;;
+           i686-w64-mingw32)                 OT="mingw" ;;
+           aarch64-w64-mingw32)              OT="mingwarm64 no-asm" ;;
+           *)                                OT="linux-generic64" ;;
+         esac
+         echo "OpenSSL target: $OT"
+
+         OPENSSL_THREAD_CFLAGS=""
+         OPENSSL_THREAD_LDFLAGS=""
+         if [[ "${{ matrix.target }}" != *"windows"* ]]; then
+           OPENSSL_THREAD_CFLAGS="-pthread"
+           OPENSSL_THREAD_LDFLAGS="-pthread"
+         fi
+
+         CC="$CC" AR="$AR" RANLIB="$RANLIB" \
+         CFLAGS="$OPENSSL_THREAD_CFLAGS" LDFLAGS="$OPENSSL_THREAD_LDFLAGS" \
+         ./Configure $OT \
+           --prefix="${GITHUB_WORKSPACE}/thirdparty/openssl-${URL}" \
+           --openssldir="${GITHUB_WORKSPACE}/thirdparty/openssl-${URL}/ssl" \
+           no-shared no-tests enable-threads \
+           no-comp no-ssl2 no-ssl3 no-weak-ssl-ciphers \
+           -DOPENSSL_API_COMPAT=0x10101000L -fPIC -Os -ffunction-sections -fdata-sections
+
+         make -j$(nproc) build_libs || { echo "❌ openssl build_libs 失败"; exit 1; }
+         make install_dev || { echo "❌ openssl install_dev 失败"; exit 1; }
+         printf '#include <openssl/crypto.h>\n#ifndef OPENSSL_THREADS\n#error OPENSSL_THREADS missing\n#endif\nint main(void){return 0;}\n' > /tmp/check-openssl-threads.c
+         "$CC" -I"${GITHUB_WORKSPACE}/thirdparty/openssl-${URL}/include" \
+           -c /tmp/check-openssl-threads.c -o /tmp/check-openssl-threads.o
+         echo "✅ openssl 编译完成"
+         ls -la "${GITHUB_WORKSPACE}/thirdparty/openssl-${URL}/lib/"*.a 2>/dev/null || \
+         ls -la "${GITHUB_WORKSPACE}/thirdparty/openssl-${URL}/lib64/"*.a 2>/dev/null || true
+
+     # =============================================
+     #  Linux / Windows: 缓存 + 编译 libevent
+     # =============================================
+     - name: 🗃 缓存 libevent
+       if: runner.os == 'Linux'
+       id: cache-libevent
+       uses: actions/cache@v5
+       with:
+        path: thirdparty/libevent-${{ matrix.URL }}
+        key: libevent-${{ env.LIBEVENT_VER }}-${{ matrix.URL }}
+
+     - name: ⛏ 编译 libevent
+       if: ${{ runner.os == 'Linux' && steps.cache-libevent.outputs.cache-hit != 'true' }}
+       shell: bash
+       run: |
+         echo "########## 编译 libevent $LIBEVENT_VER ##########"
+         cd /tmp
+         if [ ! -d "libevent-${LIBEVENT_VER}" ]; then
+           curl -L -o libevent.tar.gz "https://github.com/libevent/libevent/releases/download/release-${LIBEVENT_VER}/libevent-${LIBEVENT_VER}.tar.gz"
+           tar xzf libevent.tar.gz
+         fi
+         cd "libevent-${LIBEVENT_VER}"
+         make distclean 2>/dev/null || true
+         # Windows 用 mingw, Linux 用 dl-musl 的 CC
+         if [[ "${{ matrix.target }}" == *"windows"* ]]; then
+           ECC="${URL}-gcc" ; EAR="${URL}-ar" ; ERL="${URL}-ranlib"
+           # Windows: 手动映射 canonical triple
+           case "$URL" in
+             x86_64-w64-mingw32)  HOST_TRIPLE="x86_64-pc-mingw32" ;;
+             i686-w64-mingw32)    HOST_TRIPLE="i686-pc-mingw32" ;;
+             aarch64-w64-mingw32) HOST_TRIPLE="aarch64-pc-mingw32" ;;
+           esac
+         else
+           ECC="$CC" ; EAR="$AR" ; ERL="$RANLIB"
+           # 从 dl-musl 的 CC 完整路径提取 canonical triple
+           # CC=/tmp/loongarch64-unknown-linux-musl-cross/bin/loongarch64-unknown-linux-musl-gcc
+           HOST_TRIPLE=$(basename "$ECC" 2>/dev/null | sed 's/-gcc$//')
+         fi
+         ECC="$ECC" AR="$EAR" RANLIB="$ERL" \
+         CFLAGS="-Os -ffunction-sections -fdata-sections \
+           -I${GITHUB_WORKSPACE}/thirdparty/zlib-${URL}/include" \
+         LDFLAGS="-L${GITHUB_WORKSPACE}/thirdparty/zlib-${URL}/lib" \
+           ./configure \
+           --prefix="${GITHUB_WORKSPACE}/thirdparty/libevent-${URL}" \
+           --host="$HOST_TRIPLE" \
+           --enable-static --disable-shared \
+           --disable-samples --disable-debug-mode \
+           --disable-openssl
+         make -j$(nproc)
+         make install
+         echo "✅ libevent 编译完成"
+         ls -la "${GITHUB_WORKSPACE}/thirdparty/libevent-${URL}/lib/"*.a
+
+     # =============================================
+     #  macOS: 安装工具 + 缓存 + 编译依赖
+     # =============================================
+     - name: 📦 安装 macOS 构建工具
+       if: ${{ runner.os == 'macOS' }}
+       shell: bash
+       run: |
+         brew update > /dev/null 2>&1
+         brew install autoconf automake libtool pkg-config coreutils
+
+     - name: 🗃 缓存 macOS 依赖库
+       if: ${{ runner.os == 'macOS' }}
+       id: cache-mac-deps
+       uses: actions/cache@v5
+       with:
+        path: thirdparty/macos-universal
+        key: mac-deps-${{ env.OPENSSL_VER }}-${{ env.LIBEVENT_VER }}-${{ env.ZLIB_VER }}
+
+     - name: ⛏ 编译 macOS 依赖库
+       if: ${{ runner.os == 'macOS' && steps.cache-mac-deps.outputs.cache-hit != 'true' }}
+       shell: bash
+       run: |
+         set -euo pipefail
+         DEPS_DIR="${GITHUB_WORKSPACE}/thirdparty/macos-universal"
+         NPROC=$(sysctl -n hw.ncpu)
+         export MACOSX_DEPLOYMENT_TARGET=11.0
+
+         build_deps_arch() {
+           local ARCH="$1" CC_ARCH="$2" BUILD_DIR="/tmp/deps-$1"
+           mkdir -p "$BUILD_DIR"
+
+           echo "--- [$ARCH] 编译 zlib ---"
+           cd /tmp
+           if [ ! -d "zlib-$ZLIB_VER" ]; then
+             curl -L -o zlib.tar.gz "https://github.com/madler/zlib/releases/download/v${ZLIB_VER}/zlib-${ZLIB_VER}.tar.gz"
+             tar xzf zlib.tar.gz
+           fi
+           cd "zlib-$ZLIB_VER"
+           make distclean 2>/dev/null || true
+           CFLAGS="-Os -ffunction-sections -fdata-sections -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}" \
+           CC="clang -arch $CC_ARCH" AR="ar" RANLIB="ranlib" \
+             ./configure --prefix="$BUILD_DIR" --static
+           make -j$NPROC
+           make install
+
+           echo "--- [$ARCH] 编译 openssl ---"
+           cd /tmp
+           if [ ! -d "openssl-$OPENSSL_VER" ]; then
+             curl -L -o openssl.tar.gz "https://www.openssl.org/source/openssl-${OPENSSL_VER}.tar.gz"
+             tar xzf openssl.tar.gz
+           fi
+           cd "openssl-$OPENSSL_VER"
+           make clean 2>/dev/null || true
+           if [ "$ARCH" = "x86_64" ]; then OT="darwin64-x86_64-cc"; else OT="darwin64-arm64-cc"; fi
+           CFLAGS="-pthread -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}" \
+           LDFLAGS="-pthread -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}" \
+           ./Configure $OT \
+             --prefix="$BUILD_DIR" --openssldir="$BUILD_DIR/ssl" \
+             no-shared no-tests enable-threads \
+             no-comp no-ssl2 no-ssl3 no-weak-ssl-ciphers \
+             -DOPENSSL_API_COMPAT=0x10101000L -fPIC -Os -ffunction-sections -fdata-sections \
+             -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}
+           make -j$NPROC build_libs
+           make install_dev
+
+           echo "--- [$ARCH] 编译 libevent ---"
+           cd /tmp
+           if [ ! -d "libevent-$LIBEVENT_VER" ]; then
+             curl -L -o libevent.tar.gz "https://github.com/libevent/libevent/releases/download/release-${LIBEVENT_VER}/libevent-${LIBEVENT_VER}.tar.gz"
+             tar xzf libevent.tar.gz
+           fi
+           cd "libevent-$LIBEVENT_VER"
+           make distclean 2>/dev/null || true
+           ./configure \
+             --prefix="$BUILD_DIR" \
+             --enable-static --disable-shared \
+             --disable-samples --disable-debug-mode \
+             --disable-openssl \
+             CC="clang -arch $CC_ARCH" \
+             CFLAGS="-Os -ffunction-sections -fdata-sections -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}" \
+             LDFLAGS="-mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+           make -j$NPROC
+           make install
+         }
+
+         echo "============ x86_64 依赖 ============"
+         build_deps_arch "x86_64" "x86_64"
+         echo "============ arm64 依赖 ============"
+         build_deps_arch "arm64" "arm64"
+
+         # 合并为 Universal Binary
+         echo "============ lipo 合并依赖库 ============"
+         mkdir -p "$DEPS_DIR/lib" "$DEPS_DIR/include"
+         cp -r /tmp/deps-x86_64/include/* "$DEPS_DIR/include/"
+         for lib in libssl.a libcrypto.a libevent.a libevent_core.a libevent_extra.a libz.a; do
+           x86_lib="/tmp/deps-x86_64/lib/$lib"
+           arm_lib="/tmp/deps-arm64/lib/$lib"
+           if [ -f "$x86_lib" ] && [ -f "$arm_lib" ]; then
+             lipo -create -output "$DEPS_DIR/lib/$lib" "$x86_lib" "$arm_lib"
+             echo "  合并: $lib"
+           fi
+         done
+         echo "✅ macOS 依赖库编译完成"
+         ls -lh "$DEPS_DIR/lib/"*.a
+
+     # =============================================
+     #  编译 macOS Tor (Universal Binary)
+     # =============================================
+     - name: 编译 macOS
+       if: ${{ runner.os == 'macOS' }}
+       shell: bash
+       env:
+        TARGET: ${{ matrix.target }}
+       run: |
+         set -euo pipefail
+         DEPS_DIR="${GITHUB_WORKSPACE}/thirdparty/macos-universal"
+         NPROC=$(sysctl -n hw.ncpu)
+         export MACOSX_DEPLOYMENT_TARGET=11.0
+
+         build_tor_arch() {
+           local ARCH_NAME="$1" ARCH_FLAG="$2" OUT_NAME="$3"
+           echo "============ 编译 Tor $ARCH_NAME ============"
+           local TOR_TARGETS="src/app/tor src/tools/tor-resolve src/tools/tor-print-ed-signing-cert src/tools/tor-gencert"
+           cd "$GITHUB_WORKSPACE"
+           touch aclocal.m4 configure Makefile.in orconfig.h.in
+           if [ -f Makefile ]; then
+             make distclean 2>/dev/null || true
+           fi
+           touch aclocal.m4 configure Makefile.in orconfig.h.in
+           ./configure \
+             --prefix=/usr/local \
+             --enable-static-openssl \
+             --enable-static-libevent \
+             --enable-static-zlib \
+             --with-openssl-dir="$DEPS_DIR" \
+             --with-libevent-dir="$DEPS_DIR" \
+             --with-zlib-dir="$DEPS_DIR" \
+             --disable-systemd --disable-seccomp \
+             --disable-asciidoc \
+             --disable-unittests \
+             --disable-lzma --disable-zstd \
+             --disable-module-dirauth --disable-module-pow \
+             CC="clang" CXX="clang++" \
+             CFLAGS="-arch $ARCH_FLAG -pthread -Os -ffunction-sections -fdata-sections -mmacosx-version-min=11.0" \
+             CXXFLAGS="-arch $ARCH_FLAG -pthread -Os -ffunction-sections -fdata-sections -mmacosx-version-min=11.0" \
+             LDFLAGS="-arch $ARCH_FLAG -pthread -dead_strip -mmacosx-version-min=${MACOSX_DEPLOYMENT_TARGET}"
+           make -j$NPROC $TOR_TARGETS
+           for tool in src/app/tor src/tools/tor-resolve src/tools/tor-print-ed-signing-cert src/tools/tor-gencert; do
+             strip -x -S "$tool"
+             file "$tool"
+           done
+           cp -f src/app/tor "$GITHUB_WORKSPACE/bin/$OUT_NAME"
+           cp -f src/tools/tor-resolve "$GITHUB_WORKSPACE/bin/tor-resolve-$ARCH_NAME"
+           cp -f src/tools/tor-print-ed-signing-cert "$GITHUB_WORKSPACE/bin/tor-print-ed-signing-cert-$ARCH_NAME"
+           cp -f src/tools/tor-gencert "$GITHUB_WORKSPACE/bin/tor-gencert-$ARCH_NAME"
+         }
+
+         mkdir -p bin
+         build_tor_arch "x86_64" "x86_64" "tor-x86_64"
+         build_tor_arch "arm64" "arm64" "tor-arm64"
+
+         # 合并为 Universal Binary
+         echo "============ lipo 合并 Tor ============"
+         lipo -create -output bin/tor bin/tor-x86_64 bin/tor-arm64
+         lipo -create -output bin/tor-resolve bin/tor-resolve-x86_64 bin/tor-resolve-arm64
+         lipo -create -output bin/tor-print-ed-signing-cert bin/tor-print-ed-signing-cert-x86_64 bin/tor-print-ed-signing-cert-arm64
+         lipo -create -output bin/tor-gencert bin/tor-gencert-x86_64 bin/tor-gencert-arm64
+         lipo -info bin/tor
+         lipo -info bin/tor-resolve
+         lipo -info bin/tor-print-ed-signing-cert
+         lipo -info bin/tor-gencert
+         file bin/tor
+         file bin/tor-resolve
+         file bin/tor-print-ed-signing-cert
+         file bin/tor-gencert
+         strip -x -S bin/tor bin/tor-resolve bin/tor-print-ed-signing-cert bin/tor-gencert
+         rm -f bin/tor-x86_64 bin/tor-arm64 \
+           bin/tor-resolve-x86_64 bin/tor-resolve-arm64 \
+           bin/tor-print-ed-signing-cert-x86_64 bin/tor-print-ed-signing-cert-arm64 \
+           bin/tor-gencert-x86_64 bin/tor-gencert-arm64
+
+         # 验证静态链接
+         echo "--- 链接验证 ---"
+         otool -L bin/tor || true
+         ls -lh bin/tor*
+
+     # =============================================
+     #  编译 Linux / Windows Tor
+     # =============================================
+     - name: 编译 Linux / Windows
+       if: ${{ runner.os == 'Linux' }}
+       shell: bash
+       run: |
+         set -euo pipefail
+         mkdir -p bin
+
+         TARGET="${{ matrix.target }}"
+
+         # 设置正确的 CC/AR/RANLIB (Windows 用 mingw, Linux 用 dl-musl 的 CC)
+         if [[ "$TARGET" == *"windows"* ]]; then
+           BUILD_CC="${URL}-gcc"
+           BUILD_AR="${URL}-ar"
+           BUILD_RL="${URL}-ranlib"
+           BUILD_STRIP="${URL}-strip"
+           BUILD_LDFLAGS="-s -Wl,--gc-sections -Wl,--strip-all -static"
+         else
+           BUILD_CC="$CC"
+           BUILD_AR="$AR"
+           BUILD_RL="$RANLIB"
+           BUILD_STRIP="$STRIP"
+           BUILD_LDFLAGS="-static -s -Wl,--gc-sections -Wl,--strip-all -Wl,-s"
+         fi
+
+         BUILD_CFLAGS="-ffunction-sections -fdata-sections -Os -pipe \
+           -DOPENSSL_API_COMPAT=0x10101000L \
+           -I${GITHUB_WORKSPACE}/thirdparty/zlib-${URL}/include \
+           -I${GITHUB_WORKSPACE}/thirdparty/openssl-${URL}/include \
+           -I${GITHUB_WORKSPACE}/thirdparty/libevent-${URL}/include"
+
+         BUILD_LDFLAGS="$BUILD_LDFLAGS \
+           -L${GITHUB_WORKSPACE}/thirdparty/zlib-${URL}/lib \
+           -L${GITHUB_WORKSPACE}/thirdparty/openssl-${URL}/lib \
+           -L${GITHUB_WORKSPACE}/thirdparty/libevent-${URL}/lib"
+
+         BUILD_LIBS=""
+         case "$URL" in
+           mips*-linux-musl*|arm*-linux-musl*)
+             BUILD_LIBS="-latomic"
+             ;;
+         esac
+
+         echo "CC=$BUILD_CC  AR=$BUILD_AR  STRIP=$BUILD_STRIP"
+
+         # 将 dl-musl 工具链目录加入 PATH, 让 configure 找到 ar/strip 等
+         BUILD_DIR=$(dirname "$BUILD_CC")
+         if [ -d "$BUILD_DIR" ]; then
+           export PATH="$BUILD_DIR:$PATH"
+         fi
+
+         cd "$GITHUB_WORKSPACE"
+         make distclean 2>/dev/null || true
+
+         ./configure \
+           --host="$URL" \
+           --prefix=/usr \
+           --enable-static-tor \
+           --disable-tool-name-check \
+           --with-openssl-dir="${GITHUB_WORKSPACE}/thirdparty/openssl-${URL}" \
+           --with-libevent-dir="${GITHUB_WORKSPACE}/thirdparty/libevent-${URL}" \
+           --with-zlib-dir="${GITHUB_WORKSPACE}/thirdparty/zlib-${URL}" \
+           --disable-systemd --disable-seccomp \
+           --disable-asciidoc \
+           --disable-unittests \
+           --disable-lzma --disable-zstd \
+           --disable-module-dirauth --disable-module-pow \
+           CC="$BUILD_CC" AR="$BUILD_AR" RANLIB="$BUILD_RL" \
+           CFLAGS="$BUILD_CFLAGS" LDFLAGS="$BUILD_LDFLAGS" LIBS="$BUILD_LIBS"
+
+         if [[ "$TARGET" == *"windows"* ]]; then
+           make -j$(nproc) \
+             src/app/tor.exe \
+             src/tools/tor-resolve.exe \
+             src/tools/tor-print-ed-signing-cert.exe \
+             src/tools/tor-gencert.exe
+         else
+           make -j$(nproc) \
+             src/app/tor \
+             src/tools/tor-resolve \
+             src/tools/tor-print-ed-signing-cert \
+             src/tools/tor-gencert
+         fi
+
+         if [[ "$TARGET" == *"windows"* ]]; then
+           for tool in tor tor-resolve tor-print-ed-signing-cert tor-gencert; do
+             src_path="src/app/${tool}.exe"
+             if [ "$tool" != "tor" ]; then
+               src_path="src/tools/${tool}.exe"
+             fi
+             $BUILD_STRIP --strip-all "$src_path" 2>/dev/null || true
+             cp -f "$src_path" "bin/${tool}.exe"
+             file "bin/${tool}.exe"
+           done
+         else
+           for tool in tor tor-resolve tor-print-ed-signing-cert tor-gencert; do
+             src_path="src/app/${tool}"
+             if [ "$tool" != "tor" ]; then
+               src_path="src/tools/${tool}"
+             fi
+             $BUILD_STRIP --strip-all "$src_path" 2>/dev/null || true
+             $BUILD_STRIP --strip-unneeded "$src_path" 2>/dev/null || true
+             cp -f "$src_path" "bin/${tool}"
+             file "bin/${tool}"
+             size "bin/${tool}" 2>/dev/null || true
+           done
+           echo "--- 链接验证 ---"
+           ldd "bin/tor" 2>&1 || echo "✅ 完全静态链接, 无动态依赖"
+         fi
+
+     # =============================================
+     #  UPX 压缩 (Linux)
+     # =============================================
+     - name: 安装 UPX
+       if: ${{ runner.os == 'Linux' && !endsWith(matrix.target, 'windows') && !startsWith(matrix.target, 's390x') && !startsWith(matrix.target, 'loongarch64') && github.event.inputs.upx == 'true' }}
+       uses: crazy-max/ghaction-upx@master
+       with:
+        version: v4.2.4
+        install-only: true
+
+     - name: 压缩
+       if: ${{ runner.os == 'Linux' && !endsWith(matrix.target, 'windows') && !startsWith(matrix.target, 's390x') && !startsWith(matrix.target, 'loongarch64') && github.event.inputs.upx == 'true' }}
+       run: upx --lzma --best bin/* || true
+
+     - name: 显示产物信息
+       shell: bash
+       run: |
+         TARGET="${{ matrix.target }}"
+         cd bin
+         echo "=========================================="
+         echo "  文件信息 - $TARGET"
+         echo "=========================================="
+         for f in tor*; do
+           if [ -f "$f" ]; then
+             echo "--- $f ---"
+             ls -lh "$f"
+             file "$f"
+           fi
+         done
+         echo ""
+
+         {
+           echo "## Tor build: \`$TARGET\`"
+           echo ""
+           echo "### 构建内容"
+           echo ""
+           echo "本任务只构建 Tor 主程序和随源码安装的工具程序，没有构建单元测试、benchmark 或 fuzz 目标。"
+           echo ""
+           echo "| 程序 | 作用 |"
+           echo "| --- | --- |"
+           echo "| \`tor\` | Tor 主守护进程，客户端、中继和网桥运行时使用的核心二进制。 |"
+           echo "| \`tor-resolve\` | 通过 Tor/SOCKS 执行 DNS 解析的命令行工具。 |"
+           echo "| \`tor-print-ed-signing-cert\` | 打印和检查 Ed25519 signing certificate 的维护工具。 |"
+           echo "| \`tor-gencert\` | 目录权威证书生成工具，主要用于 directory authority 运维场景。 |"
+           echo ""
+           echo "### 当前平台产物"
+           echo ""
+           echo "| 文件 | 大小 | 类型 |"
+           echo "| --- | ---: | --- |"
+           for f in tor*; do
+             if [ -f "$f" ]; then
+               size="$(du -h "$f" | awk '{print $1}')"
+               kind="$(file -b "$f" | sed 's/|/\\|/g')"
+               echo "| \`$f\` | $size | $kind |"
+             fi
+           done
+           echo ""
+           echo "### 上传规则"
+           echo ""
+           echo "- Actions artifact \`tor-$TARGET\` 直接上传的构建目录 \`bin/\` 里的程序文件。"
+           echo "- 如果启用 Release，本平台会额外生成并上传 \`tor-$TARGET.tar.gz\`。"
+           echo "- 当前 Release 开关：\`${{ github.event.inputs.rel }}\`。"
+         } >> "$GITHUB_STEP_SUMMARY"
+
+     - name: 复制使用说明到产物目录
+       shell: bash
+       run: cp "${GITHUB_WORKSPACE}/使用说明.md" bin/
+
+     # =============================================
+     #  上传产物
+     # =============================================
+     - uses: actions/upload-artifact@main
+       with:
+        name: tor-${{ matrix.target }}
+        path: |
+          bin/*
+
+     # =============================================
+     #  打包 + Release
+     # =============================================
+     - name: 打包
+       if: github.event.inputs.rel == 'true'
+       shell: bash
+       run: |
+          echo "build_time=$(date '+%Y年%m月%d日%H:%M:%S' | jq -sRr @uri)" >> $GITHUB_ENV
+          if [ -z "$TAG" ]; then
+              echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          else
+              echo "tag=$TAG" >> $GITHUB_ENV
+          fi
+          echo "haxi=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+          tar -C bin -czf "tor-${TARGET}.tar.gz" .
+       env:
+        TAG: ${{ github.event.inputs.tag }}
+        TARGET: ${{ matrix.target }}
+
+     - name: 生成 Release Body
+       if: github.event.inputs.rel == 'true'
+       shell: bash
+       run: |
+         {
+           echo "> ### ![](https://img.shields.io/badge/%E7%BC%96%E8%AF%91%E6%97%B6%E9%97%B4-${{ env.build_time }}-8267?logo=github&labelColor=%E9%A1%BB)![](https://img.shields.io/github/downloads/${{ github.repository }}/${{env.tag}}/total?label=%E4%B8%8B%E8%BD%BD%E6%AC%A1%E6%95%B0&logo=github)"
+           echo ""
+           echo "<details>"
+           echo "<summary>📖 使用说明（点击展开）</summary>"
+           echo ""
+           cat "${GITHUB_WORKSPACE}/使用说明.md"
+           echo ""
+           echo "</details>"
+         } > "${GITHUB_WORKSPACE}/release_body.md"
+
+     - name: 发布Release
+       if: github.event.inputs.rel == 'true'
+       uses: lmq8267/action-gh-release@master
+       with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body_path: ${{ github.workspace }}/release_body.md
+          tag_name: ${{env.tag}}
+          files: tor-${{ matrix.target }}.tar.gz
+
+  summary:
+    name: 汇总所有平台产物
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    steps:
+      - name: 下载所有平台产物
+        uses: actions/download-artifact@main
+        with:
+          path: all-platforms
+          pattern: tor-*
+
+      - name: 生成汇总包
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.inputs.tag }}"
+          if [ -z "$TAG" ]; then
+            TAG="${GITHUB_SHA::7}"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_ENV"
+
+          mkdir -p summary
+          for dir in all-platforms/tor-*; do
+            if [ -d "$dir" ]; then
+              target="$(basename "$dir" | sed 's/^tor-//')"
+              mkdir -p "summary/$target"
+              cp -a "$dir"/. "summary/$target/"
+            fi
+          done
+          zip -r "tor-all-platforms.zip" summary/
+
+          {
+            echo "## Tor all-platforms summary"
+            echo ""
+            echo "所有平台构建成功后才生成该汇总。每个平台的文件保留在独立目录中，目录名为 target名称。"
+            echo ""
+            echo "### 汇总内容"
+            echo ""
+            echo "\`\`\`"
+            find summary -maxdepth 2 -type f | sort
+            echo "\`\`\`"
+            echo ""
+            echo "### 上传规则"
+            echo ""
+            echo "- Actions artifact \`tor-all-platforms\` 上传的是展开后的 \`summary/\` 目录。"
+            echo "- Release 上传的是单个 \`tor-all-platforms.zip\` 文件。"
+            echo "- 当前 Release tag：\`$TAG\`。"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 上传汇总产物
+        uses: actions/upload-artifact@main
+        with:
+          name: tor-all-platforms
+          path: summary/
+
+      - name: 上传汇总包到 Release
+        if: github.event.inputs.rel == 'true'
+        uses: lmq8267/action-gh-release@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ env.tag }}
+          files: tor-all-platforms.zip
+
+  del:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 删除流程记录
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          retain_days: 0
+          keep_minimum_runs: 0
