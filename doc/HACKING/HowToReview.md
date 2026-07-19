@@ -1,82 +1,74 @@
-# How to review a patch
+# 如何审查补丁
 
-Some folks have said that they'd like to review patches more often, but they
-don't know how.
+有些人说他们想更频繁地审查补丁，但不知道该怎么做。
 
-So, here are a bunch of things to check for when reviewing a patch!
+那么，这里有一系列在审查补丁时需要检查的事项！
 
-Note that if you can't do every one of these, that doesn't mean you can't do
-a good review!  Just make it clear what you checked for and what you didn't.
+请注意，如果你不能检查所有这些事项，并不意味着你不能做好审查工作！只需要清楚你检查了什么以及没检查什么。
 
-## Top-level smell-checks
+## 顶层初步检查
 
-(Difficulty: easy)
+（难度：简单）
 
-- Does it compile with `--enable-fatal-warnings`?
+- 它是否能用 `--enable-fatal-warnings` 编译？
 
-- Does `make check-spaces` pass?
+- `make check-spaces` 是否通过？
 
-- Does `make check-changes` pass?
+- `make check-changes` 是否通过？
 
-- Does it have a reasonable amount of tests?  Do they pass?  Do they leak
-  memory?
+- 它是否有合理数量的测试？测试是否通过？是否有内存泄漏？
 
-- Do all the new functions, global variables, types, and structure members have
- documentation?
+- 所有新增的函数、全局变量、类型和结构体成员是否都有文档？
 
-- Do all the functions, global variables, types, and structure members with
-  modified behavior have modified documentation?
+- 所有行为被修改的函数、全局变量、类型和结构体成员的文档是否也被更新了？
 
-- Do all the new torrc options have documentation?
+- 所有新增的 torrc 选项是否都有文档？
 
-- If this changes Tor's behavior on the wire, is there a design proposal?
+- 如果这改变了 Tor 在网络传输层的行为，是否有设计提案？
 
-- If this changes anything in the code, is there a "changes" file?
+- 如果这改变了代码中的任何内容，是否有 "changes" 文件？
 
 
-## Let's look at the code!
+## 让我们看看代码！
 
-- Does the code conform to `CodingStandards.md`?
+- 代码是否符合 `CodingStandards.md`？
 
-- Does the code leak memory?
+- 代码是否有内存泄漏？
 
-- If two or more pointers ever point to the same object, is it clear which
-  pointer "owns" the object?
+- 如果两个或多个指针指向同一个对象，是否清楚哪个指针"拥有"该对象？
 
-- Are all allocated resources freed?
+- 所有分配的资源是否都被释放了？
 
-- Are all pointers that should be const, const?
+- 所有应该为 const 的指针是否都是 const？
 
-- Are `#defines` used for 'magic' numbers?
+- 是否使用 `#defines` 来定义"魔法"数字？
 
-- Can you understand what the code is trying to do?
+- 你是否能理解代码试图做什么？
 
-- Can you convince yourself that the code really does that?
+- 你是否能确信代码确实做了这些事？
 
-- Is there duplicated code that could be turned into a function?
-
-
-## Let's look at the documentation!
-
-- Does the documentation conform to CodingStandards.txt?
-
-- Does it make sense?
-
-- Can you predict what the function will do from its documentation?
+- 是否有可以被提取为函数的重复代码？
 
 
-## Let's think about security!
+## 让我们看看文档！
 
-- If there are any arrays, buffers, are you 100% sure that they cannot
-  overflow?
+- 文档是否符合 CodingStandards.txt？
 
-- If there is any integer math, can it overflow or underflow?
+- 文档是否有意义？
 
-- If there are any allocations, are you sure there are corresponding
-  deallocations?
+- 你能否根据文档预测函数的行为？
 
-- Is there a safer pattern that could be used in any case?
 
-- Have they used one of the Forbidden Functions?
+## 让我们考虑安全性！
 
-(Also see your favorite secure C programming guides.)
+- 如果有任何数组、缓冲区，你是否 100% 确信它们不会溢出？
+
+- 如果有任何整数运算，它是否会溢出或下溢？
+
+- 如果有任何内存分配，你是否确定有对应的释放？
+
+- 在任何情况下是否有更安全的模式可以使用？
+
+- 他们是否使用了禁止使用的函数？
+
+（另请参阅你最喜欢的安全 C 编程指南。）

@@ -1,169 +1,109 @@
-# Writing tests for Tor: an incomplete guide
+# 为 Tor 编写测试：一份不完整的指南
 
-Tor uses a variety of testing frameworks and methodologies to try to
-keep from introducing bugs.  The major ones are:
+Tor 使用各种测试框架和方法论来尽量避免引入 bug。主要的测试方法包括：
 
-   1. Unit tests written in C and shipped with the Tor distribution.
+   1. 用 C 语言编写的单元测试，随 Tor 发行版一起发布。
 
-   2. Integration tests written in Python 2 (>= 2.7) or Python 3
-      (>= 3.1) and shipped with the Tor distribution.
+   2. 用 Python 2 (>= 2.7) 或 Python 3 (>= 3.1) 编写的集成测试，随 Tor 发行版一起发布。
 
-   3. Integration tests written in Python and shipped with the Stem
-      library.  Some of these use the Tor controller protocol.
+   3. 用 Python 编写的集成测试，随 Stem 库一起发布。其中一些测试使用 Tor 控制器协议。
 
-   4. System tests written in Python and SH, and shipped with the
-      Chutney package.  These work by running many instances of Tor
-      locally, and sending traffic through them.
+   4. 用 Python 和 SH 编写的系统测试，随 Chutney 包一起发布。这些测试通过在本地运行多个 Tor 实例并通过它们发送流量来工作。
 
-   5. The Shadow network simulator.
+   5. Shadow 网络模拟器。
 
-## How to run these tests
+## 如何运行这些测试
 
-### The easy version
+### 简单版本
 
-To run all the tests that come bundled with Tor, run `make check`.
+要运行 Tor 自带的所有测试，请运行 `make check`。
 
-To run the Stem tests as well, fetch stem from the git repository,
-set `STEM_SOURCE_DIR` to the checkout, and run `make test-stem`.
+要同时运行 Stem 测试，请从 git 仓库获取 stem，将 `STEM_SOURCE_DIR` 设置为检出目录，然后运行 `make test-stem`。
 
-To run the Chutney tests as well, fetch chutney from the git repository,
-set `CHUTNEY_PATH` to the checkout, and run `make test-network`.
+要同时运行 Chutney 测试，请从 git 仓库获取 chutney，将 `CHUTNEY_PATH` 设置为检出目录，然后运行 `make test-network`。
 
-To run all of the above, run `make test-full`.
+要运行以上所有测试，请运行 `make test-full`。
 
-To run all of the above, plus tests that require a working connection to the
-internet, run `make test-full-online`.
+要运行以上所有测试，加上需要连接互联网才能运行的测试，请运行 `make test-full-online`。
 
-### Running particular subtests
+### 运行特定的子测试
 
-The Tor unit tests are divided into separate programs and a couple of
-bundled unit test programs.
+Tor 的单元测试被划分为独立的程序和几个打包的单元测试程序。
 
-Separate programs are easy.  For example, to run the memwipe tests in
-isolation, you just run `./src/test/test-memwipe`.
+独立程序很容易运行。例如，要单独运行 memwipe 测试，只需运行 `./src/test/test-memwipe`。
 
-To run tests within the unit test programs, you can specify the name
-of the test.  The string ".." can be used as a wildcard at the end of the
-test name.  For example, to run all the cell format tests, enter
-`./src/test/test cellfmt/..`.
+要在单元测试程序内运行测试，可以指定测试的名称。字符串 ".." 可用作测试名称末尾的通配符。例如，要运行所有 cell format 测试，请输入 `./src/test/test cellfmt/..`。
 
-Many tests that need to mess with global state run in forked subprocesses in
-order to keep from contaminating one another.  But when debugging a failing test,
-you might want to run it without forking a subprocess.  To do so, use the
-`--no-fork` option with a single test.  (If you specify it along with
-multiple tests, they might interfere.)
+许多需要修改全局状态的测试在分叉的子进程中运行，以避免相互干扰。但在调试一个失败的测试时，你可能希望在不分叉子进程的情况下运行它。为此，可以对单个测试使用 `--no-fork` 选项。（如果同时指定了多个测试，它们可能会相互干扰。）
 
-You can turn on logging in the unit tests by passing one of `--debug`,
-`--info`, `--notice`, or `--warn`.  By default only errors are displayed.
+你可以通过传递 `--debug`、`--info`、`--notice` 或 `--warn` 来开启单元测试中的日志记录。默认情况下只显示错误。
 
-Unit tests are divided into `./src/test/test` and `./src/test/test-slow`.
-The former are those that should finish in a few seconds; the latter tend to
-take more time, and may include CPU-intensive operations, deliberate delays,
-and stuff like that.
+单元测试分为 `./src/test/test` 和 `./src/test/test-slow`。前者是那些应该在几秒内完成的测试；后者往往需要更多时间，可能包含 CPU 密集型操作、人为延迟等。
 
-## Finding test coverage
+## 查找测试覆盖率
 
-Test coverage is a measurement of which lines your tests actually visit.
+测试覆盖率是衡量你的测试实际访问了哪些行的指标。
 
-When you configure Tor with the `--enable-coverage` option, it should
-build with support for coverage in the unit tests, and in a special
-`tor-cov` binary.
+当你使用 `--enable-coverage` 选项配置 Tor 时，它应该会构建带有单元测试覆盖率支持和一个特殊的 `tor-cov` 二进制文件的版本。
 
-Then, run the tests you'd like to see coverage from.  If you have old
-coverage output, you may need to run `reset-gcov` first.
+然后，运行你想查看覆盖率的测试。如果你有旧的覆盖率输出，可能需要先运行 `reset-gcov`。
 
-Now you've got a bunch of files scattered around your build directories
-called `*.gcda`.  In order to extract the coverage output from them, make a
-temporary directory for them and run `./scripts/test/coverage ${TMPDIR}`,
-where `${TMPDIR}` is the temporary directory you made.  This will create a
-`.gcov` file for each source file under tests, containing that file's source
-annotated with the number of times the tests hit each line.  (You'll need to
-have gcov installed.)
+现在你会在构建目录中找到一堆名为 `*.gcda` 的文件。为了从中提取覆盖率输出，请为它们创建一个临时目录并运行 `./scripts/test/coverage ${TMPDIR}`，其中 `${TMPDIR}` 是你创建的临时目录。这将为测试下的每个源文件创建一个 `.gcov` 文件，包含该文件的源代码，并标注测试中每行被命中次数的注释。（你需要安装 gcov。）
 
-You can get a summary of the test coverage for each file by running
-`./scripts/test/cov-display ${TMPDIR}/*` .  Each line lists the file's name,
-the number of uncovered lines, the number of uncovered lines, and the
-coverage percentage.
+你可以通过运行 `./scripts/test/cov-display ${TMPDIR}/*` 来获取每个文件的测试覆盖率摘要。每行列出文件名、未覆盖的行数、未覆盖的行数和覆盖率百分比。
 
-For a summary of the test coverage for each _function_, run
-`./scripts/test/cov-display -f ${TMPDIR}/*`.
+要获取每个_函数_的测试覆盖率摘要，请运行 `./scripts/test/cov-display -f ${TMPDIR}/*`。
 
-For more details on using gcov, including the helper scripts in
-scripts/test, see HelpfulTools.md.
+有关使用 gcov 的更多详细信息，包括 scripts/test 中的辅助脚本，请参阅 HelpfulTools.md。
 
-### Comparing test coverage
+### 比较测试覆盖率
 
-Sometimes it's useful to compare test coverage for a branch you're writing to
-coverage from another branch (such as git master, for example).  But you
-can't run `diff` on the two coverage outputs directly, since the actual
-number of times each line is executed aren't so important, and aren't wholly
-deterministic.
+有时比较你正在编写的分支的测试覆盖率与另一个分支（例如 git master）的覆盖率是很有用的。但你不能直接对两个覆盖率输出运行 `diff`，因为每行实际执行的次数并不那么重要，而且也不是完全确定性的。
 
-Instead, follow the instructions above for each branch, creating a separate
-temporary directory for each.  Then, run `./scripts/test/cov-diff ${D1}
-${D2}`, where D1 and D2 are the directories you want to compare.  This will
-produce a diff of the two directories, with all lines normalized to be either
-covered or uncovered.
+相反，请按照上面的说明对每个分支执行操作，为每个分支创建一个单独的临时目录。然后运行 `./scripts/test/cov-diff ${D1} ${D2}`，其中 D1 和 D2 是你想比较的目录。这将生成两个目录的差异，所有行被规范化为已覆盖或未覆盖。
 
-To count new or modified uncovered lines in D2, you can run:
+要计算 D2 中新增或修改的未覆盖行数，你可以运行：
 
 ```console
 $ ./scripts/test/cov-diff ${D1} ${D2}" | grep '^+ *\#' | wc -l
 ```
 
-## Marking lines as unreachable by tests
+## 将行标记为不可达的
 
-You can mark a specific line as unreachable by using the special
-string LCOV_EXCL_LINE.  You can mark a range of lines as unreachable
-with LCOV_EXCL_START... LCOV_EXCL_STOP.  Note that older versions of
-lcov don't understand these lines.
+你可以使用特殊字符串 LCOV_EXCL_LINE 将特定行标记为不可达的。你可以用 LCOV_EXCL_START... LCOV_EXCL_STOP 将一段行标记为不可达的。请注意，旧版本的 lcov 不理解这些行。
 
-You can post-process .gcov files to make these lines 'unreached' by
-running ./scripts/test/cov-exclude on them.  It marks excluded
-unreached lines with 'x', and excluded reached lines with '!!!'.
+你可以对 .gcov 文件进行后处理，通过运行 ./scripts/test/cov-exclude 将这些行设为"未到达"。它将排除的未到达行标记为 'x'，将排除的已到达行标记为 '!!!'。
 
-Note: you should never do this unless the line is meant to 100%
-unreachable by actual code.
+注意：你不应该这样做，除非该行确实应该被实际代码 100% 不可达。
 
-## What kinds of test should I write?
+## 我应该编写什么类型的测试？
 
-Integration testing and unit testing are complementary: it's probably a
-good idea to make sure that your code is hit by both if you can.
+集成测试和单元测试是互补的：如果可以的话，确保你的代码同时被两者覆盖可能是一个好主意。
 
-If your code is very-low level, and its behavior is easily described in
-terms of a relation between inputs and outputs, or a set of state
-transitions, then it's a natural fit for unit tests.  (If not, please
-consider refactoring it until most of it _is_ a good fit for unit
-tests!)
+如果你的代码是非常底层的，并且其行为很容易用输入和输出之间的关系或一组状态转换来描述，那么它自然适合单元测试。（如果不是，请考虑重构它，直到大部分_适合_单元测试！）
 
-If your code adds new externally visible functionality to Tor, it would
-be great to have a test for that functionality.  That's where
-integration tests more usually come in.
+如果你的代码为 Tor 添加了新的外部可见功能，最好有一个针对该功能的测试。这通常是集成测试更常发挥作用的地方。
 
-## Unit and regression tests: Does this function do what it's supposed to?
+## 单元测试和回归测试：这个函数是否按照预期工作？
 
-Most of Tor's unit tests are made using the "tinytest" testing framework.
-You can see a guide to using it in the tinytest manual at
+Tor 的大多数单元测试是使用 "tinytest" 测试框架制作的。你可以在 tinytest 手册中查看使用指南：
 
     https://github.com/nmathewson/tinytest/blob/master/tinytest-manual.md
 
-To add a new test of this kind, either edit an existing C file in `src/test/`,
-or create a new C file there.  Each test is a single function that must
-be indexed in the table at the end of the file.  We use the label "done:" as
-a cleanup point for all test functions.
+要添加这种新测试，可以编辑 `src/test/` 中现有的 C 文件，或在那里创建一个新的 C 文件。每个测试都是一个单独的函数，必须在文件末尾的表格中进行索引。我们使用标签 "done:" 作为所有测试函数的清理点。
 
-If you have created a new test file, you will need to:
-1. Add the new test file to include.am
-2. In `test.h`, include the new test cases (testcase_t)
-3. In `test.c`, add the new test cases to testgroup_t testgroups
+如果你创建了一个新的测试文件，你需要：
+1. 将新的测试文件添加到 include.am
+2. 在 `test.h` 中，包含新的测试用例 (testcase_t)
+3. 在 `test.c` 中，将新的测试用例添加到 testgroup_t testgroups
 
-(Make sure you read `tinytest-manual.md` before proceeding.)
+（确保在继续之前阅读 `tinytest-manual.md`。）
 
-I use the term "unit test" and "regression tests" very sloppily here.
+我在这里使用"单元测试"和"回归测试"这两个术语非常随意。
 
-## A simple example
+## 一个简单的例子
 
-Here's an example of a test function for a simple function in util.c:
+这是一个针对 util.c 中简单函数的测试函数示例：
 
 ```c
 static void
@@ -190,33 +130,19 @@ done:
 }
 ```
 
-This should look pretty familiar to you if you've read the tinytest
-manual.  One thing to note here is that we use the testing-specific
-function `get_fname` to generate a file with respect to a temporary
-directory that the tests use.  You don't need to delete the file;
-it will get removed when the tests are done.
+如果你读过 tinytest 手册，这看起来应该很熟悉。这里需要注意的一点是我们使用了测试专用函数 `get_fname` 来生成一个相对于测试使用的临时目录的文件。你不需要删除该文件；测试完成后它会被移除。
 
-Also note our use of `OP_EQ` instead of `==` in the `tt_int_op()` calls.
-We define `OP_*` macros to use instead of the binary comparison
-operators so that analysis tools can more easily parse our code.
-(Coccinelle really hates to see `==` used as a macro argument.)
+还要注意我们在 `tt_int_op()` 调用中使用 `OP_EQ` 而不是 `==`。我们定义 `OP_*` 宏来代替二元比较运算符，以便分析工具可以更容易地解析我们的代码。（Coccinelle 非常不喜欢看到 `==` 用作宏参数。）
 
-Finally, remember that by convention, all `*_free()` functions that
-Tor defines are defined to accept NULL harmlessly.  Thus, you don't
-need to say `if (contents)` in the cleanup block.
+最后，请记住，按照惯例，Tor 定义的所有 `*_free()` 函数都定义为可以安全接受 NULL。因此，你不需要在清理块中写 `if (contents)`。
 
-## Exposing static functions for testing
+## 为测试暴露静态函数
 
-Sometimes you need to test a function, but you don't want to expose
-it outside its usual module.
+有时你需要测试一个函数，但不想将其暴露在其通常模块之外。
 
-To support this, Tor's build system compiles a testing version of
-each module, with extra identifiers exposed.  If you want to
-declare a function as static but available for testing, use the
-macro `STATIC` instead of `static`.  Then, make sure there's a
-macro-protected declaration of the function in the module's header.
+为此，Tor 的构建系统编译每个模块的测试版本，暴露额外的标识符。如果你想将一个函数声明为 static 但可供测试使用，请使用宏 `STATIC` 代替 `static`。然后，确保在模块的头文件中有该函数的宏保护声明。
 
-For example, `crypto_curve25519.h` contains:
+例如，`crypto_curve25519.h` 包含：
 
 ```c
 #ifdef CRYPTO_CURVE25519_PRIVATE
@@ -225,17 +151,13 @@ STATIC int curve25519_impl(uint8_t *output, const uint8_t *secret,
 #endif
 ```
 
-The `crypto_curve25519.c` file and the `test_crypto.c` file both define
-`CRYPTO_CURVE25519_PRIVATE`, so they can see this declaration.
+`crypto_curve25519.c` 文件和 `test_crypto.c` 文件都定义了 `CRYPTO_CURVE25519_PRIVATE`，因此它们可以看到此声明。
 
-## STOP!  Does this test really test?
+## 停下来！这个测试真的在测试吗？
 
-When writing tests, it's not enough to just generate coverage on all the
-lines of the code that you're testing:  It's important to make sure that
-the test _really tests_ the code.
+编写测试时，仅仅在你测试的代码的所有行上产生覆盖率是不够的：确保测试_真正测试_了代码非常重要。
 
-For example, here is a _bad_ test for the unlink() function (which is
-supposed to remove a file).
+例如，这里是一个针对 unlink() 函数（应该用于删除文件）的_糟糕_测试。
 
 ```c
 static void
@@ -261,30 +183,21 @@ done:
 }
 ```
 
-This test might get very high coverage on unlink().  So why is it a
-bad test? Because it doesn't check that unlink() *actually removes the
-named file*!
+这个测试可能在 unlink() 上获得非常高的覆盖率。那么为什么它是一个糟糕的测试呢？因为它没有检查 unlink() *是否确实删除了指定的文件*！
 
-Remember, the purpose of a test is to succeed if the code does what
-it's supposed to do, and fail otherwise.  Try to design your tests so
-that they check for the code's intended and documented functionality
-as much as possible.
+记住，测试的目的是在代码按预期工作时成功，在否则时失败。尽量设计你的测试，使其尽可能检查代码的预期和文档化的功能。
 
-## Mock functions for testing in isolation
+## 用于隔离测试的模拟函数
 
-Often we want to test that a function works right, but the function to
-be tested depends on other functions whose behavior is hard to observe,
-or which require a working Tor network, or something like that.
+通常我们想测试一个函数是否正常工作，但要测试的函数依赖于其他行为难以观察的函数，或者需要一个正常运行的 Tor 网络，等等。
 
-To write tests for this case, you can replace the underlying functions
-with testing stubs while your unit test is running.  You need to declare
-the underlying function as 'mockable', as follows:
+要为此情况编写测试，你可以在单元测试运行时用测试桩替换底层函数。你需要将底层函数声明为 'mockable'，如下所示：
 
 ```c
 MOCK_DECL(returntype, functionname, (argument list));
 ```
 
-and then later implement it as:
+然后稍后将其实现为：
 
 ```c
 MOCK_IMPL(returntype, functionname, (argument list))
@@ -293,52 +206,39 @@ MOCK_IMPL(returntype, functionname, (argument list))
 }
 ```
 
-For example, if you had a 'connect to remote server' function, you could
-declare it as:
+例如，如果你有一个'连接到远程服务器'函数，你可以将其声明为：
 
 ```c
 MOCK_DECL(int, connect_to_remote, (const char *name, status_t *status));
 ```
 
-When you declare a function this way, it will be declared as normal in
-regular builds, but when the module is built for testing, it is declared
-as a function pointer initialized to the actual implementation.
+当你以这种方式声明一个函数时，它在常规构建中会被正常声明，但当模块用于测试构建时，它会被声明为一个初始化为实际实现的函数指针。
 
-In your tests, if you want to override the function with a temporary
-replacement, you say:
+在你的测试中，如果你想用临时替代品覆盖该函数，可以这样写：
 
 ```c
 MOCK(functionname, replacement_function_name);
 ```
 
-And later, you can restore the original function with:
+然后，你可以用以下方式恢复原始函数：
 
 ```c
 UNMOCK(functionname);
 ```
 
-For more information, see the definitions of this mocking logic in
-`testsupport.h`.
+有关更多信息，请参阅 `testsupport.h` 中此模拟逻辑的定义。
 
-## Okay but what should my tests actually do?
+## 好的，但我的测试实际上应该做什么？
 
-We talk above about "test coverage" -- making sure that your tests visit
-every line of code, or every branch of code.  But visiting the code isn't
-enough: we want to verify that it's correct.
+我们在上面讨论了"测试覆盖率"——确保你的测试访问每一行代码或每一个代码分支。但仅仅访问代码是不够的：我们想要验证它是正确的。
 
-So when writing tests, try to make tests that should pass with any correct
-implementation of the code, and that should fail if the code doesn't do what
-it's supposed to do.
+因此，在编写测试时，尽量使测试在任何正确的代码实现下都通过，而在代码不按预期工作时应该失败。
 
-You can write "black-box" tests or "glass-box" tests.  A black-box test is
-one that you write without looking at the structure of the function.  A
-glass-box one is one you implement while looking at how the function is
-implemented.
+你可以编写"黑盒"测试或"白盒"测试。黑盒测试是你在不查看函数结构的情况下编写的测试。白盒测试是你在查看函数实现方式的同时实现的测试。
 
-In either case, make sure to consider common cases *and* edge cases; success
-cases and failure cases.
+无论哪种情况，请确保考虑常见情况*和*边界情况；成功情况和失败情况。
 
-For example, consider testing this function:
+例如，考虑测试这个函数：
 
 ```c
 /** Remove all elements E from sl such that E==element.  Preserve
@@ -348,30 +248,25 @@ For example, consider testing this function:
 void smartlist_remove(smartlist_t *sl, const void *element);
 ```
 
-In order to test it well, you should write tests for at least all of the
-following cases.  (These would be black-box tests, since we're only looking
-at the declared behavior for the function:
+为了好好测试它，你应该至少为以下所有情况编写测试。（这些将是黑盒测试，因为我们只查看函数的声明行为：
 
-   * Remove an element that is in the smartlist.
-   * Remove an element that is not in the smartlist.
-   * Remove an element that appears in the smartlist more than once.
+   * 从 smartlist 中移除一个存在的元素。
+   * 从 smartlist 中移除一个不存在的元素。
+   * 从 smartlist 中移除一个出现多次的元素。
 
-And your tests should verify that it behaves correct.  At minimum, you should
-test:
+你的测试应该验证其行为是否正确。至少，你应该测试：
 
-   * That other elements before E are in the same order after you call the
-     functions.
-   * That the target element is really removed.
-   * That _only_ the target element is removed.
+   * 在调用函数之后，E 之前的其他元素是否保持相同的顺序。
+   * 目标元素是否确实被移除了。
+   * _只有_目标元素被移除了。
 
-When you consider edge cases, you might try:
+当你考虑边界情况时，你可以尝试：
 
-   * Remove an element from an empty list.
-   * Remove an element from a singleton list containing that element.
-   * Remove an element for a list containing several instances of that
-     element, and nothing else.
+   * 从空列表中移除一个元素。
+   * 从包含该元素的单元素列表中移除一个元素。
+   * 从包含该元素多个实例且没有其他内容的列表中移除一个元素。
 
-Now let's look at the implementation:
+现在让我们看一下实现：
 
 ```c
 void
@@ -389,130 +284,65 @@ smartlist_remove(smartlist_t *sl, const void *element)
 }
 ```
 
-Based on the implementation, we now see three more edge cases to test:
+根据实现，我们现在看到了三个更多需要测试的边界情况：
 
-   * Removing NULL from the list.
-   * Removing an element from the end of the list
-   * Removing an element from a position other than the end of the list.
+   * 从列表中移除 NULL。
+   * 从列表末尾移除一个元素。
+   * 从列表末尾以外的位置移除一个元素。
 
-## What should my tests NOT do?
+## 我的测试不应该做什么？
 
-Tests shouldn't require a network connection.
+测试不应该需要网络连接。
 
-Whenever possible, tests shouldn't take more than a second.  Put the test
-into test/slow if it genuinely needs to be run.
+尽可能地，测试不应该超过一秒钟。如果确实需要更长时间运行，请将测试放入 test/slow 中。
 
-Tests should not alter global state unless they run with `TT_FORK`: Tests
-should not require other tests to be run before or after them.
+除非使用 `TT_FORK` 运行，否则测试不应修改全局状态：测试不应要求其他测试在它们之前或之后运行。
 
-Tests should not leak memory or other resources.  To find out if your tests
-are leaking memory, run them under valgrind (see HelpfulTools.txt for more
-information on how to do that).
+测试不应该泄漏内存或其他资源。要检查你的测试是否泄漏内存，请在 valgrind 下运行它们（有关如何操作的更多信息，请参见 HelpfulTools.txt）。
 
-When possible, tests should not be over-fit to the implementation.  That is,
-the test should verify that the documented behavior is implemented, but
-should not break if other permissible behavior is later implemented.
+在可能的情况下，测试不应该过度适应实现。也就是说，测试应该验证文档化的行为已实现，但如果后来实现了其他允许的行为，测试不应崩溃。
 
-## Advanced techniques: Namespaces
+## 高级技术：命名空间
 
-Sometimes, when you're doing a lot of mocking at once, it's convenient to
-isolate your identifiers within a single namespace.  If this were C++, we'd
-already have namespaces, but for C, we do the best we can with macros and
-token-pasting.
+有时，当你同时进行大量模拟操作时，将标识符隔离在单个命名空间中是很方便的。如果是 C++，我们已经有了命名空间，但对于 C，我们用宏和标记粘合来尽力实现。
 
-We have some macros defined for this purpose in `src/test/test.h`.  To use
-them, you define `NS_MODULE` to a prefix to be used for your identifiers, and
-then use other macros in place of identifier names.  See `src/test/test.h` for
-more documentation.
+我们在 `src/test/test.h` 中为此目的定义了一些宏。要使用它们，你将 `NS_MODULE` 定义为你标识符的前缀，然后使用其他宏代替标识符名称。有关更多文档，请参阅 `src/test/test.h`。
 
-## Integration tests: Calling Tor from the outside
+## 集成测试：从外部调用 Tor
 
-Some tests need to invoke Tor from the outside, and shouldn't run from the
-same process as the Tor test program.  Reasons for doing this might include:
+一些测试需要从外部调用 Tor，不应该在与 Tor 测试程序相同的进程中运行。这样做的原因可能包括：
 
-   * Testing the actual behavior of Tor when run from the command line
-   * Testing that a crash-handler correctly logs a stack trace
-   * Verifying that violating a sandbox or capability requirement will
-     actually crash the program.
-   * Needing to run as root in order to test capability inheritance or
-     user switching.
+   * 测试从命令行运行时 Tor 的实际行为
+   * 测试崩溃处理器是否正确记录了堆栈跟踪
+   * 验证违反沙箱或能力要求是否确实会导致程序崩溃
+   * 需要以 root 权限运行以测试能力继承或用户切换
 
-To add one of these, you generally want a new C program in `src/test`.  Add it
-to `TESTS` and `noinst_PROGRAMS` if it can run on its own and return success or
-failure.  If it needs to be invoked multiple times, or it needs to be
-wrapped, add a new shell script to `TESTS`, and the new program to
-`noinst_PROGRAMS`.  If you need access to any environment variable from the
-makefile (eg `${PYTHON}` for a python interpreter), then make sure that the
-makefile exports them.
+要添加这样的测试，通常需要在 `src/test` 中创建一个新的 C 程序。如果它可以独立运行并返回成功或失败，请将其添加到 `TESTS` 和 `noinst_PROGRAMS` 中。如果它需要被多次调用，或者需要被包装，请向 `TESTS` 添加新的 shell 脚本，并将新程序添加到 `noinst_PROGRAMS` 中。如果你需要访问 makefile 中的任何环境变量（例如用于 Python 解释器的 `${PYTHON}`），请确保 makefile 导出了它们。
 
-## Writing integration tests with Stem
+## 使用 Stem 编写集成测试
 
-The 'stem' library includes extensive tests for the Tor controller protocol.
-You can run stem tests from tor with `make test-stem`, or see
-`https://stem.torproject.org/faq.html#how-do-i-run-the-tests`.
+'stem' 库包含针对 Tor 控制器协议的大量测试。你可以通过 `make test-stem` 从 tor 运行 stem 测试，或查看 `https://stem.torproject.org/faq.html#how-do-i-run-the-tests`。
 
-To see what tests are available, have a look around the `test/*` directory in
-stem. The first thing you'll notice is that there are both `unit` and `integ`
-tests. The former are for tests of the facilities provided by stem itself that
-can be tested on their own, without the need to hook up a tor process. These
-are less relevant, unless you want to develop a new stem feature. The latter,
-however, are a very useful tool to write tests for controller features. They
-provide a default environment with a connected tor instance that can be
-modified and queried. Adding more integration tests is a great way to increase
-the test coverage inside Tor, especially for controller features.
+要查看有哪些可用测试，请查看 stem 中的 `test/*` 目录。你首先注意到的是有 `unit` 和 `integ` 两类测试。前者是针对 stem 自身提供的功能的测试，可以单独测试，无需连接 tor 进程。这些关联性较小，除非你想开发新的 stem 功能。然而，后者是编写控制器功能测试的非常有用的工具。它们提供了一个带有已连接 tor 实例的默认环境，可以进行修改和查询。添加更多集成测试是提高 Tor 内部测试覆盖率的好方法，特别是对于控制器功能。
 
-Let's assume you actually want to write a test for a previously untested
-controller feature. I'm picking the `exit-policy/*` GETINFO queries. Since
-these are a controller feature that we want to write an integration test for,
-the right file to modify is
-`https://gitlab.torproject.org/tpo/network-health/stem/-/blob/master/test/integ/control/controller.py`.
+假设你确实想为一个之前未测试的控制器功能编写测试。我选择 `exit-policy/*` GETINFO 查询。由于这些是我们想要编写集成测试的控制器功能，要修改的正确文件是 `https://gitlab.torproject.org/tpo/network-health/stem/-/blob/master/test/integ/control/controller.py`。
 
-First off we notice that there is an integration test called
-`test_get_exit_policy()` that's already written. This exercises the interaction
-of stem's `Controller.get_exit_policy()` method, and is not relevant for our
-test since there are no stem methods to make use of all `exit-policy/*`
-queries (if there were, likely they'd be tested already. Maybe you want to
-write a stem feature, but I chose to just add tests).
+首先我们注意到已经有一个名为 `test_get_exit_policy()` 的集成测试。这测试了 stem 的 `Controller.get_exit_policy()` 方法的交互，与我们的测试无关，因为没有 stem 方法可以使用所有 `exit-policy/*` 查询（如果有，可能已经测试过了。也许你想编写一个 stem 功能，但我选择只添加测试）。
 
-Our test requires a tor controller connection, so we'll use the
-`@require_controller` annotation for our `test_exit_policy()` method. We need a
-controller instance, which we get from
-`test.runner.get_runner().get_tor_controller()`. The attached Tor instance is
-configured as a client, but the exit-policy GETINFO queries need a relay to
-work, so we have to change the config (using `controller.set_options()`). This
-is OK for us to do, we just have to remember to set DisableNetwork so we don't
-actually start an exit relay and also to undo the changes we made (by calling
-`controller.reset_conf()` at the end of our test). Additionally, we have to
-configure a static Address for Tor to use, because it refuses to build a
-descriptor when it can't guess a suitable IP address. Unfortunately, these
-kinds of tripwires are everywhere. Don't forget to file appropriate tickets if
-you notice any strange behaviour that seems totally unreasonable.
+我们的测试需要一个 tor 控制器连接，所以我们将对 `test_exit_policy()` 方法使用 `@require_controller` 注解。我们需要一个控制器实例，可以从 `test.runner.get_runner().get_tor_controller()` 获取。附带的 Tor 实例配置为客户端，但 exit-policy GETINFO 查询需要中继才能工作，所以我们必须更改配置（使用 `controller.set_options()`）。这对我们来说是可以的，我们只需记住设置 DisableNetwork 以便不真正启动出口中继，并且通过在测试结束时调用 `controller.reset_conf()` 来撤销我们所做的更改。此外，我们必须为 Tor 配置一个静态 Address，因为当它无法猜测合适的 IP 地址时，它会拒绝构建描述符。不幸的是，这类陷阱到处都是。如果你注意到任何看起来完全不合理的奇怪行为，不要忘记提交相应的工单。
 
-Check out the `test_exit_policy()` function in abovementioned file to see the
-final implementation for this test.
+查看上述文件中的 `test_exit_policy()` 函数以查看此测试的最终实现。
 
-## System testing with Chutney
+## 使用 Chutney 进行系统测试
 
-The 'chutney' program configures and launches a set of Tor relays,
-authorities, and clients on your local host.  It has a `test network`
-functionality to send traffic through them and verify that the traffic
-arrives correctly.
+'chutney' 程序在你的本地主机上配置并启动一组 Tor 中继、权威节点和客户端。它具有 `test network` 功能，可以通过它们发送流量并验证流量是否正确到达。
 
-You can write new test networks by adding them to `networks`. To add
-them to Tor's tests, add them to the `test-network` or `test-network-all`
-targets in `Makefile.am`.
+你可以通过将新测试添加到 `networks` 来编写新的测试网络。要将它们添加到 Tor 的测试中，请将它们添加到 `Makefile.am` 中的 `test-network` 或 `test-network-all` 目标。
 
-(Adding new kinds of program to chutney will still require hacking the
-code.)
+（向 chutney 添加新类型的程序仍然需要修改代码。）
 
-## Other integration tests
+## 其他集成测试
 
-It's fine to write tests that use a POSIX shell to invoke Tor or test other
-aspects of the system.  When you do this, have a look at our existing tests
-of this kind in `src/test/` to make sure that you haven't forgotten anything
-important.  For example: it can be tricky to make sure you're invoking Tor at
-the right path in various build scenarios.
+使用 POSIX shell 调用 Tor 或测试系统的其他方面是完全可以的。当你这样做时，请查看我们在 `src/test/` 中的现有测试，确保你没有忘记任何重要的事项。例如：确保在各种构建场景中以正确的路径调用 Tor 可能会比较棘手。
 
-We use a POSIX shell whenever possible here, and we use the shellcheck tool
-to make sure that our scripts portable.  We should only require bash for
-scripts that are developer-only.
+我们在这里尽可能使用 POSIX shell，并使用 shellcheck 工具来确保我们的脚本可移植。我们只应为仅限开发人员使用的脚本要求 bash。

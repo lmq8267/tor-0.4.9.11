@@ -1,88 +1,66 @@
 @dir /ext
-@brief Externally maintained code
+@brief 外部维护的代码
 
-The "ext" directory holds code that was written elsewhere, and is not
-reliably packaged as a library where we want to build, so we ship
-it along with Tor.
+"ext" 目录包含在其他地方编写的代码，这些代码在我们希望构建的环境中无法可靠地作为库使用，因此我们将其随 Tor 一起发布。
 
-In general, you should not edit this code: we are not the maintainers.
-Instead, you should submit patches upstream.
+通常情况下，您不应编辑这些代码：我们不是这些代码的维护者。相反，您应该向上游提交补丁。
 
 OpenBSD_malloc_Linux.c:
 
-> The OpenBSD malloc implementation, ported to Linux.  Used only when
-> --enable-openbsd-malloc is passed to the configure script.
+> OpenBSD malloc 实现，移植到 Linux。仅在向 configure 脚本传递 --enable-openbsd-malloc 时使用。
 
 strlcat.c
 strlcpy.c
 
-> Implementations of strlcat and strlcpy, the more sane replacements
-> for strcat and strcpy.  These are nonstandard, and some libc
-> implementations refuse to add them for religious reasons.
+> strlcat 和 strlcpy 的实现，它们是 strcat 和 strcpy 的更安全替代品。这些是非标准函数，一些 libc 实现出于原则性原因拒绝添加它们。
 
 ht.h
 
-> An implementation of a hash table in the style of Niels Provos's
-> tree.h.  Shared with Libevent.
+> Niels Provos 风格的哈希表实现（类似 tree.h）。与 Libevent 共享。
 
 tinytest.c tinytest.h
 tinytest_demos.c
 tinytest_macros.h
 
-> A unit testing framework. https://github.com/nmathewson/tinytest
+> 一个单元测试框架。https://github.com/nmathewson/tinytest
 
 tor_queue.h
 
-> A copy of sys/queue.h from OpenBSD.  We keep our own copy rather
-> than using sys/queue.h, since some platforms don't have a
-> sys/queue.h, and the ones that do have diverged in incompatible
-> ways.  (CIRCLEQ or no CIRCLEQ? SIMPLQ or STAILQ?)  We also rename
-> the identifiers with a TOR_ prefix to avoid conflicts with
-> the system headers.
+> 来自 OpenBSD 的 sys/queue.h 的副本。我们保留自己的副本而不是使用 sys/queue.h，因为某些平台没有 sys/queue.h，而有此文件的平台之间也存在不兼容的差异。（有还是没有 CIRCLEQ？使用 SIMPLQ 还是 STAILQ？）我们还将标识符重命名为 TOR_ 前缀，以避免与系统头文件冲突。
 
 curve25519_donna/*.c
 
-> A copy of Adam Langley's curve25519-donna mostly-portable
-> implementations of curve25519.
+> Adam Langley 的 curve25519-donna 基本可移植的 curve25519 实现的副本。
 
 csiphash.c
 siphash.h
 
-> Marek Majkowski's implementation of siphash 2-4, a secure keyed
-> hash algorithm to avoid collision-based DoS attacks against hash
-> tables.
+> Marek Majkowski 的 siphash 2-4 实现，这是一种安全的带密钥哈希算法，用于避免针对哈希表的基于碰撞的 DoS 攻击。
 
 trunnel/*.[ch]
 
-> Headers and runtime code for Trunnel, a system for generating
-> code to encode and decode binary formats.
+> Trunnel 的头文件和运行时代码，Trunnel 是一个用于生成编解码二进制格式代码的系统。
 
 ed25519/ref10/*
 
-> Daniel Bernsten's portable ref10 implementation of ed25519.
-> Public domain.
+> Daniel Bernsten 的可移植 ref10 ed25519 实现。公共领域。
 
 ed25519/donna/*
 
-> Andrew Moon's semi-portable ed25519-donna implementation of
-> ed25519. Public domain.
+> Andrew Moon 的半可移植 ed25519-donna ed25519 实现。公共领域。
 
 keccak-tiny/
 
-> David Leon Gil's portable Keccak implementation. CC0.
+> David Leon Gil 的可移植 Keccak 实现。CC0 许可证。
 
 readpassphrase.[ch]
 
-> Portable readpassphrase implementation from OpenSSH portable, version
-> 6.8p1.
+> 来自 OpenSSH portable 的可移植 readpassphrase 实现，版本 6.8p1。
 
 timeouts/
 
-> William Ahern's hierarchical timer-wheel implementation. MIT license.
+> William Ahern 的分层定时器轮实现。MIT 许可证。
 
 mulodi/
 
-> Contains an overflow-checking 64-bit signed integer multiply
-> from LLVM's compiler_rt.  For some reason, this is missing from
-> 32-bit libclang in many places. Dual licensed MIT-license and
-> BSD-like license; see mulodi/LICENSE.TXT.
+> 包含来自 LLVM compiler_rt 的溢出检查 64 位有符号整数乘法。出于某种原因，这在许多地方的 32 位 libclang 中缺失。双重许可，MIT 许可证和类 BSD 许可证；参见 mulodi/LICENSE.TXT。

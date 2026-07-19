@@ -1,185 +1,103 @@
-# Getting started in Tor development
+# Tor 开发入门
 
-Congratulations!  You've found this file, and you're reading it!  This
-means that you might be interested in getting started in developing Tor.
+恭喜！你找到了这个文件并正在阅读它！这意味着你可能对开始开发 Tor 感兴趣。
 
-(_This guide is just about Tor itself--the small network program at the
-heart of the Tor network--and not about all the other programs in the
-whole Tor ecosystem._)
+（_本指南仅针对 Tor 本身——即位于 Tor 网络核心的小型网络程序——而不是整个 Tor 生态系统中的所有其他程序。_）
 
-If you are looking for a more bare-bones, less user-friendly information
-dump of important information, you might like reading the
-[doxygen output](https://src-ref.docs.torproject.org/tor/index.html).
-You probably should skim some of the topic headings there before you write
-your first patch.
+如果你正在寻找更基础、不那么用户友好的重要信息汇总，你可能会喜欢阅读 [doxygen 输出](https://src-ref.docs.torproject.org/tor/index.html)。在编写你的第一个补丁之前，你可能应该先浏览一下那里的主题标题。
 
-## Required background
+## 必要的背景知识
 
-First, I'm going to assume that you can build Tor from source, and that
-you know enough of the C language to read and write it.  (See the README
-file that comes with the Tor source for more information on building it,
-and any high-quality guide to C for information on programming.)
+首先，我假设你可以从源代码构建 Tor，并且你有足够的 C 语言知识来阅读和编写代码。（有关构建的更多信息，请参阅 Tor 源代码附带的 README 文件；有关编程的更多信息，请参阅任何高质量的 C 语言指南。）
 
-I'm also going to assume that you know a little bit about how to use
-Git, or that you're able to follow one of the several excellent guides
-at [git-scm](https://git-scm.org) to learn.
+我还假设你知道一点如何使用 Git，或者你能够遵循 [git-scm](https://git-scm.org) 上的众多优秀指南来学习。
 
-Most Tor developers develop using some Unix-based system, such as GNU/Linux,
-BSD, or macOS.  It's okay to develop on Windows if you want, but you're
-going to have a more difficult time.
+大多数 Tor 开发人员使用基于 Unix 的系统进行开发，例如 GNU/Linux、BSD 或 macOS。如果你想在 Windows 上开发也是可以的，但你会遇到更多的困难。
 
-## Getting your first patch into Tor
+## 将你的第一个补丁提交到 Tor
 
-Once you've reached this point, here's what you need to know.
+一旦你达到了这个阶段，以下是你需要知道的内容。
 
-  1. Get the source.
+  1. 获取源代码。
 
-     We keep our source under version control in Git.  To get the latest
-     version, run:
+     我们将源代码保存在 Git 版本控制中。要获取最新版本，请运行：
 
      ```console
      $ git clone https://gitlab.torproject.org/tpo/core/tor.git
      ```
 
-     This will give you a checkout of the main branch.  If you're
-     going to fix a bug that appears in a stable version, check out the
-     appropriate "maint" branch, as in:
+     这将给你一个 main 分支的检出。如果你要修复出现在稳定版本中的 bug，请检出相应的 "maint" 分支，如下所示：
 
      ```console
      $ git checkout maint-0.4.3
      ```
 
-  2. Find your way around the source.
+  2. 熟悉源代码。
 
-     Our overall code structure is explained in our
-     [source documentation](https://src-ref.docs.torproject.org/tor/index.html).
+     我们的整体代码结构在我们的[源代码文档](https://src-ref.docs.torproject.org/tor/index.html)中有说明。
 
-     Find a part of the code that looks interesting to you, and start
-     looking around it to see how it fits together!
+     找到一段看起来有趣的代码，然后开始查看它是如何组合在一起的！
 
-     We do some unusual things in our codebase.  Our testing-related
-     practices and kludges are explained in `doc/HACKING/WritingTests.md`.
+     我们在代码库中做一些不同寻常的事情。我们与测试相关的做法和临时方案在 `doc/HACKING/WritingTests.md` 中有解释。
 
-     If you see something that doesn't make sense, we love to get
-     questions!
+     如果你看到一些不理解的东西，我们很乐意收到问题！
 
-  3. Find something cool to hack on.
+  3. 找一个有趣的东西来开发。
 
-     You may already have a good idea of what you'd like to work on, or
-     you might be looking for a way to contribute.
+     你可能已经有了一个关于你想做什么的好主意，或者你可能正在寻找一种贡献方式。
 
-     Many people have gotten started by looking for an area where they
-     personally felt Tor was underperforming, and investigating ways to
-     fix it. If you're looking for ideas, you can head to
-     [gitlab](https://gitlab.torproject.org) our bug tracking tool and look for
-     tickets that have received the "First Contribution" label: these are ones
-     that developers
-     think would be pretty simple for a new person to work on.  For a bigger
-     challenge, you might want to look for tickets with the "Project Ideas"
-     keyword: these are tickets that the developers think might be a
-     good idea to build, but which we have no time to work on any time
-     soon.
+     许多人通过寻找他们个人认为 Tor 在某个方面表现不佳的区域，并研究修复方法来开始。如果你正在寻找想法，你可以前往我们的错误跟踪工具 [gitlab](https://gitlab.torproject.org)，查找带有"首次贡献"标签的工单：这些是开发人员认为对新人来说相当简单的工单。对于更大的挑战，你可能想查找带有"项目创意"关键词的工单：这些是开发人员认为可能是个好主意但我们近期没有时间去做的工单。
 
-     Or you might find another open ticket that piques your
-     interest. It's all fine!
+     或者你可能会找到另一个引起你兴趣的开放工单。这都没问题！
 
-     For your first patch, it is probably NOT a good idea to make
-     something huge or invasive.  In particular, you should probably
-     avoid:
+     对于你的第一个补丁，制作大规模或侵入性的更改可能不是个好主意。特别地，你可能应该避免：
 
-       * Major changes spread across many parts of the codebase.
-       * Major changes to programming practice or coding style.
-       * Huge new features or protocol changes.
+       * 跨越代码库许多部分的重大更改。
+       * 对编程实践或编码风格的重大更改。
+       * 大型新功能或协议更改。
 
-  4. Meet the developers!
+  4. 认识开发者！
 
-     We discuss stuff on the tor-dev mailing list and on the `#tor-dev`
-     IRC channel on OFTC.  We're generally friendly and approachable,
-     and we like to talk about how Tor fits together.  If we have ideas
-     about how something should be implemented, we'll be happy to share
-     them.
+     我们在 tor-dev 邮件列表和 OFTC 上的 `#tor-dev` IRC 频道上讨论事情。我们通常都很友好且容易接近，我们喜欢讨论 Tor 是如何组合在一起的。如果我们对某些东西应该如何实现有想法，我们会很乐意分享。
 
-     We currently have a patch workshop at least once a week, where
-     people share patches they've made and discuss how to make them
-     better.  The time might change in the future, but generally,
-     there's no bad time to talk, and ask us about patch ideas.
+     我们目前至少每周有一次补丁研讨会，人们在那里分享他们制作的补丁并讨论如何改进它们。时间在未来可能会改变，但一般来说，任何时候都适合聊天并向我们询问补丁想法。
 
-  5. Do you need to write a design proposal?
+  5. 你需要写设计提案吗？
 
-     If your idea is very large, or it will require a change to Tor's
-     protocols, there needs to be a written design proposal before it
-     can be merged. (We use this process to manage changes in the
-     protocols.)  To write one, see the instructions at
-     [the Tor proposal process](https://gitweb.torproject.org/torspec.git/plain/proposals/001-process.txt).
-     If you'd like help writing a proposal, just ask!  We're happy to
-     help out with good ideas.
+     如果你的想法很大，或者它需要更改 Tor 的协议，那么在合并之前需要有一个书面的设计提案。（我们使用这个过程来管理协议的更改。）要编写一个，请参阅 [Tor 提案流程](https://gitweb.torproject.org/torspec.git/plain/proposals/001-process.txt) 中的说明。如果你想获得编写提案的帮助，尽管问！我们很乐意帮助好的想法。
 
-     You might also like to look around the rest of that directory, to
-     see more about open and past proposed changes to Tor's behavior.
+     你也可能想浏览该目录的其余部分，以了解更多关于 Tor 行为的开放和过去的提案更改。
 
-  6. Writing your patch
+  6. 编写你的补丁
 
-     As you write your code, you'll probably want it to fit in with the
-     standards of the rest of the Tor codebase so it will be easy for us
-     to review and merge.  You can learn our coding standards in
-     `doc/HACKING` directory.
+     在编写代码时，你可能希望它符合 Tor 代码库其余部分的标准，这样我们就能更容易地审查和合并它。你可以在 `doc/HACKING` 目录中学习我们的编码标准。
 
-     If your patch is large and/or is divided into multiple logical
-     components, remember to divide it into a series of Git commits.  A
-     series of small changes is much easier to review than one big lump.
+     如果你的补丁很大和/或被分成多个逻辑组件，请记住将其分成一系列 Git 提交。一系列小的更改比一个大块更容易审查。
 
-  7. Testing your patch
+  7. 测试你的补丁
 
-     We prefer that all new or modified code have unit tests for it to
-     ensure that it runs correctly.  Also, all code should actually be
-     _run_ by somebody, to make sure it works.
+     我们希望所有新增或修改的代码都有单元测试，以确保它能正确运行。此外，所有代码都应该实际被某人_运行_，以确保它能正常工作。
 
-     See `doc/HACKING/WritingTests.md` for more information on how we test things
-     in Tor.  If you'd like any help writing tests, just ask!  We're
-     glad to help out.
+     有关我们在 Tor 中如何测试的更多信息，请参阅 `doc/HACKING/WritingTests.md`。如果你想获得编写测试的帮助，尽管问！我们很乐意帮忙。
 
-  8. Submitting your patch
+  8. 提交你的补丁
 
-     We review patches through tickets on our bugtracker at
-     [gitlab](https://gitlab.torproject.org). You can either upload your patches there, or
-     put them at a public git repository somewhere we can fetch them
-     (like gitlab, github or bitbucket) and then paste a link on the appropriate
-     ticket.
+     我们通过 [gitlab](https://gitlab.torproject.org) 上的工单来审查补丁。你可以将补丁上传到那里，或者将它们放在我们可以获取的公共 git 仓库中（如 gitlab、github 或 bitbucket），然后在相应的工单上粘贴链接。
 
-     Once your patches are available, write a short explanation of what
-     you've done on trac, and then change the status of the ticket to
-     needs_review.
+     一旦你的补丁可用，请在 trac 上写一个简短的解释，说明你做了什么，然后将工单的状态更改为 needs_review。
 
-  9. Review, Revision, and Merge
+  9. 审查、修改和合并
 
-     With any luck, somebody will review your patch soon!  If not, you
-     can ask on the IRC channel; sometimes we get really busy and take
-     longer than we should.  But don't let us slow you down: you're the
-     one who's offering help here, and we should respect your time and
-     contributions.
+     幸运的话，很快就会有人审查你的补丁！如果没有，你可以在 IRC 频道上询问；有时候我们真的很忙，花了比预期更长的时间。但不要让我们拖慢你：你是提供帮助的人，我们应该尊重你的时间和贡献。
 
-     When your patch is reviewed, one of these things will happen:
+     当你的补丁被审查时，会发生以下情况之一：
 
-       * The reviewer will say "_looks good to me_" and your
-         patch will get merged right into Tor.  [Assuming we're not
-         in the middle of a code-freeze window.  If the codebase is
-         frozen, your patch will go into the next release series.]
+       * 审查者会说"_看起来不错_"，你的补丁将直接合并到 Tor 中。[假设我们不在代码冻结窗口中。如果代码库已冻结，你的补丁将进入下一个发布系列。]
 
-       * OR the reviewer will say "_looks good, just needs some small
-         changes!_"  And then the reviewer will make those changes,
-         and merge the modified patch into Tor.
+       * 或者审查者会说"_看起来不错，只需要一些小的更改！_" 然后审查者将进行这些更改，并将修改后的补丁合并到 Tor 中。
 
-       * OR the reviewer will say "_Here are some questions and
-         comments,_" followed by a bunch of stuff that the reviewer
-         thinks should change in your code, or questions that the
-         reviewer has.
+       * 或者审查者会说"_以下是一些问题和意见，_"随后是一堆审查者认为你的代码应该更改的内容或审查者有的问题。
 
-         At this point, you might want to make the requested changes
-         yourself, and comment on the trac ticket once you have done
-         so. Or if you disagree with any of the comments, you should
-         say so!  And if you won't have time to make some of the
-         changes, you should say that too, so that other developers
-         will be able to pick up the unfinished portion.
+         在这一点上，你可能想自己进行请求的更改，并在完成后在 trac 工单上发表评论。或者如果你不同意任何意见，你应该说出来！如果你没有时间进行某些更改，你也应该说出来，这样其他开发者就能接手未完成的部分。
 
-    Congratulations!  You have now written your first patch, and gotten
-    it integrated into mainline Tor.
+    恭喜！你现在已经编写了你的第一个补丁，并将其集成到了主线 Tor 中。

@@ -1,55 +1,39 @@
 # README.1st
 
-## In this directory
+## 本目录
 
-This directory has helpful information about what you need to know to
-hack on Tor!
+本目录包含有关参与 Tor 开发所需了解的重要信息！
 
-First, read `GettingStarted.md` to learn how to get a start in Tor
-development.
+首先，阅读 `GettingStarted.md` 以了解如何开始 Tor 开发。
 
-If you've decided to write a patch, `CodingStandards.md` will give you a bunch
-of information about how we structure our code.
+如果您决定编写补丁，`CodingStandards.md` 将为您提供大量关于我们代码组织方式的信息。
 
-It's important to get the code right!  Reading `WritingTests.md` will
-tell you how to write and run tests in the Tor codebase.
+确保代码正确非常重要！阅读 `WritingTests.md` 将告诉您如何在 Tor 代码库中编写和运行测试。
 
-There are a bunch of other programs we use to help maintain and
-develop the codebase: `HelpfulTools.md` can tell you how to use them
-with Tor.
+我们使用许多其他程序来帮助维护和开发代码库：`HelpfulTools.md` 可以告诉您如何在 Tor 中使用它们。
 
-If it's your job to put out Tor releases, see `ReleasingTor.md` so
-that you don't miss any steps!
+如果您负责发布 Tor 版本，请参阅 `ReleasingTor.md` 以确保不会遗漏任何步骤！
 
-## Additional Information
+## 补充信息
 
-For full information on how Tor is supposed to work, look at the files in
-[Tor specification](https://gitlab.torproject.org/tpo/core/torspec).
+有关 Tor 应如何工作的完整信息，请参阅 [Tor 规范](https://gitlab.torproject.org/tpo/core/torspec) 中的文件。
 
-For an explanation of how to change Tor's design to work differently, look at
-[the Tor proposal process](https://gitlab.torproject.org/tpo/core/torspec/-/blob/main/proposals/001-process.txt).
+有关如何修改 Tor 设计以实现不同工作的说明，请参阅 [Tor 提案流程](https://gitlab.torproject.org/tpo/core/torspec/-/blob/main/proposals/001-process.txt)。
 
-For the latest version of the code, get a copy of git, and
+要获取代码的最新版本，请安装 git，然后执行：
 
 ```console
 $ git clone https://gitlab.torproject.org/tpo/core/tor.git
 ```
 
-For a copy of Tor's original design paper, see
-[here](https://spec.torproject.org/tor-design). Note that Tor has changed in
-many ways since 2004.
+要获取 Tor 原始设计论文，请参阅 [此处](https://spec.torproject.org/tor-design)。请注意，自 2004 年以来 Tor 已在许多方面发生了变化。
 
-For a large collection of security papers, many of which are related to Tor,
-see [Anonbib's Selected Papers in Anonymity](https://www.freehaven.net/anonbib/).
+有关大量安全论文（其中许多与 Tor 相关），请参阅 [Anonbib 的匿名精选论文](https://www.freehaven.net/anonbib/)。
 
-## Stay in touch
+## 保持联系
 
-We talk about Tor on the `tor-talk` mailing list.  Design proposals and
-discussion belong on the `tor-dev` mailing list.  We hang around on
-irc.oftc.net, with general discussion happening on `#tor` and development
-happening on `#tor-dev`.
+我们在 `tor-talk` 邮件列表上讨论 Tor。设计提案和讨论应发送到 `tor-dev` 邮件列表。我们在 irc.oftc.net 上活动，一般讨论在 `#tor` 频道，开发讨论在 `#tor-dev` 频道。
 
-The other files in this `HACKING` directory may also be useful as you
-get started working with Tor.
+本 `HACKING` 目录中的其他文件在您开始使用 Tor 时也可能有用。
 
-Happy hacking!
+祝您编码愉快！

@@ -1,45 +1,38 @@
-# Useful tools
+# 实用工具
 
-These aren't strictly necessary for hacking on Tor, but they can help track
-down bugs.
+这些工具对于参与 Tor 开发并非严格必需，但它们可以帮助追踪 bug。
 
 ## Travis/Appveyor CI
 
-It's CI.
+这是 CI（持续集成）服务。
 
-Looks like this:
+看起来像这样：
 * https://travis-ci.org/torproject/tor
 * https://ci.appveyor.com/project/torproject/tor
 
-Travis builds and runs tests on Linux, and eventually macOS (#24629).
-Appveyor builds and runs tests on Windows (using Windows Services for Linux).
+Travis 在 Linux 上构建并运行测试，最终也会支持 macOS（#24629）。
+Appveyor 在 Windows 上构建并运行测试（使用 Windows Services for Linux）。
 
-Runs automatically on Pull Requests sent to torproject/tor. You can set it up
-for your fork to build commits outside of PRs too:
+当向 torproject/tor 提交 Pull Request 时会自动运行。你也可以为你的 fork 设置它，以便在 PR 之外构建提交：
 
-1. sign up for GitHub: https://github.com/join
-2. fork https://github.com/torproject/tor:
+1. 注册 GitHub：https://github.com/join
+2. fork https://github.com/torproject/tor：
    https://help.github.com/articles/fork-a-repo/
-3. follow https://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI.
-   skip steps involving `.travis.yml` (we already have one).
-4. go to https://ci.appveyor.com/login , log in with github, and select
-   "NEW PROJECT"
+3. 按照 https://docs.travis-ci.com/user/getting-started/#To-get-started-with-Travis-CI 进行操作。
+   跳过涉及 `.travis.yml` 的步骤（我们已经有一个了）。
+4. 前往 https://ci.appveyor.com/login ，使用 github 登录，并选择 "NEW PROJECT"
 
-Builds should show up on the web at travis-ci.com and on IRC at #tor-ci on
-OFTC. If they don't, ask #tor-dev (also on OFTC).
+构建结果应该会显示在 travis-ci.com 网站上以及 IRC 的 OFTC #tor-ci 频道。如果没有，请咨询 #tor-dev（同样在 OFTC 上）。
 
 ## Jenkins
 
-It's CI/builders. Looks like this: https://jenkins.torproject.org
+这是 CI/构建服务。看起来像这样：https://jenkins.torproject.org
 
-Runs automatically on commits merged to git.torproject.org. We CI the
-main branch and all supported tor versions. We also build nightly debian
-packages from main.
+在提交合并到 git.torproject.org 时自动运行。我们对主分支和所有受支持的 tor 版本进行 CI 构建。我们还从主分支构建每夜 debian 软件包。
 
-Builds Linux and Windows cross-compilation. Runs Linux tests.
+构建 Linux 和 Windows 交叉编译版本。运行 Linux 测试。
 
-Builds should show up on the web at jenkins.torproject.org and on IRC at
-#tor-bots on OFTC. If they don't, ask #tor-dev (also on OFTC).
+构建结果应该会显示在 jenkins.torproject.org 网站上以及 IRC 的 OFTC #tor-bots 频道。如果没有，请咨询 #tor-dev（同样在 OFTC 上）。
 
 ## Valgrind
 
@@ -47,37 +40,30 @@ Builds should show up on the web at jenkins.torproject.org and on IRC at
 $ valgrind --leak-check=yes --error-limit=no --show-reachable=yes src/app/tor
 ```
 
-(Note that if you get a zillion openssl warnings, you will also need to
-pass `--undef-value-errors=no` to valgrind, or rebuild your openssl
-with `-DPURIFY`.)
+（请注意，如果你看到大量的 openssl 警告，你还需要向 valgrind 传递 `--undef-value-errors=no` 参数，或者使用 `-DPURIFY` 重新编译你的 openssl。）
 
 ## Coverity
 
-Nick regularly runs the coverity static analyzer on the Tor codebase.
+Nick 定期对 Tor 代码库运行 Coverity 静态分析器。
 
-The preprocessor define `__COVERITY__` is used to work around instances
-where coverity picks up behavior that we wish to permit.
+预处理器宏 `__COVERITY__` 用于处理 Coverity 检测到但我们允许存在的行为实例。
 
-## clang Static Analyzer
+## clang 静态分析器
 
-The clang static analyzer can be run on the Tor codebase using Xcode (WIP)
-or a command-line build.
+clang 静态分析器可以通过 Xcode（开发中）或命令行构建在 Tor 代码库上运行。
 
-The preprocessor define `__clang_analyzer__` is used to work around instances
-where clang picks up behavior that we wish to permit.
+预处理器宏 `__clang_analyzer__` 用于处理 clang 检测到但我们允许存在的行为实例。
 
-## clang Runtime Sanitizers
+## clang 运行时消毒器
 
-To build the Tor codebase with the clang Address and Undefined Behavior
-sanitizers, see the file `contrib/clang/sanitize_blacklist.txt`.
+要使用 clang Address 和 Undefined Behavior 消毒器构建 Tor 代码库，请参阅文件 `contrib/clang/sanitize_blacklist.txt`。
 
-Preprocessor workarounds for instances where clang picks up behavior that
-we wish to permit are also documented in the blacklist file.
+clang 检测到但我们允许存在的行为的预处理器解决方案也记录在该黑名单文件中。
 
-## Running lcov for unit test coverage
+## 运行 lcov 进行单元测试覆盖率分析
 
-Lcov is a utility that generates pretty HTML reports of test code coverage.
-To generate such a report:
+lcov 是一个生成美观 HTML 测试覆盖率报告的工具。
+要生成这样的报告：
 
 ```console
 $ ./configure --enable-coverage
@@ -86,29 +72,25 @@ $ make coverage-html
 $ $BROWSER ./coverage_html/index.html
 ```
 
-This will run the tor unit test suite `./src/test/test` and generate the HTML
-coverage code report under the directory `./coverage_html/`. To change the
-output directory, use `make coverage-html HTML_COVER_DIR=./funky_new_cov_dir`.
+这将运行 Tor 单元测试套件 `./src/test/test` 并在 `./coverage_html/` 目录下生成 HTML 覆盖率代码报告。要更改输出目录，请使用 `make coverage-html HTML_COVER_DIR=./funky_new_cov_dir`。
 
-Coverage diffs using lcov are not currently implemented, but are being
-investigated (as of July 2014).
+使用 lcov 进行覆盖率差异比较目前尚未实现，但正在研究中（截至 2014 年 7 月）。
 
-## Running the unit tests
+## 运行单元测试
 
-To quickly run all the tests distributed with Tor:
+要快速运行 Tor 附带的所有测试：
 
 ```console
 $ make check
 ```
 
-To run the fast unit tests only:
+只运行快速单元测试：
 
 ```console
 $ make test
 ```
 
-To selectively run just some tests (the following can be combined
-arbitrarily):
+有选择地运行部分测试（以下方式可以任意组合）：
 
 ```console
 $ ./src/test/test <name_of_test> [<name of test 2>] ...
@@ -116,162 +98,133 @@ $ ./src/test/test <prefix_of_name_of_test>.. [<prefix_of_name_of_test2>..] ...
 $ ./src/test/test :<name_of_excluded_test> [:<name_of_excluded_test2]...
 ```
 
-To run all tests, including those based on Stem or Chutney:
+运行所有测试，包括基于 Stem 或 Chutney 的测试：
 
 ```console
 $ make test-full
 ```
 
-To run all tests, including those based on Stem or Chutney that require a
-working connection to the internet:
+运行所有测试，包括需要互联网连接的基于 Stem 或 Chutney 的测试：
 
 ```console
 $ make test-full-online
 ```
 
-## Running gcov for unit test coverage
+## 运行 gcov 进行单元测试覆盖率分析
 
 ```console
 $ ./configure --enable-coverage
 $ make
 $ make check
-$ # or--- make test-full ? make test-full-online?
+$ # 或者--- make test-full ? make test-full-online?
 $ mkdir coverage-output
 $ ./scripts/test/coverage coverage-output
 ```
 
-(On OSX, you'll need to start with `--enable-coverage CC=clang`.)
+（在 OSX 上，你需要使用 `--enable-coverage CC=clang` 来开始。）
 
-If that doesn't work:
+如果上述操作不起作用：
 
-   * Try configuring Tor with `--disable-gcc-hardening`
-   * You might need to run `make clean` after you run `./configure`.
+   * 尝试使用 `--disable-gcc-hardening` 配置 Tor
+   * 你可能需要在运行 `./configure` 之后执行 `make clean`。
 
-Then, look at the .gcov files in `coverage-output`.  '-' before a line means
-that the compiler generated no code for that line.  '######' means that the
-line was never reached.  Lines with numbers were called that number of times.
+然后，查看 `coverage-output` 中的 .gcov 文件。行首的 '-' 表示编译器未为该行生成任何代码。'######' 表示该行从未被执行过。带有数字的行表示该行被调用了对应次数。
 
-For more details about how to read gcov output, see the [Invoking
-gcov](https://gcc.gnu.org/onlinedocs/gcc/Invoking-Gcov.html) chapter
-of the GCC manual.
+有关如何阅读 gcov 输出的更多详细信息，请参阅 GCC 手册中的 [调用 gcov](https://gcc.gnu.org/onlinedocs/gcc/Invoking-Gcov.html) 章节。
 
-If you make changes to Tor and want to get another set of coverage results,
-you can run `make reset-gcov` to clear the intermediary gcov output.
+如果你对 Tor 做了更改并想要获取另一组覆盖率结果，可以运行 `make reset-gcov` 来清除中间 gcov 输出。
 
-If you have two different `coverage-output` directories, and you want to see
-a meaningful diff between them, you can run:
+如果你有两个不同的 `coverage-output` 目录，并且想要查看它们之间有意义的差异，可以运行：
 
 ```console
 $ ./scripts/test/cov-diff coverage-output1 coverage-output2 | less
 ```
 
-In this diff, any lines that were visited at least once will have coverage "1",
-and line numbers are deleted.  This lets you inspect what you (probably) really
-want to know: which untested lines were changed?  Are there any new untested
-lines?
+在此差异中，任何至少被访问过一次的行，覆盖率都会显示为 "1"，并且行号会被删除。这让你可以检查（可能）你真正想知道的内容：哪些未测试的行被修改了？是否有新的未测试行？
 
-If you run ./scripts/test/cov-exclude, it marks excluded unreached
-lines with 'x', and excluded reached lines with '!!!'.
+如果你运行 ./scripts/test/cov-exclude，它会将排除的未到达行标记为 'x'，将排除的已到达行标记为 '!!!'。
 
-## Running integration tests
+## 运行集成测试
 
-We have the beginnings of a set of scripts to run integration tests using
-Chutney. To try them, set CHUTNEY_PATH to your chutney source directory, and
-run `make test-network`.
+我们有一套使用 Chutney 运行集成测试的初始脚本。要试用它们，请将 CHUTNEY_PATH 设置为你的 chutney 源代码目录，然后运行 `make test-network`。
 
-We also have scripts to run integration tests using Stem.  To try them, set
-`STEM_SOURCE_DIR` to your Stem source directory, and run `test-stem`.
+我们还有使用 Stem 运行集成测试的脚本。要试用它们，请将 `STEM_SOURCE_DIR` 设置为你的 Stem 源代码目录，然后运行 `test-stem`。
 
-## Profiling Tor
+## 性能分析 Tor
 
-Ongoing notes about Tor profiling can be found at
+关于 Tor 性能分析的持续记录可以在以下地址找到：
 https://pad.riseup.net/p/profiling-tor
 
-## Profiling Tor with oprofile
+## 使用 oprofile 对 Tor 进行性能分析
 
-The oprofile tool runs (on Linux only!) to tell you what functions Tor is
-spending its CPU time in, so we can identify performance bottlenecks.
+oprofile 工具（仅在 Linux 上运行！）可以告诉你 Tor 在哪些函数上花费了 CPU 时间，从而帮助我们识别性能瓶颈。
 
-Here are some basic instructions
+以下是一些基本说明
 
- - Build tor with debugging symbols (you probably already have, unless
-   you messed with CFLAGS during the build process).
- - Build all the libraries you care about with debugging symbols
-   (probably you only care about libssl, maybe zlib and Libevent).
- - Copy this tor to a new directory
- - Copy all the libraries it uses to that dir too (`ldd ./tor` will
-   tell you)
- - Set LD_LIBRARY_PATH to include that dir.  `ldd ./tor` should now
-   show you it's using the libs in that dir
- - Run that tor
- - Reset oprofiles counters/start it
-   * `opcontrol --reset; opcontrol --start`, if Nick remembers right.
- - After a while, have it dump the stats on tor and all the libs
-   in that dir you created.
+ - 使用调试符号构建 tor（如果你在构建过程中没有修改 CFLAGS，你可能已经有了）。
+ - 使用调试符号构建你关心的所有库（可能你只关心 libssl，也许还有 zlib 和 Libevent）。
+ - 将此 tor 复制到一个新目录
+ - 将它使用的所有库也复制到该目录（`ldd ./tor` 会告诉你）
+ - 设置 LD_LIBRARY_PATH 以包含该目录。`ldd ./tor` 现在应该会显示它正在使用该目录中的库
+ - 运行该 tor
+ - 重置 oprofile 计数器/启动它
+   * `opcontrol --reset; opcontrol --start`，如果 Nick 没记错的话。
+ - 过一段时间后，让它转储该目录中 tor 和所有库的统计数据
    * `opcontrol --dump;`
    * `opreport -l that_dir/*`
- - Profit
+ - 获益
 
-## Profiling Tor with perf
+## 使用 perf 对 Tor 进行性能分析
 
-This works with a running Tor, and requires root.
+这适用于正在运行的 Tor，并且需要 root 权限。
 
-1. Decide how long you want to profile for. Start with (say) 30 seconds. If that
-   works, try again with longer times.
+1. 决定你想要分析多长时间。先从（比如说）30 秒开始。如果有效，再尝试更长的时间。
 
-2. Find the PID of your running tor process.
+2. 找到正在运行的 tor 进程的 PID。
 
-3. Run `perf record --call-graph dwarf -p <PID> sleep <SECONDS>`
+3. 运行 `perf record --call-graph dwarf -p <PID> sleep <SECONDS>`
 
-   (You may need to do this as root.)
+   （你可能需要以 root 身份执行此操作。）
 
-   You might need to add `-e cpu-clock` as an option to the perf record line
-   above, if you are on an older CPU without access to hardware profiling
-   events, or in a VM, or something.
+   如果你使用的是较旧的 CPU、无法访问硬件分析事件、在虚拟机中或类似情况，你可能需要在上面的 perf record 行中添加 `-e cpu-clock` 作为选项。
 
-4. Now you have a perf.data file. Have a look at it with `perf report
-   --no-children --sort symbol,dso` or `perf report --no-children --sort
-   symbol,dso --stdio --header`. How does it look?
+4. 现在你有了一个 perf.data 文件。使用 `perf report
+   --no-children --sort symbol,dso` 或 `perf report --no-children --sort
+   symbol,dso --stdio --header` 查看它。看起来怎么样？
 
-5a. Once you have a nice big perf.data file, you can compress it, encrypt it,
-    and send it to your favorite Tor developers.
+5a. 一旦你有了一个足够大的 perf.data 文件，你可以压缩它、加密它，
+    然后发送给你最喜欢的 Tor 开发者。
 
-5b. Or maybe you'd rather not send a nice big perf.data file. Who knows what's
-    in that!? It's kinda scary. To generate a less scary file, you can use `perf
-    report -g > <FILENAME>.out`. Then you can compress that and put it somewhere
-    public.
+5b. 或者你可能不想发送一个很大的 perf.data 文件。谁知道里面有什么！？
+    这有点吓人。要生成一个不那么吓人的文件，你可以使用 `perf
+    report -g > <FILENAME>.out`。然后你可以压缩它并将其放在某个公开的地方。
 
-## Profiling Tor with gperftools aka Google-performance-tools
+## 使用 gperftools（又称 Google-performance-tools）对 Tor 进行性能分析
 
-This should work on nearly any unixy system. It doesn't seem to be compatible
-with RunAsDaemon though.
+这应该几乎可以在任何类 Unix 系统上工作。但它似乎与 RunAsDaemon 不兼容。
 
-Beforehand, install google-perftools.
+事先，请安装 google-perftools。
 
-1. You need to rebuild Tor, hack the linking steps to add `-lprofiler` to the
-   libs. You can do this by adding `LIBS=-lprofiler` when you call `./configure`.
+1. 你需要重新构建 Tor，修改链接步骤以在库中添加 `-lprofiler`。你可以在调用 `./configure` 时添加 `LIBS=-lprofiler` 来实现。
 
-Now you can run Tor with profiling enabled, and use the pprof utility to look at
-performance! See the gperftools manual for more info, but basically:
+现在你可以运行启用了性能分析的 Tor，并使用 pprof 工具查看性能！有关更多信息，请参阅 gperftools 手册，但基本步骤如下：
 
-2. Run `env CPUPROFILE=/tmp/profile src/app/tor -f <path/torrc>`. The profile file
-   is not written to until Tor finishes execution.
+2. 运行 `env CPUPROFILE=/tmp/profile src/app/tor -f <path/torrc>`。配置文件在 Tor 执行完毕之前不会被写入。
 
-3. Run `pprof src/app/tor /tmp/profile` to start the REPL.
+3. 运行 `pprof src/app/tor /tmp/profile` 以启动 REPL。
 
-## Generating and analyzing a callgraph
+## 生成和分析调用图
 
-0. Build Tor on linux or mac, ideally with -O0 or -fno-inline.
+0. 在 Linux 或 Mac 上构建 Tor，理想情况下使用 -O0 或 -fno-inline。
 
-1. Clone 'https://git.torproject.org/user/nickm/calltool.git/' .
-   Follow the README in that repository.
+1. 克隆 'https://git.torproject.org/user/nickm/calltool.git/' 。
+   按照该仓库中的 README 进行操作。
 
-Note that currently the callgraph generator can't detect calls that pass
-through function pointers.
+请注意，目前调用图生成器无法检测通过函数指针的调用。
 
-## Getting emacs to edit Tor source properly
+## 让 emacs 正确编辑 Tor 源代码
 
-Nick likes to put the following snippet in his .emacs file:
+Nick 喜欢在他的 .emacs 文件中添加以下代码片段：
 
 
     (add-hook 'c-mode-hook
@@ -295,15 +248,11 @@ Nick likes to put the following snippet in his .emacs file:
             ))))
 
 
-You'll note that it defaults to showing all trailing whitespace.  The `cond`
-test detects whether the file is one of a few C free software projects that I
-often edit, and sets up the indentation level and tab preferences to match
-what they want.
+你会注意到它默认显示所有尾随空白。`cond` 测试检测文件是否是我经常编辑的几个 C 自由软件项目之一，并设置相应的缩进级别和制表符偏好。
 
-If you want to try this out, you'll need to change the filename regex
-patterns to match where you keep your Tor files.
+如果你想试用这个，你需要将文件名正则表达式模式更改为匹配你存放 Tor 文件的位置。
 
-If you use emacs for editing Tor and nothing else, you could always just say:
+如果你只用 emacs 编辑 Tor 而不编辑其他内容，你总是可以直接说：
 
 
     (add-hook 'c-mode-hook
@@ -314,66 +263,55 @@ If you use emacs for editing Tor and nothing else, you could always just say:
             (set-variable 'c-basic-offset 2)))
 
 
-There is probably a better way to do this.  No, we are probably not going
-to clutter the files with emacs stuff.
+可能有更好的方法来做这件事。不，我们可能不会在文件中添加 emacs 相关内容。
 
-## Building a tag file (code index)
+## 构建标签文件（代码索引）
 
-Many functions in tor use `MOCK_IMPL` wrappers for unit tests. Your
-tag-building program must be told how to handle this syntax.
+tor 中的许多函数使用 `MOCK_IMPL` 包装器进行单元测试。你的标签构建程序必须被告知如何处理此语法。
 
-If you're using emacs, you can generate an emacs-compatible tag file using
-`make tags`. This will run your system's `etags`. Tor's build system assumes
-that you're using the emacs-specific version of `etags` (bundled under the
-`xemacs21-bin` package on Debian). This is incompatible with other versions of
-`etags` such as the version provided by Exuberant Ctags.
+如果你使用 emacs，你可以使用 `make tags` 生成一个 emacs 兼容的标签文件。这将运行你系统上的 `etags`。Tor 的构建系统假设你使用的是 emacs 特定版本的 `etags`（在 Debian 的 `xemacs21-bin` 包中捆绑）。这与其他版本的 `etags`（如 Exuberant Ctags 提供的版本）不兼容。
 
-If you're using vim or emacs, you can also use Universal Ctags to build a tag
-file using the syntax:
+如果你使用 vim 或 emacs，你也可以使用 Universal Ctags 使用以下语法构建标签文件：
 
 ```console
 $ ctags -R -D 'MOCK_IMPL(r,h,a)=r h a' .
 ```
 
-If you're using an older version of Universal Ctags, you can use the following
-instead:
+如果你使用的是较旧版本的 Universal Ctags，你可以改用以下方式：
 
 ```console
 ctags -R --mline-regex-c='/MOCK_IMPL\([^,]+,\W*([a-zA-Z0-9_]+)\W*,/\1/f/{mgroup=1}' .
 ```
 
-A vim-compatible tag file will be generated by default. If you use emacs, add
-the `-e` flag to generate an emacs-compatible tag file.
+默认会生成一个 vim 兼容的标签文件。如果你使用 emacs，请添加 `-e` 标志以生成 emacs 兼容的标签文件。
 
 ## Doxygen
 
-We use the 'doxygen' utility to generate documentation from our
-source code. Here's how to use it:
+我们使用 'doxygen' 工具从源代码生成文档。以下是如何使用它：
 
-  1. Begin every file that should be documented with
+  1. 每个应该被记录的文件都以如下内容开头
 
 ```
  /**
   * \file filename.c
-  * \brief Short description of the file.
+  * \brief 文件的简短描述。
   */
 ```
 
-  (Doxygen will recognize any comment beginning with /** as special.)
+  （Doxygen 会将任何以 /** 开头的注释识别为特殊注释。）
 
-  2. Before any function, structure, #define, or variable you want to
-     document, add a comment of the form:
+  2. 在你想要记录的任何函数、结构体、#define 或变量之前，添加如下格式的注释：
 
 ```
-/** Describe the function's actions in imperative sentences.
+/** 用祈使句描述函数的操作。
  *
- * Use blank lines for paragraph breaks
- *   - and
- *   - hyphens
- *   - for
- *   - lists.
+ * 使用空行进行段落分隔
+ *   - 并且
+ *   - 使用连字符
+ *   - 进行
+ *   - 列表。
  *
- * Write <b>argument_names</b> in boldface.
+ * 将 <b>参数名</b> 写为粗体。
  *
  * \code
  *     place_example_code();
@@ -382,42 +320,30 @@ source code. Here's how to use it:
  */
 ```
 
-  3. Make sure to escape the characters `<`, `>`, `\`, `%` and `#` as `\<`,
-     `\>`, `\\`, `\%` and `\#`.
+  3. 确保将字符 `<`、`>`、`\`、`%` 和 `#` 转义为 `\<`、`\>`、`\\`、`\%` 和 `\#`。
 
-  4. To document structure members, you can use two forms:
+  4. 要记录结构体成员，你可以使用两种形式：
 
 ```c
 struct foo {
-  /** You can put the comment before an element; */
+  /** 你可以将注释放在元素之前； */
   int a;
-  int b; /**< Or use the less-than symbol to put the comment
-         * after the element. */
+  int b; /**< 或者使用小于号将注释放在元素之后。 */
 };
 ```
 
-  5. To generate documentation from the Tor source code, type:
+  5. 要从 Tor 源代码生成文档，请输入：
 
 ```console
 $ doxygen -g
 ```
 
-  to generate a file called `Doxyfile`.  Edit that file and run
-  `doxygen` to generate the API documentation.
+  这会生成一个名为 `Doxyfile` 的文件。编辑该文件并运行 `doxygen` 以生成 API 文档。
 
-  6. See the Doxygen manual for more information; this summary just
-     scratches the surface.
+  6. 有关更多信息，请参阅 Doxygen 手册；本摘要只是浅尝辄止。
 
-## Style and best-practices checking
+## 样式和最佳实践检查
 
-We use scripts to check for various problems in the formatting and style
-of our source code.  The "check-spaces" test detects a bunch of violations
-of our coding style on the local level.  The "check-best-practices" test
-looks for violations of some of our complexity guidelines.
+我们使用脚本来检查源代码格式和样式中的各种问题。"check-spaces" 测试在本地级别检测大量编码风格违规。"check-best-practices" 测试查找违反某些复杂性指南的情况。
 
-You can tell the tool about exceptions to the complexity guidelines via its
-exceptions file (scripts/maint/practracker/exceptions.txt).  But before you
-do this, consider whether you shouldn't fix the underlying problem.  Maybe
-that file really _is_ too big.  Maybe that function really _is_ doing too
-much.  (On the other hand, for stable release series, it is sometimes better
-to leave things unrefactored.)
+你可以通过异常文件（scripts/maint/practracker/exceptions.txt）告诉工具关于复杂性指南的例外情况。但在这样做之前，请考虑你是否应该修复根本问题。也许那个文件确实_太_大了。也许那个函数确实做了太多事情。（另一方面，对于稳定发行系列，有时最好保持不重构。）
