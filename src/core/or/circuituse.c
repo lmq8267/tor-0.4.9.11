@@ -57,6 +57,8 @@
 #include "feature/nodelist/describe.h"
 #include "feature/nodelist/networkstatus.h"
 #include "feature/nodelist/nodelist.h"
+#include "feature/nodelist/node_select.h"
+#include "feature/nodelist/node_st.h"
 #include "feature/nodelist/routerlist.h"
 #include "feature/relay/routermode.h"
 #include "feature/relay/selftest.h"
@@ -2907,6 +2909,46 @@ connection_ap_handshake_attach_circuit(entry_connection_t *conn)
                  "is already downloading.", base_conn->linked_conn->address);
         return -1;
       }
+    }
+
+    /* SocksExitByUser: if this stream was authenticated with a SOCKS5
+     * username that maps to a pinned country routerset, pin its exit to a
+     * single usable relay from that country (via chosen_exit_name).  If the
+     * country has no usable exit right now, reject the stream immediately
+     * rather than letting it fall back to another country or wait out
+     * SocksTimeout.  Passwords are never checked by Tor, so any value
+     * works. */
+    const or_options_t *exitbyuser_opts = get_options();
+    if (exitbyuser_opts->SocksExitByUser && !conn->chosen_exit_name) {
+      if (!conn->socks_request || !conn->socks_request->username ||
+          conn->socks_request->usernamelen == 0) {
+        /* No SOCKS5 auth: reject immediately rather than falling back to
+         * a random exit country.  Prevents unauthenticated access when
+         * SocksExitByUser is enabled. */
+        log_info(LD_APP, "SOCKS stream has no username; rejecting per "
+                 "SocksExitByUser (authentication required).");
+        connection_mark_unattached_ap(conn, END_STREAM_REASON_CANT_ATTACH);
+        return -1;
+      }
+      const node_t *exit_node = pick_exit_node_for_username(
+          conn->socks_request->username, conn->socks_request->usernamelen,
+          exitbyuser_opts, CRN_NEED_DESC);
+      if (!exit_node) {
+        log_info(LD_APP, "No usable exit relay for SOCKS username '%.*s'; "
+                 "rejecting the stream per SocksExitByUser.",
+                 (int)conn->socks_request->usernamelen,
+                 conn->socks_request->username);
+        connection_mark_unattached_ap(conn, END_STREAM_REASON_CANT_ATTACH);
+        return -1;
+      }
+      /* Use the long-lived "$<hex digest>" form so node_get_by_nickname()
+       * below resolves it unambiguously even across reboots/renames. */
+      char hexid[HEX_DIGEST_LEN + 2];
+      hexid[0] = '$';
+      base16_encode(hexid + 1, sizeof(hexid) - 1, exit_node->identity,
+                    DIGEST_LEN);
+      conn->chosen_exit_name = tor_strdup(hexid);
+      conn->chosen_exit_optional = 0;  /* never fall back to another exit */
     }
 
     /* If we have a chosen exit, we need to use a circuit that's

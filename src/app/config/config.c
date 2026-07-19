@@ -110,6 +110,7 @@
 #include "feature/stats/geoip_stats.h"
 #include "lib/compress/compress.h"
 #include "lib/confmgt/structvar.h"
+#include "lib/container/map.h"
 #include "lib/crypt_ops/crypto_init.h"
 #include "lib/crypt_ops/crypto_rand.h"
 #include "lib/crypt_ops/crypto_util.h"
@@ -670,6 +671,8 @@ static const config_var_t option_vars_[] = {
   V(ShutdownWaitLength,          INTERVAL, "30 seconds"),
   OBSOLETE("SocksListenAddress"),
   V(SocksPolicy,                 LINELIST, NULL),
+  V(SocksExitByUser,             BOOL,     "0"),
+  V(SocksExitUserMap,            CSV,      NULL),
   VPORT(SocksPort),
   V(SocksTimeout,                INTERVAL, "2 minutes"),
   V(SSLKeyLifetime,              INTERVAL, "0"),
@@ -1023,6 +1026,17 @@ set_options(or_options_t *new_val, char **msg)
   return 0;
 }
 
+/** Helper for strmap_free: free a routerset_t value held in a strmap. */
+static void
+routerset_free_void_(void *rs)
+{
+  /* Free the routerset without nulling the caller's slot: the strmap owns
+   * the pointer and frees it through this helper, so there is no out-pointer
+   * to null.  (routerset_free() is FREE_AND_NULL() and would take the
+   * address of a cast, which compilers reject.) */
+  routerset_free_((routerset_t *)rs);
+}
+
 /** Release additional memory allocated in options
  */
 static void
@@ -1037,6 +1051,9 @@ options_clear_cb(const config_mgr_t *mgr, void *opts)
     SMARTLIST_FOREACH(options->NodeFamilySets, routerset_t *,
                       rs, routerset_free(rs));
     smartlist_free(options->NodeFamilySets);
+  }
+  if (options->SocksExitUserMapSets) {
+    strmap_free(options->SocksExitUserMapSets, routerset_free_void_);
   }
   if (options->SchedulerTypes_) {
     SMARTLIST_FOREACH(options->SchedulerTypes_, int *, i, tor_free(i));
@@ -3423,6 +3440,49 @@ options_validate_cb(const void *old_options_, void *options_, char **msg)
         routerset_free(rs);
       }
     }
+  }
+
+  if (options->SocksExitByUser && !options->SocksExitUserMap) {
+    COMPLAIN("SocksExitByUser is enabled but SocksExitUserMap is empty; "
+             "no SOCKS username can be mapped to an exit country.");
+  }
+  if (options->SocksExitUserMap) {
+    options->SocksExitUserMapSets = strmap_new();
+    SMARTLIST_FOREACH_BEGIN(options->SocksExitUserMap, const char *, entry) {
+      /* Each entry is "username={routerset}"; split on the first '='. */
+      const char *eq = strchr(entry, '=');
+      if (!eq || eq == entry) {
+        tor_asprintf(msg, "SocksExitUserMap entry '%s' is missing a "
+                    "username= prefix.", entry);
+        return -1;
+      }
+      char *username = tor_strndup(entry, (size_t)(eq - entry));
+      const char *expr = eq + 1;
+      /* Reject usernames that would be ambiguous or empty when used as a
+       * SOCKS5 auth username (containing '=' or whitespace). */
+      if (strspn(username, " \t") == strlen(username)) {
+        tor_asprintf(msg, "SocksExitUserMap entry '%s' has an empty "
+                    "username.", entry);
+        tor_free(username);
+        return -1;
+      }
+      if (strchr(username, '=') || strpbrk(username, " \t")) {
+        tor_asprintf(msg, "SocksExitUserMap username '%s' must not contain "
+                    "'=' or whitespace.", username);
+        tor_free(username);
+        return -1;
+      }
+      routerset_t *rs = routerset_new();
+      if (routerset_parse(rs, expr, "SocksExitUserMap") < 0) {
+        tor_asprintf(msg, "SocksExitUserMap entry '%s' has an invalid "
+                    "routerset on the right-hand side.", username);
+        routerset_free(rs);
+        tor_free(username);
+        return -1;
+      }
+      strmap_set(options->SocksExitUserMapSets, username, rs);
+      tor_free(username); /* strmap_set strdup()ed its own copy of the key */
+    } SMARTLIST_FOREACH_END(entry);
   }
 
   if (options->ExcludeNodes && options->StrictNodes) {

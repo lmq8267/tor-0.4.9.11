@@ -3359,6 +3359,13 @@ refresh_all_country_info(void)
     routerset_refresh_countries(options->ExcludeExitNodes);
   if (options->ExcludeExitNodesUnion_)
     routerset_refresh_countries(options->ExcludeExitNodesUnion_);
+  if (options->SocksExitUserMapSets) {
+    MAP_FOREACH(strmap, options->SocksExitUserMapSets, const char *, k,
+                routerset_t *, rs) {
+      (void)k; /* username, unused */
+      routerset_refresh_countries(rs);
+    } MAP_FOREACH_END;
+  }
 
   nodelist_refresh_countries();
 }

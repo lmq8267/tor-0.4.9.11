@@ -1,0 +1,12 @@
+  o Major features (SOCKS proxy, self-hosted use):
+    - Add a new "SocksExitByUser" option that lets a single SocksPort
+      route each SOCKS5-authenticated stream to the exit country named by
+      its SOCKS5 username, via the new "SocksExitUserMap" option (a CSV of
+      "username={routerset}" entries, e.g. "jp={jp},de={de}"). Username
+      "jp" with any password pins that stream's exit to a single relay in
+      {jp}; if the user's country has no usable exit relay, the stream is
+      rejected immediately instead of falling back to another country or
+      waiting out SocksTimeout. Passwords are never checked by Tor, so any
+      value works. Designed for self-hosted/internal use; do not expose
+      this on an untrusted network, as it reintroduces .exit-style exit
+      selection surface. Closes ticket 00000.

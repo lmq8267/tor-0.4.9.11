@@ -20,6 +20,7 @@
 
 struct smartlist_t;
 struct config_line_t;
+struct strmap_t;
 struct config_suite_t;
 struct routerset_t;
 
@@ -410,6 +411,19 @@ struct or_options_t {
                         * connections alive? */
   int SocksTimeout; /**< How long do we let a socks connection wait
                      * unattached before we fail it? */
+  /** If true, route each SOCKS stream's exit node by its SOCKS username,
+   * using SocksExitUserMap to map a username to an ExitNodes-style routerset.
+   * The stream's chosen exit is pinned (chosen_exit_optional is forced off),
+   * so a username whose country has no usable exit is rejected immediately
+   * rather than falling back to another country. */
+  int SocksExitByUser;
+  /** CSV of "user={routerset}" entries; for each entry, any SOCKS stream whose
+   * username matches the left-hand side is pinned to an exit in the
+   * right-hand routerset (typically a single country code like "{jp}"). */
+  struct smartlist_t *SocksExitUserMap;
+  /** Derived from SocksExitUserMap: a map from username (char*) to
+   * routerset_t*. Owned here; freed in options_clear_cb. */
+  struct strmap_t *SocksExitUserMapSets;
   int LearnCircuitBuildTimeout; /**< If non-zero, we attempt to learn a value
                                  * for CircuitBuildTimeout based on timeout
                                  * history. Use circuit_build_times_disabled()

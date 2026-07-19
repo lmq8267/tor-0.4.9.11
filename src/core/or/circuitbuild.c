@@ -1632,6 +1632,64 @@ ap_stream_wants_exit_attention(connection_t *conn)
   return 0;
 }
 
+/** If SocksExitByUser is enabled, look up <b>username</b> (of length
+ * <b>usernamelen</b>, not necessarily NUL-terminated) in
+ * <b>opts</b>->SocksExitUserMapSets; if it matches a pinned routerset,
+ * run that set through the same exit-sieve used by
+ * choose_good_exit_server_general() (router_can_choose_node, not a bad exit,
+ * not in ExcludeExitNodesUnion_, not rejecting all) and return a single
+ * bandwidth-weighted node from the survivors, or NULL if none survive.
+ *
+ * <b>flags</b> is a router_crn_flags_t (as built for the stream's circuit).
+ *
+ * Returns NULL if the feature is disabled, if <b>username</b> is empty or
+ * unknown, or if no usable exit relay exists for the user's country -- in
+ * which case the caller should reject the stream immediately rather than
+ * fall back to another country.
+ */
+const node_t *
+pick_exit_node_for_username(const char *username, size_t usernamelen,
+                            const or_options_t *opts, int flags)
+{
+  tor_assert(opts);
+
+  if (!opts->SocksExitByUser || !opts->SocksExitUserMapSets ||
+      !username || usernamelen == 0)
+    return NULL;
+
+  char *username_nt = tor_strndup(username, usernamelen);
+  routerset_t *rs_pinned = strmap_get(opts->SocksExitUserMapSets, username_nt);
+  tor_free(username_nt);
+  if (!rs_pinned)
+    return NULL;
+
+  /* Build the list of nodes referenced by the pinned routerset.  Only running
+   * nodes are returned, but exit-relevance is filtered by hand below. */
+  smartlist_t *nodes = smartlist_new();
+  routerset_get_all_nodes(nodes, rs_pinned, opts->ExcludeExitNodesUnion_, 1);
+
+  const node_t *chosen = NULL;
+  SMARTLIST_FOREACH_BEGIN(nodes, const node_t *, node) {
+    if (!router_can_choose_node(node, flags))
+      goto skip;
+    if (node->is_bad_exit)
+      goto skip;
+    if (routerset_contains_node(opts->ExcludeExitNodesUnion_, node))
+      goto skip;
+    if (node_exit_policy_rejects_all(node))
+      goto skip;
+    continue;
+   skip:
+    SMARTLIST_DEL_CURRENT(nodes, node);
+  } SMARTLIST_FOREACH_END(node);
+
+  if (smartlist_len(nodes) > 0)
+    chosen = node_sl_choose_by_bandwidth(nodes, WEIGHT_FOR_EXIT);
+
+  smartlist_free(nodes);
+  return chosen;
+}
+
 /** Return a pointer to a suitable router to be the exit node for the
  * general-purpose circuit we're about to build.
  *

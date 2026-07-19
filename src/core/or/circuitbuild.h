@@ -53,6 +53,19 @@ MOCK_DECL(const node_t *,
           build_state_get_exit_node,(cpath_build_state_t *state));
 const char *build_state_get_exit_nickname(cpath_build_state_t *state);
 
+struct or_options_t;
+struct routerset_t;
+
+/** If SocksExitByUser is enabled, map a SOCKS username to a single usable
+ * exit node from the user's pinned country routerset, or NULL if the
+ * feature is off, the username is empty/unknown, or the user's country has
+ * no usable exit relay (in which case the caller should reject the stream
+ * rather than fall back to another country). */
+const node_t *pick_exit_node_for_username(const char *username,
+                                          size_t usernamelen,
+                                          const struct or_options_t *opts,
+                                          int flags);
+
 struct circuit_guard_state_t;
 
 const node_t *choose_good_entry_server(const origin_circuit_t *circ,
