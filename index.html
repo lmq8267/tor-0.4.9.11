@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tor 0.4.9.11 指定国家出口版 - 运行教程</title>
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,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6f/jls//yC6f/8gun//ILp//yC6f/8gun//HLZ7sxyubKQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACqAKoDyC2eyMgvn//qstv/9dnu/8o5o//02O3/yjej//bg8f/modP/23fA//79/v/Xarr/yC6f/8gun//ILp//yC6f/8gun//ILZ7MvwB/BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMktnlrHLp/+3oPF//7+/v/Ybbz/3YHF//TX7P/JMqD//ff7//TW7P/LOqT//fn8//Xa7v/IL5//yC6f/8gun//ILp//yC6f/8gun/7HK55XAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxyyevMkzof/56vX/+OXz/8gxoP/02e3/7bvg/81DqP/+/v7//fj7/8k0ov/z0+v//v7+/9Vftf/ILp//yC6f/8gun//ILp//yC6f/8csnbgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMwAmQXHLJ701WC2///////prtr/z0qs//7+/v/prtn/0lSw///////+/v7/0E6t/+mv2v//////5JnQ/8gun//ILp//yC6f/8gun//ILp//yC2f8pkAmQUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAySqfGMgtn/3df8T//////+KSzf/Ybbz//////+u23f/UXLT////////////WZbj/45jQ///////st97/yC6f/8gun//ILp//yC6f/8gun//HLZ7+xCecGgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMKqEexy2e/t6Fx///////4pXO/9pzv///////8s7o/9Retf///////////9dpuf/kmtH//////+qy2//ILp//yC6f/8gun//ILp//yC6f/8ctnv7ILZocAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL8fjxDILZ782nS+///////rtt3/1F61///////89fr/01my///+/v///v//0lSw/+u33f//////4pTN/8gun//ILp//yC6f/8gun//ILp//xy2e+MYcjQkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMctntzNRKn//vv9//rv9//MP6b/+/L5///////ficj//PT6//z2+//KOKP/+en0//7+/v/UX7X/yC6f/8gun//ILp//yC6f/8gun//HLZ7LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyC2fiMgun//rs9z//////+GQzP/lndL///////34/P/+/f7/78bk/9ZmuP/+/v7/9+Lx/8gwoP/ILp//yC6f/8gun//ILp//yC6f/8YrnHUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADLKKMZyC2e78w/p//45fP//fn8/9lyvv/01uz////////////dgMT/8Mjl///+///dgMX/yC6f/8gun//ILp//yC6f/8gun//ILZ/qwx6WEQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADHLJ1cyC2f/dBPrv/35fL//fr8/+/E5P//////+/L5/9x9w//+/v7/8c3o/8gwoP/ILp//yC6f/8gun//ILp//xy2e/sUqnVkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADHLZ58xy2e/sw/p//wx+X////////////67Pb/+u33//vx+P/PSqv/yC6f/8gun//ILp//yC6f/8ctnv7GLJ1+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADGLZ5fxy2f88kyoP/uv+H////////////+/v7/23rC/8gun//ILp//yC6f/8gun//HLZ74xyudaQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADFLJkoxyyex8w/p//78vn///////HL5//ILp//yC6f/8gu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n//Zcb7/+ev1//rv9//UX7X/zD6m//fk8v/hkMv/yC+f//LS6v/+/f7/3HvC/8s9pf/y0er//v7+/+y84P/IMaD/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8ctnvjJLJ9tfwB/AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMkooRPHLZ/Gxy6f/s1DqP/z1Or//v7+/+u03f/IMaD/5JrQ//z2+//adL//yTKg//rt9v//////6rDb/8kyof/nptb//v3+//vx+P/WZLj/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun/7ILZ7ExiWXGwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMUrnkfILZ73yC6f/+GQzP/+/f7//Pb6/9JUsP/PS6z/9d3v//vx+P/UX7X/zD+n//36/P//////9t3v/8gwoP/egsX//Pb7//79/v/moNP/yTSi/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILZ72xyqcTgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMctnqTHLZ7+yzyl//rw+P//////7sLj/8gvn//cfsP//PX6//rs9v/QTq7/0lax//79/v///////Pn8/8s/pv/WY7f/+uv2//7+/v/z1ev/zkWp/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//HLZ7+xy2epAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wC/BMcsneTILp//2nO+///////+/v7/34fI/8kzof/oqdf//v7+//jq9P/ORqr/12i5/////////////v7+/9Rftf/PS6z/9+Lx///////89fr/01my/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2f4r8AvwQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAySqfGMcsnvrILp//5Z/T///////+/P3/1mO3/8s6pP/wyOX///////nr9f/OSKv/2nO//////////////////9x+w//LOqT/9Njt///////+/v7/23nB/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xiyf+sQnnBoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxSicLMctn/3ILp//67Xd///////89vv/0lWx/8w+pv/12e7///////rt9//RUa//3HvC/////////////////+KUzf/IMaD/89Pr/////////v//4Y7L/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2f/cYoozIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzCieMsctnv7IL5//7bvg///////89/v/0ley/8w/p//13e////////vx+P/VYLb/3H3D/////////////////+OXz//JM6H/89Tr///////+/v7/3obH/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2e/sksnDQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzSuhKcctnv3ILp//6rPc///////+/f7/12q6/8w9pv/z1ev///////33+//cesL/2nW//////////////////9+Hx//MP6b/9dvu///////+/f7/2G+8/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2e/MQroCMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxhybEsgtnvjILp//45bO///////+/v7/45fP/8o4o//uwOL///////7+/v/modP/1WO3///+/v////////7//9Zouf/SVrH/+Obz///////78vn/0VSw/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy6e7r8fnwgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/Acgun9LILp//1WC1//77/f//////9Njs/8o3o//lndL//vz9///////02Oz/0liy//v0+v///////ff7/81Bp//becH/+/P5//7+/v/y0er/zUSp/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//yC2euwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMYsnYPHLZ7+yTSh//LR6f///////vz9/9t3wP/Xabr/+u32///////+/P3/6KvY//nr9f//////8tHq/8k0of/nptb//v3+//79/v/mpNX/yTWi/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//HLZ/9xiyfbQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMUsnyjILZ/tyC6f/9Vitv/89fr///////be8P/PTa3/67fe/////////////vz9//7+/v/+/v7/4ZDM/8xAp//23vD//v7+//z0+v/Xa7v/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//GLZ7fxSyZKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALIZmQrHLJ6hyC2e/Mk1ov/nqNf//fr9//78/f/nqdf/0VSw//Xd7//+/v7////////////67/f/0lex/92Dxf/+/f7///7///LO6f/KN6P/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8gtnvzIK56RshmZCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADHLp08xi2e38gun//PSqv/7sDh//7+/v/89/v/6azZ/9t6wf/56/b///////7+/v/uwOL/01uz//jl8///////+/D4/9Vit//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8csn+PFK5k1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/AH8CxyueV8ctnvvILp//zD2l/+qy2//+/f7//v3+//np9f/9+Pz///////35/P/gjMr/7Lvf//7+/v/+/P3/34rJ/8gvn//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2d/McsnVx/AH8CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMksnnLHLZ7xxy2e/sk1ov/km9H/+/H4//////////////////z3+//vxOT//PT6//79/v/tvOD/zD6m/8gun//ILp//yC6f/8gun//ILp//yC6f/8ctnv7HLZ7xxy2efAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL8fnwjIK550xyye6cgun//KN6P/3X/E//nq9f/////////////+/////v////////np9f/UXrT/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8ctnvLILJ55vyqUDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMM5kFxy6dPMgtn9vHLp/+yC+f/9douf/89Pr//////////////////v7+/92Dxv/IL5//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2e68gtoU/UKqoGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMZgUAzHsjAL9fCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==">
+<style>
+:root {
+  --bg: #f2f2f7;
+  --bg-blob1: rgba(120, 160, 255, 0.25);
+  --bg-blob2: rgba(255, 140, 200, 0.2);
+  --bg-blob3: rgba(100, 220, 180, 0.18);
+  --text: #1d1d1f;
+  --text2: #6e6e73;
+  --text3: #aeaeb2;
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --glass-blur: blur(20px) saturate(180%);
+  --code-bg: rgba(30, 30, 40, 0.88);
+  --code-text: #e8e8ed;
+  --code-border: rgba(255,255,255,0.08);
+  --accent: #0071e3;
+  --accent2: #bf5af2;
+  --accent3: #30d158;
+  --nav-bg: rgba(255,255,255,0.72);
+  --tag-bg: rgba(0,113,227,0.1);
+  --tag-text: #0071e3;
+  --step-num: #0071e3;
+  --table-hover: rgba(0,0,0,0.03);
+  --badge-bg: rgba(0,0,0,0.06);
+  --divider: rgba(0,0,0,0.08);
+  --scrollbar: #c1c1c6;
+}
+@media(prefers-color-scheme:dark){
+  :root {
+    --bg: #111114;
+    --bg-blob1: rgba(60, 110, 230, 0.15);
+    --bg-blob2: rgba(190, 70, 150, 0.12);
+    --bg-blob3: rgba(50, 180, 130, 0.1);
+    --text: #f5f5f7;
+    --text2: #a1a1a6;
+    --text3: #636366;
+    --glass-bg: rgba(30, 30, 35, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --code-bg: rgba(18, 18, 22, 0.92);
+    --code-text: #e0e0e5;
+    --nav-bg: rgba(30, 30, 35, 0.78);
+    --tag-bg: rgba(10, 132, 255, 0.15);
+    --tag-text: #64b5f6;
+    --accent: #64b5f6;
+    --accent3: #34c759;
+    --table-hover: rgba(255,255,255,0.04);
+    --badge-bg: rgba(255,255,255,0.08);
+    --divider: rgba(255,255,255,0.08);
+    --scrollbar: #48484a;
+  }
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue","PingFang SC",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;
+  min-height:100vh;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:3px}
+body::before,body::after{
+  content:"";position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+  filter:blur(100px);-webkit-filter:blur(100px);
+}
+body::before{
+  width:600px;height:600px;top:-120px;left:-80px;
+  background:var(--bg-blob1);animation:blob-float 20s ease-in-out infinite alternate;
+}
+body::after{
+  width:500px;height:500px;bottom:-80px;right:-60px;
+  background:var(--bg-blob2);animation:blob-float 24s ease-in-out infinite alternate-reverse;
+}
+@keyframes blob-float{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(40px,-30px) scale(1.08)}
+  100%{transform:translate(-20px,20px) scale(0.96)}
+}
+@keyframes fade-up{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* 导航 */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:var(--nav-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border-bottom:1px solid var(--glass-border);
+  transition:box-shadow .3s;
+}
+nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.08)}
+.nav-inner{
+  max-width:960px;margin:0 auto;padding:0 20px;
+  display:flex;align-items:center;justify-content:space-between;height:52px;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-weight:700;font-size:15px;color:var(--accent);white-space:nowrap;flex-shrink:0}
+.nav-links{display:flex;gap:6px;flex-shrink:0}
+.nav-links a{
+  font-size:13px;color:var(--text2);text-decoration:none;
+  padding:4px 10px;border-radius:8px;transition:all .25s;white-space:nowrap;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--accent);background:var(--tag-bg)}
+
+/* 主内容 */
+main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px 80px}
+
+/* Hero */
+.hero{text-align:center;padding:64px 0 48px;animation:fade-up .8s ease-out}
+.hero h1{font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.hero h1 .hl{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:17px;color:var(--text2);max-width:600px;margin:0 auto 28px}
+.hero-badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.badge{
+  display:inline-flex;align-items:center;gap:5px;padding:5px 14px;
+  border-radius:999px;font-size:12px;font-weight:600;
+  background:var(--badge-bg);color:var(--text2);
+}
+.badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent3)}
+.btn-group{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:12px 28px;
+  border-radius:14px;font-size:15px;font-weight:600;text-decoration:none;
+  transition:all .3s cubic-bezier(.4,0,.2,1);cursor:pointer;border:none;
+}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(0,113,227,.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,113,227,.4);filter:brightness(1.08)}
+.btn-primary:active{transform:translateY(0) scale(.98);filter:brightness(.95)}
+.btn-secondary{background:var(--glass-bg);color:var(--text);border:1px solid var(--glass-border);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.btn-secondary:hover{transform:translateY(-2px);box-shadow:var(--glass-shadow);border-color:var(--accent)}
+.btn-secondary:active{transform:translateY(0) scale(.98)}
+.btn svg{width:18px;height:18px;flex-shrink:0}
+
+/* 章节 */
+section{margin-top:56px;animation:fade-up .7s ease-out both}
+section:nth-child(2){animation-delay:.1s}
+section:nth-child(3){animation-delay:.15s}
+h2{
+  font-size:clamp(22px,3.5vw,30px);font-weight:700;margin-bottom:24px;
+  display:flex;align-items:center;gap:10px;
+}
+h2 svg{width:28px;height:28px;color:var(--accent);flex-shrink:0}
+h3{font-size:19px;font-weight:700;margin:32px 0 14px;color:var(--text)}
+h4{font-size:16px;font-weight:600;margin:20px 0 10px;color:var(--text2)}
+
+/* 卡片 */
+.card{
+  background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);border-radius:20px;
+  padding:28px;box-shadow:var(--glass-shadow);
+  transition:transform .3s,box-shadow .3s;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.12)}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.feature-card{text-align:center;padding:32px 24px}
+.feature-icon{
+  width:56px;height:56px;border-radius:16px;margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--tag-bg);
+}
+.feature-icon svg{width:28px;height:28px;color:var(--accent)}
+.feature-card h3{font-size:17px;margin:0 0 8px}
+.feature-card p{font-size:14px;color:var(--text2);margin:0}
+
+/* 标签 */
+.tag{
+  display:inline-block;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:600;
+  background:var(--tag-bg);color:var(--tag-text);
+}
+.tag-green{background:rgba(52,199,89,.1);color:#34c759}
+.tag-orange{background:rgba(255,159,10,.1);color:#ff9f0a}
+.tag-red{background:rgba(255,69,58,.1);color:#ff453a}
+
+/* 表格 */
+.table-wrap{overflow-x:auto;border-radius:16px;margin:16px 0}
+table{
+  width:100%;border-collapse:collapse;
+  background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);font-size:14px;
+}
+th{
+  background:var(--badge-bg);text-align:left;padding:12px 16px;font-weight:600;
+  border-bottom:1px solid var(--divider);white-space:nowrap;
+}
+td{padding:10px 16px;border-bottom:1px solid var(--divider)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--table-hover)}
+a.dl{color:var(--accent);text-decoration:none;font-weight:500;transition:color .2s}
+a.dl:hover{text-decoration:underline}
+
+/* 代码块 */
+.codeblock{position:relative;margin:16px 0;border-radius:14px;overflow:hidden;border:1px solid var(--code-border)}
+.codeblock pre{
+  background:var(--code-bg);color:var(--code-text);
+  padding:20px;padding-top:12px;overflow-x:auto;font-size:13px;line-height:1.65;
+  font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  margin:0;white-space:pre;
+}
+.codeblock .code-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:6px 14px;background:rgba(0,0,0,.15);font-size:12px;color:#a1a1a6;
+}
+.codeblock .code-lang{font-weight:600}
+.copy-btn{
+  display:inline-flex;align-items:center;gap:5px;padding:4px 12px;
+  border:1px solid rgba(255,255,255,.15);border-radius:8px;
+  background:rgba(255,255,255,.06);color:#a1a1a6;font-size:12px;
+  cursor:pointer;transition:all .25s;
+}
+.copy-btn:hover{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)}
+.copy-btn:active{transform:scale(.95)}
+.copy-btn.copied{background:rgba(52,199,89,.2);color:#34c759;border-color:rgba(52,199,89,.3)}
+.copy-btn svg{width:14px;height:14px}
+
+/* 步骤 */
+.step{display:flex;gap:16px;margin:24px 0}
+.step-num{
+  flex-shrink:0;width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--tag-bg);color:var(--step-num);
+  font-weight:700;font-size:15px;
+}
+.step-body{flex:1;min-width:0}
+.step-body p{margin:4px 0}
+.step-body strong{color:var(--text)}
+
+/* 注意框 */
+.tip{
+  border-radius:14px;padding:18px 20px;margin:16px 0;font-size:14px;
+  border-left:4px solid;display:flex;gap:10px;align-items:flex-start;
+}
+.tip-info{background:rgba(0,113,227,.06);border-color:var(--accent)}
+.tip-warn{background:rgba(255,159,10,.06);border-color:#ff9f0a}
+.tip-success{background:rgba(52,199,89,.06);border-color:#34c759}
+.tip svg{width:18px;height:18px;flex-shrink:0;margin-top:2px}
+.tip-info svg{color:var(--accent)}
+.tip-warn svg{color:#ff9f0a}
+.tip-success svg{color:#34c759}
+
+/* FAQ */
+.faq-item{border-bottom:1px solid var(--divider);overflow:hidden}
+.faq-q{
+  width:100%;background:none;border:none;text-align:left;
+  padding:18px 20px;font-size:15px;font-weight:600;color:var(--text);
+  cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  transition:background .2s;
+}
+.faq-q:hover{background:var(--table-hover)}
+.faq-q svg{width:18px;height:18px;color:var(--text3);transition:transform .3s;flex-shrink:0}
+.faq-item.open .faq-q svg{transform:rotate(180deg)}
+.faq-a{padding:0 20px 18px;font-size:14px;color:var(--text2);display:none;line-height:1.7}
+.faq-item.open .faq-a{display:block}
+
+/* 选项卡 */
+.tabs{display:flex;gap:4px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{
+  padding:8px 18px;border-radius:10px;font-size:14px;font-weight:600;
+  border:none;background:var(--badge-bg);color:var(--text2);
+  cursor:pointer;transition:all .25s;white-space:nowrap;flex-shrink:0;
+}
+.tab-btn:hover{color:var(--text);background:var(--glass-bg)}
+.tab-btn.active{background:var(--accent);color:#fff;box-shadow:0 2px 10px rgba(0,113,227,.25)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* 回到顶部 */
+.back-top{
+  position:fixed;bottom:28px;right:28px;width:44px;height:44px;
+  border-radius:14px;border:1px solid var(--glass-border);
+  background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:90;opacity:0;transform:translateY(16px);
+  transition:all .35s;box-shadow:var(--glass-shadow);
+}
+.back-top.show{opacity:1;transform:translateY(0)}
+.back-top:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.back-top:active{transform:translateY(0) scale(.92)}
+.back-top svg{width:20px;height:20px;color:var(--accent)}
+
+/* 页脚 */
+footer{
+  text-align:center;padding:40px 20px;font-size:13px;color:var(--text3);
+  border-top:1px solid var(--divider);margin-top:60px;
+}
+footer a{color:var(--text2);text-decoration:none;transition:color .2s}
+footer a:hover{color:var(--accent)}
+
+/* 响应式 */
+@media(max-width:640px){
+  .hero{padding:40px 0 32px}
+  .hero p{font-size:15px}
+  .card{padding:20px;border-radius:16px}
+  .card-grid{grid-template-columns:1fr}
+  .step{gap:12px}
+  .step-num{width:30px;height:30px;font-size:13px;border-radius:8px}
+  section{margin-top:40px}
+  .btn{padding:10px 20px;font-size:14px}
+  h2{font-size:22px}
+  .tip{padding:14px 16px;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-inner">
+    <span class="nav-brand">Tor 0.4.9.11</span>
+    <div class="nav-links">
+      <a href="#features">特性</a>
+      <a href="#download">下载</a>
+      <a href="#linux">Linux</a>
+      <a href="#openwrt">OpenWrt</a>
+      <a href="#windows">Windows</a>
+      <a href="#config">配置</a>
+      <a href="#countries">国家</a>
+      <a href="#examples">示例</a>
+      <a href="#faq">常见问题</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+<!-- ==================== Hero ==================== -->
+<div class="hero">
+  <h1>Tor 0.4.9.11 <span class="hl">静态编译版</span></h1>
+  <p>完全静态链接，无任何动态库依赖，直接解压运行。支持 SOCKS5 用户名指定出口国家。</p>
+  <div class="hero-badges">
+    <span class="badge"><span class="dot"></span>静态编译</span>
+    <span class="badge">OpenSSL 3.0.15</span>
+    <span class="badge">14 个平台</span>
+    <span class="badge">musl libc</span>
+  </div>
+  <div class="btn-group">
+    <a href="https://github.com/lmq8267/tor-0.4.9.11/releases/tag/2026-07-20" class="btn btn-primary" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      前往 GitHub 下载
+    </a>
+    <a href="#config" class="btn btn-secondary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      查看完整配置
+    </a>
+  </div>
+</div>
+
+<!-- ==================== 特性 ==================== -->
+<section id="features">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    功能特性
+  </h2>
+  <div class="card-grid">
+    <div class="card feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>完全静态编译</h3>
+      <p>使用 musl libc 静态链接，无任何动态库依赖，解压即用</p>
+    </div>
+    <div class="card feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3>按国家出口</h3>
+      <p>SocksExitByUser 功能：通过 SOCKS5 用户名指定出口国家</p>
+    </div>
+    <div class="card feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+      </div>
+      <h3>多平台支持</h3>
+      <p>支持 Linux、macOS、Windows、OpenWrt 等 14 个平台架构</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 下载 ==================== -->
+<section id="download">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    下载与平台选择
+  </h2>
+  <p>根据你的设备架构选择对应的压缩包下载。每个包包含 <code>tor</code>、<code>tor-resolve</code>、<code>tor-gencert</code>、<code>tor-print-ed-signing-cert</code> 四个程序，以及 <code>geoip</code>、<code>geoip6</code>、<code>torrc.sample</code> 配置文件。</p>
+
+  <div class="tip tip-info">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <span>不确定架构？在 Linux/OpenWrt 上执行 <code>uname -m</code> 查看 CPU 架构。Windows x64 系统选 x86_64-pc-windows，32 位选 i686-pc-windows。</span>
+  </div>
+
+  <h3>Linux / macOS</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>文件名</th><th>架构</th><th>适用设备</th><th>下载</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>tor-x86_64-linux-musl.tar.gz</code></td>
+          <td>x86_64</td><td>64 位 PC / 服务器</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-x86_64-linux-musl.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-i686-linux-musl.tar.gz</code></td>
+          <td>i686</td><td>32 位 PC</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-i686-linux-musl.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-aarch64-linux-musl.tar.gz</code></td>
+          <td>aarch64</td><td>ARM64（树莓派 4、手机、新路由器）</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-aarch64-linux-musl.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-armv7-linux-musleabihf.tar.gz</code></td>
+          <td>armv7 硬浮点</td><td>树莓派 2/3、多数 ARM 路由器</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-armv7-linux-musleabihf.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-armv7-linux-musleabi.tar.gz</code></td>
+          <td>armv7 软浮点</td><td>ARMv7 软浮点设备</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-armv7-linux-musleabi.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-arm-linux-musleabihf.tar.gz</code></td>
+          <td>ARM 硬浮点</td><td>ARM 旧设备</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-arm-linux-musleabihf.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-arm-linux-musleabi.tar.gz</code></td>
+          <td>ARM 软浮点</td><td>ARM 旧设备</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-arm-linux-musleabi.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-mipsel-linux-musl.tar.gz</code></td>
+          <td>MIPS 小端</td><td>MIPSEL 路由器（MT7620/MT7621 等）</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-mipsel-linux-musl.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-mips-linux-musl.tar.gz</code></td>
+          <td>MIPS 大端</td><td>MIPS 路由器</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-mips-linux-musl.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-mips64-linux-musl.tar.gz</code></td>
+          <td>MIPS64</td><td>64 位 MIPS 设备</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-mips64-linux-musl.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-s390x-linux-musl.tar.gz</code></td>
+          <td>s390x</td><td>IBM 大型机</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-s390x-linux-musl.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-apple-darwin.tar.gz</code></td>
+          <td>Universal</td><td>macOS（Intel + Apple Silicon）</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-apple-darwin.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Windows</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>文件名</th><th>架构</th><th>适用设备</th><th>下载</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>tor-x86_64-pc-windows.tar.gz</code></td>
+          <td>x86_64</td><td>Windows 64 位</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-x86_64-pc-windows.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+        <tr>
+          <td><code>tor-i686-pc-windows.tar.gz</code></td>
+          <td>i686</td><td>Windows 32 位</td>
+          <td><a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-i686-pc-windows.tar.gz" target="_blank" rel="noopener">下载</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>全平台汇总</h3>
+  <p>也可直接下载包含所有平台的汇总压缩包：</p>
+  <p>
+    <a class="dl" href="https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-all-platforms.zip" target="_blank" rel="noopener">
+      <code>tor-all-platforms.zip</code> — 全部 14 个平台汇总
+    </a>
+  </p>
+</section>
+
+<!-- ==================== Linux 教程 ==================== -->
+<section id="linux">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    Linux 运行教程
+  </h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <p><strong>查看架构并下载</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 查看架构
+uname -m
+
+# 根据输出选择对应的包下载（以 x86_64 为例）
+curl -fLkO https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-x86_64-linux-musl.tar.gz
+mkdir -p tor-bin &amp;&amp; cd tor-bin
+tar -xzf ../tor-x86_64-linux-musl.tar.gz
+ls -l</code></pre>
+      </div>
+      <div class="tip tip-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span>如果无法访问 GitHub，可在其他设备下载后通过 <code>scp</code> 传输到目标机器。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <p><strong>生成控制端口密码哈希</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>cd tor-bin
+chmod +x tor
+
+# 替换为你自己的密码，这里只是示例
+./tor --hash-password "my_secret_password"
+# 输出类似：16:ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890
+# 将此哈希值记录下来，填入下方 torrc 的 HashedControlPassword 一行</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <p><strong>创建配置文件</strong></p>
+      <p>将下方「完整配置」中的 torrc 内容复制保存为 <code>torrc</code> 文件，替换 <code>HashedControlPassword</code> 为上一步生成的哈希值。</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 精简快速启动（常用国家，适合日常使用）
+cat &gt; torrc &lt;&lt;'EOF'
+SocksPort 9050
+ControlPort 9051
+HashedControlPassword 替换为你的哈希值
+
+SocksExitByUser 1
+SocksExitUserMap "us={us}"
+SocksExitUserMap "de={de}"
+SocksExitUserMap "jp={jp}"
+SocksExitUserMap "sg={sg}"
+SocksExitUserMap "gb={gb}"
+SocksExitUserMap "fr={fr}"
+SocksExitUserMap "kr={kr}"
+SocksExitUserMap "nl={nl}"
+SocksExitUserMap "au={au}"
+SocksExitUserMap "ca={ca}"
+SocksExitUserMap "hk={hk}"
+SocksExitUserMap "tw={tw}"
+SocksExitUserMap "ru={ru}"
+SocksExitUserMap "in={in}"
+SocksExitUserMap "br={br}"
+
+DataDirectory ./data
+GeoIPFile ./geoip
+GeoIPv6File ./geoip6
+Log notice stdout
+EOF</code></pre>
+      </div>
+      <div class="tip tip-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span>如需全部国家出口映射，请复制页面下方「完整配置」或「全量国家映射」中的内容。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <p><strong>启动 Tor</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 创建数据目录并启动
+mkdir -p data
+./tor -f ./torrc
+
+# 后台运行（daemon 模式）
+./tor -f ./torrc --RunAsDaemon 1</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <p><strong>验证是否正常工作</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 通过美国出口访问
+curl --socks5-hostname -u "us:my_secret_password" 127.0.0.1:9050 https://check.torproject.org/api/ip
+
+# 通过日本出口访问
+curl --socks5-hostname -u "jp:my_secret_password" 127.0.0.1:9050 https://myip.ipip.net
+
+# 通过德国出口访问
+curl --socks5-hostname -u "de:my_secret_password" 127.0.0.1:9050 https://myip.ipip.net</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>可选：systemd 开机自启</h3>
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+    <pre><code># 复制程序到系统目录
+sudo cp tor /usr/local/bin/
+sudo cp geoip geoip6 /etc/tor/
+sudo cp torrc /etc/tor/torrc
+
+# 创建 systemd 服务文件
+sudo tee /etc/systemd/system/tor.service &gt;/dev/null &lt;&lt;'EOF'
+[Unit]
+Description=Tor Proxy Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/tor -f /etc/tor/torrc
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# 启动并设置开机自启
+sudo systemctl daemon-reload
+sudo systemctl enable --now tor
+sudo systemctl status tor</code></pre>
+  </div>
+</section>
+
+<!-- ==================== OpenWrt 教程 ==================== -->
+<section id="openwrt">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+    OpenWrt 运行教程
+  </h2>
+
+  <div class="tip tip-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span>OpenWrt 使用 BusyBox ash shell，不支持 bash 特性。本教程中的命令均兼容 ash。建议使用 <code>sh</code> 或 <code>ash</code> 执行脚本，不要用 <code>bash</code>。</span>
+  </div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <p><strong>确认路由器架构</strong></p>
+      <p>通过 SSH 登录 OpenWrt 路由器后执行：</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">ash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>uname -m</code></pre>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>uname -m 输出</th><th>对应下载包</th><th>常见设备</th></tr></thead>
+          <tbody>
+            <tr><td><code>mips</code> 或 <code>mipsel</code></td><td>tor-mipsel-linux-musl</td><td>MT7620/MT7621 路由器</td></tr>
+            <tr><td><code>armv7l</code></td><td>tor-armv7-linux-musleabihf</td><td>树莓派、多数 ARM 路由器</td></tr>
+            <tr><td><code>aarch64</code></td><td>tor-aarch64-linux-musl</td><td>新款 ARM64 路由器</td></tr>
+            <tr><td><code>x86_64</code></td><td>tor-x86_64-linux-musl</td><td>x86 软路由</td></tr>
+            <tr><td><code>armv5l</code> / <code>armv6l</code></td><td>tor-arm-linux-musleabihf</td><td>旧款 ARM 路由器</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <p><strong>上传程序到路由器</strong></p>
+      <p>在电脑上先下载对应包并解压，然后将 <code>tor</code> 程序上传到路由器：</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">bash（电脑端操作）</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 在电脑上解压后找到 tor 二进制文件
+tar -xzf tor-mipsel-linux-musl.tar.gz
+
+# 通过 scp 上传到路由器（替换为你的路由器 IP 和密码）
+scp tor root@192.168.1.1:/tmp/
+
+# 也可以在路由器上直接用 wget 下载（如果路由器能访问 GitHub）
+ssh root@192.168.1.1 "wget -O /tmp/tor https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-mipsel-linux-musl/tor"</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <p><strong>在路由器上配置并启动</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">ash（路由器端操作）</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># === 在路由器上通过 SSH 执行 ===
+
+# 1. 创建 Tor 目录
+mkdir -p /etc/tor/data
+
+# 2. 移动程序到系统目录
+cp /tmp/tor /usr/bin/tor
+chmod 755 /usr/bin/tor
+
+# 3. 下载 GeoIP 数据文件（如路由器能访问 GitHub）
+# 如果无法访问，可从电脑端 scp 上传
+wget -O /etc/tor/geoip https://raw.githubusercontent.com/lmq8267/tor-0.4.9.11/master/src/config/geoip 2&gt;/dev/null || echo "请从电脑上传 geoip 文件"
+wget -O /etc/tor/geoip6 https://raw.githubusercontent.com/lmq8267/tor-0.4.9.11/master/src/config/geoip6 2&gt;/dev/null || echo "请从电脑上传 geoip6 文件"</code></pre>
+      </div>
+
+      <p>然后生成密码哈希并创建配置文件：</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">ash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 4. 生成密码哈希
+/usr/bin/tor --hash-password "my_secret_password"
+# 记录输出的哈希值，填入下方 torrc
+
+# 5. 创建配置文件（监听 127.0.0.1 仅本机可用）
+cat &gt; /etc/tor/torrc &lt;&lt;'EOF'
+SocksPort 9050
+ControlPort 9051
+HashedControlPassword 替换为你的哈希值
+
+SocksExitByUser 1
+SocksExitUserMap "us={us}"
+SocksExitUserMap "de={de}"
+SocksExitUserMap "jp={jp}"
+SocksExitUserMap "sg={sg}"
+SocksExitUserMap "gb={gb}"
+SocksExitUserMap "fr={fr}"
+SocksExitUserMap "kr={kr}"
+SocksExitUserMap "nl={nl}"
+SocksExitUserMap "au={au}"
+SocksExitUserMap "ca={ca}"
+SocksExitUserMap "hk={hk}"
+SocksExitUserMap "tw={tw}"
+SocksExitUserMap "ru={ru}"
+SocksExitUserMap "in={in}"
+SocksExitUserMap "br={br}"
+
+DataDirectory /etc/tor/data
+GeoIPFile /etc/tor/geoip
+GeoIPv6File /etc/tor/geoip6
+Log notice stdout
+EOF
+
+# 6. 启动 Tor（前台测试）
+tor -f /etc/tor/torrc
+
+# 7. 或后台运行
+tor -f /etc/tor/torrc --RunAsDaemon 1
+
+# 8. 停止后台 Tor
+killall tor</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <p><strong>如需对外提供服务（其他设备连接）</strong></p>
+      <p>将 SocksPort 改为监听所有地址，并开放防火墙端口：</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">ash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 修改 SocksPort 为外部可访问
+sed -i 's/SocksPort 9050/SocksPort 0.0.0.0:9050/' /etc/tor/torrc
+
+# 开放防火墙端口（OpenWrt 标准命令）
+uci add firewall rule
+uci set firewall.@rule[-1].name='allow-tor'
+uci set firewall.@rule[-1].src='lan'
+uci set firewall.@rule[-1].dest_port='9050'
+uci set firewall.@rule[-1].proto='tcp'
+uci set firewall.@rule[-1].target='ACCEPT'
+uci commit firewall
+/etc/init.d/firewall restart</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>可选：开机自启动（procd 服务）</h3>
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">ash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+    <pre><code># 创建 procd 服务脚本
+cat &gt; /etc/init.d/tor &lt;&lt;'INITEOF'
+#!/bin/sh /etc/rc.common
+
+START=99
+STOP=10
+
+USE_PROCD=1
+
+start_service() {
+    procd_open_instance
+    procd_set_param command /usr/bin/tor -f /etc/tor/torrc
+    procd_set_param respawn 3600 5 5
+    procd_set_param stdout 1
+    procd_set_param stderr 1
+    procd_close_instance
+}
+# 注意：不要自定义 stop_service() 去 killall tor，
+# 那样会提前杀掉 procd 自身管理的进程、干扰停止流程。
+# procd 会自动停止它启动的 Tor 实例。
+INITEOF
+
+chmod 755 /etc/init.d/tor
+
+# 启动服务
+/etc/init.d/tor start
+
+# 设置开机自启
+/etc/init.d/tor enable
+
+# 管理服务
+/etc/init.d/tor stop
+/etc/init.d/tor restart
+/etc/init.d/tor status</code></pre>
+  </div>
+
+  <h3>可选：配合第三方客户端（OpenClash / PassWall / SSR-Plus 等）</h3>
+  <p>如果路由器已安装 OpenClash 等代理工具，可将 Tor 作为上游代理使用，或将 Tor 的 SocksPort 填入相应客户端的节点配置中。Tor 监听 <code>127.0.0.1:9050</code> 时，客户端填入 <code>SOCKS5://127.0.0.1:9050</code> 即可。</p>
+</section>
+
+<!-- ==================== Windows 教程 ==================== -->
+<section id="windows">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+    Windows 运行教程
+  </h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <p><strong>下载并解压</strong></p>
+      <p>打开 PowerShell（管理员），下载并解压对应版本：</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 创建 Tor 目录
+New-Item -ItemType Directory -Path C:\tor -Force
+cd C:\tor
+
+# 下载（x64 系统）
+Invoke-WebRequest -Uri "https://github.com/lmq8267/tor-0.4.9.11/releases/download/2026-07-20/tor-x86_64-pc-windows.tar.gz" -OutFile tor.tar.gz
+
+# 解压（Windows 10 1803+ 自带 tar）
+tar -xzf tor.tar.gz
+Remove-Item tor.tar.gz
+
+# 查看解压后的文件
+dir</code></pre>
+      </div>
+      <div class="tip tip-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span>如果 <code>tar</code> 命令不可用，也可以使用 7-Zip 解压 .tar.gz 文件。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <p><strong>生成密码哈希</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>cd C:\tor
+.\tor.exe --hash-password "my_secret_password"
+# 记录输出的哈希值</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <p><strong>创建配置文件</strong></p>
+      <p>复制下方「完整配置」内容，保存为 <code>C:\tor\torrc</code>。也可以用 PowerShell 直接创建：</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>@'
+SocksPort 9050
+ControlPort 9051
+HashedControlPassword 替换为你的哈希值
+
+SocksExitByUser 1
+SocksExitUserMap "us={us}"
+SocksExitUserMap "de={de}"
+SocksExitUserMap "jp={jp}"
+SocksExitUserMap "sg={sg}"
+SocksExitUserMap "gb={gb}"
+SocksExitUserMap "fr={fr}"
+SocksExitUserMap "kr={kr}"
+SocksExitUserMap "nl={nl}"
+SocksExitUserMap "au={au}"
+SocksExitUserMap "ca={ca}"
+SocksExitUserMap "hk={hk}"
+SocksExitUserMap "tw={tw}"
+SocksExitUserMap "ru={ru}"
+SocksExitUserMap "in={in}"
+SocksExitUserMap "br={br}"
+
+DataDirectory .\data
+GeoIPFile .\geoip
+GeoIPv6File .\geoip6
+Log notice stdout
+'@ | Set-Content -Path torrc -Encoding UTF8</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-body">
+      <p><strong>启动 Tor</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>cd C:\tor
+New-Item -ItemType Directory -Path data -Force
+
+# 前台启动
+.\tor.exe -f .\torrc
+
+# 后台运行（启动后关闭窗口即可）
+Start-Process -FilePath .\tor.exe -ArgumentList "-f",".\torrc","--RunAsDaemon","1" -WindowStyle Hidden</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-body">
+      <p><strong>验证</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 通过美国出口验证
+curl --socks5-hostname -u "us:my_secret_password" 127.0.0.1:9050 https://check.torproject.org/api/ip</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <h3>可选：安装为 Windows 服务</h3>
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">PowerShell（管理员）</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+    <pre><code>cd C:\tor
+
+# 安装为 Windows 服务（开机自动启动）
+.\tor.exe --service install --options "-f C:\tor\torrc"
+
+# 启动服务
+.\tor.exe --service start
+
+# 停止服务
+.\tor.exe --service stop
+
+# 移除服务
+.\tor.exe --service remove</code></pre>
+  </div>
+</section>
+
+<!-- ==================== 完整配置 ==================== -->
+<section id="config">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    完整配置文件（一键复制）
+  </h2>
+
+  <p>以下是一份包含 <strong>全部国家出口映射</strong> 的完整 torrc 配置文件。适用于 Linux / OpenWrt / Windows 通用。复制后替换 <code>HashedControlPassword</code> 为你的密码哈希值，并根据运行平台调整 <code>DataDirectory</code>、<code>GeoIPFile</code>、<code>GeoIPv6File</code> 的路径。</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(event,'tab-full')">完整版（全部国家）</button>
+    <button class="tab-btn" onclick="switchTab(event,'tab-lite')">精简版（15 常用国家）</button>
+  </div>
+
+  <div id="tab-full" class="tab-content active">
+    <div class="codeblock">
+      <div class="code-header"><span class="code-lang">torrc - 完整版（含全部国家出口映射）</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+      <pre><code># ============================================================
+# Tor 0.4.9.11 完整配置（中文注释版）
+# 含全部国家 SOCKS5 用户名出口映射
+# 适用于 Linux / OpenWrt / Windows 通用
+# ============================================================
+
+# ---------- 基本代理 ----------
+SocksPort 9050
+# 若需对外提供服务，改为：SocksPort 0.0.0.0:9050
+
+# ---------- 数据目录 ----------
+DataDirectory ./data
+# OpenWrt 路径示例：DataDirectory /etc/tor/data
+# Windows 路径示例：DataDirectory .\data
+
+GeoIPFile ./geoip
+GeoIPv6File ./geoip6
+
+# ---------- 日志 ----------
+Log notice stdout
+# 或写文件：Log notice file ./data/notices.log
+
+# ---------- 控制端口 ----------
+ControlPort 9051
+# 替换为 --hash-password 生成的哈希值
+HashedControlPassword 替换为你的哈希值
+
+# ============================================================
+#  ★ 按 SOCKS5 用户名指定出口国家 ★
+#  格式：SocksExitUserMap "用户名={国家代码}"
+#  用户名 = SOCKS5 认证时传入的用户名（任意字符串）
+#  国家代码 = ISO 3166-1 alpha-2 小写两字母
+#  一个用户名可映射多个国家，如 "global={us,de,jp}"
+# ============================================================
+SocksExitByUser 1
+
+# ---- 亚洲 ----
+SocksExitUserMap "cn={cn}"
+SocksExitUserMap "jp={jp}"
+SocksExitUserMap "kr={kr}"
+SocksExitUserMap "hk={hk}"
+SocksExitUserMap "tw={tw}"
+SocksExitUserMap "mo={mo}"
+SocksExitUserMap "sg={sg}"
+SocksExitUserMap "my={my}"
+SocksExitUserMap "th={th}"
+SocksExitUserMap "vn={vn}"
+SocksExitUserMap "ph={ph}"
+SocksExitUserMap "id={id}"
+SocksExitUserMap "kh={kh}"
+SocksExitUserMap "la={la}"
+SocksExitUserMap "mm={mm}"
+SocksExitUserMap "bn={bn}"
+SocksExitUserMap "in={in}"
+SocksExitUserMap "pk={pk}"
+SocksExitUserMap "bd={bd}"
+SocksExitUserMap "lk={lk}"
+SocksExitUserMap "np={np}"
+SocksExitUserMap "bt={bt}"
+SocksExitUserMap "mn={mn}"
+SocksExitUserMap "kz={kz}"
+SocksExitUserMap "uz={uz}"
+
+# ---- 欧洲 ----
+SocksExitUserMap "de={de}"
+SocksExitUserMap "fr={fr}"
+SocksExitUserMap "gb={gb}"
+SocksExitUserMap "nl={nl}"
+SocksExitUserMap "se={se}"
+SocksExitUserMap "no={no}"
+SocksExitUserMap "dk={dk}"
+SocksExitUserMap "fi={fi}"
+SocksExitUserMap "ch={ch}"
+SocksExitUserMap "at={at}"
+SocksExitUserMap "it={it}"
+SocksExitUserMap "es={es}"
+SocksExitUserMap "pt={pt}"
+SocksExitUserMap "be={be}"
+SocksExitUserMap "ie={ie}"
+SocksExitUserMap "is={is}"
+SocksExitUserMap "lu={lu}"
+SocksExitUserMap "pl={pl}"
+SocksExitUserMap "cz={cz}"
+SocksExitUserMap "hu={hu}"
+SocksExitUserMap "ro={ro}"
+SocksExitUserMap "bg={bg}"
+SocksExitUserMap "gr={gr}"
+SocksExitUserMap "cy={cy}"
+SocksExitUserMap "mt={mt}"
+SocksExitUserMap "si={si}"
+SocksExitUserMap "hr={hr}"
+SocksExitUserMap "sk={sk}"
+SocksExitUserMap "lt={lt}"
+SocksExitUserMap "lv={lv}"
+SocksExitUserMap "ee={ee}"
+SocksExitUserMap "rs={rs}"
+SocksExitUserMap "ua={ua}"
+SocksExitUserMap "ru={ru}"
+SocksExitUserMap "by={by}"
+SocksExitUserMap "md={md}"
+SocksExitUserMap "tr={tr}"
+
+# ---- 北美 ----
+SocksExitUserMap "us={us}"
+SocksExitUserMap "ca={ca}"
+SocksExitUserMap "mx={mx}"
+
+# ---- 南美 ----
+SocksExitUserMap "br={br}"
+SocksExitUserMap "ar={ar}"
+SocksExitUserMap "cl={cl}"
+SocksExitUserMap "co={co}"
+SocksExitUserMap "pe={pe}"
+SocksExitUserMap "ve={ve}"
+SocksExitUserMap "uy={uy}"
+SocksExitUserMap "ec={ec}"
+SocksExitUserMap "bo={bo}"
+SocksExitUserMap "py={py}"
+SocksExitUserMap "pa={pa}"
+SocksExitUserMap "cr={cr}"
+SocksExitUserMap "cu={cu}"
+SocksExitUserMap "do={do}"
+SocksExitUserMap "pr={pr}"
+
+# ---- 大洋洲 ----
+SocksExitUserMap "au={au}"
+SocksExitUserMap "nz={nz}"
+SocksExitUserMap "fj={fj}"
+
+# ---- 中东 ----
+SocksExitUserMap "il={il}"
+SocksExitUserMap "sa={sa}"
+SocksExitUserMap "ae={ae}"
+SocksExitUserMap "qa={qa}"
+SocksExitUserMap "kw={kw}"
+SocksExitUserMap "om={om}"
+SocksExitUserMap "bh={bh}"
+SocksExitUserMap "jo={jo}"
+SocksExitUserMap "lb={lb}"
+SocksExitUserMap "iq={iq}"
+SocksExitUserMap "ir={ir}"
+
+# ---- 中亚/高加索 ----
+SocksExitUserMap "az={az}"
+SocksExitUserMap "am={am}"
+SocksExitUserMap "ge={ge}"
+
+# ---- 非洲 ----
+SocksExitUserMap "za={za}"
+SocksExitUserMap "ng={ng}"
+SocksExitUserMap "eg={eg}"
+SocksExitUserMap "ma={ma}"
+SocksExitUserMap "ke={ke}"
+SocksExitUserMap "gh={gh}"
+SocksExitUserMap "tz={tz}"
+SocksExitUserMap "et={et}"
+SocksExitUserMap "cm={cm}"
+SocksExitUserMap "ci={ci}"
+SocksExitUserMap "sn={sn}"
+SocksExitUserMap "cd={cd}"
+SocksExitUserMap "ug={ug}"
+SocksExitUserMap "zw={zw}"
+SocksExitUserMap "mz={mz}"
+SocksExitUserMap "dz={dz}"
+SocksExitUserMap "tn={tn}"
+SocksExitUserMap "na={na}"
+SocksExitUserMap "bw={bw}"
+SocksExitUserMap "mw={mw}"
+SocksExitUserMap "mg={mg}"
+SocksExitUserMap "rw={rw}"</code></pre>
+    </div>
+  </div>
+
+  <div id="tab-lite" class="tab-content">
+    <div class="codeblock">
+      <div class="code-header"><span class="code-lang">torrc - 精简版（15 常用国家）</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+      <pre><code># ============================================================
+# Tor 0.4.9.11 精简配置（15 常用国家）
+# ============================================================
+
+SocksPort 9050
+DataDirectory ./data
+GeoIPFile ./geoip
+GeoIPv6File ./geoip6
+Log notice stdout
+
+ControlPort 9051
+HashedControlPassword 替换为你的哈希值
+
+# ---------- 出口国家映射 ----------
+SocksExitByUser 1
+SocksExitUserMap "us={us}"
+SocksExitUserMap "de={de}"
+SocksExitUserMap "jp={jp}"
+SocksExitUserMap "sg={sg}"
+SocksExitUserMap "gb={gb}"
+SocksExitUserMap "fr={fr}"
+SocksExitUserMap "kr={kr}"
+SocksExitUserMap "nl={nl}"
+SocksExitUserMap "au={au}"
+SocksExitUserMap "ca={ca}"
+SocksExitUserMap "hk={hk}"
+SocksExitUserMap "tw={tw}"
+SocksExitUserMap "ru={ru}"
+SocksExitUserMap "in={in}"
+SocksExitUserMap "br={br}"</code></pre>
+    </div>
+  </div>
+
+  <div class="tip tip-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span><strong>重要提醒：</strong>部分国家（如中国 cn、朝鲜 kp）在 Tor 网络中没有出口节点，使用这些国家代码可能导致电路构建失败。建议不要设置 <code>StrictNodes 1</code>，否则在某些小国节点不足时会导致连接问题。</span>
+  </div>
+
+  <h3>配置项说明</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>配置项</th><th>说明</th><th>默认值</th></tr></thead>
+      <tbody>
+        <tr><td><code>SocksPort</code></td><td>SOCKS5 代理监听端口</td><td>9050</td></tr>
+        <tr><td><code>ControlPort</code></td><td>控制端口，SocksExitByUser 必须开启</td><td>无（需手动设置）</td></tr>
+        <tr><td><code>HashedControlPassword</code></td><td>控制端口密码哈希值（哈希值写这里，客户端用明文）</td><td>无</td></tr>
+        <tr><td><code>SocksExitByUser</code></td><td>启用 SOCKS5 用户名到国家出口映射（0 关闭 / 1 开启）</td><td>0</td></tr>
+        <tr><td><code>SocksExitUserMap</code></td><td>格式 <code>"用户名={国家代码}"</code>，支持一个用户映射多国</td><td>无</td></tr>
+        <tr><td><code>DataDirectory</code></td><td>数据/密钥/缓存目录</td><td>~/.tor</td></tr>
+        <tr><td><code>GeoIPFile</code></td><td>IPv4 国家数据库文件路径</td><td>编译时内置</td></tr>
+        <tr><td><code>GeoIPv6File</code></td><td>IPv6 国家数据库文件路径</td><td>编译时内置</td></tr>
+        <tr><td><code>Log</code></td><td>日志输出目标，支持 <code>stdout</code> 或 <code>file 路径</code></td><td>无</td></tr>
+        <tr><td><code>RunAsDaemon</code></td><td>后台运行（命令行参数，不能写在 torrc 中）</td><td>0</td></tr>
+        <tr><td><code>StrictNodes</code></td><td>严格遵守节点选择（建议不设置或设为 0）</td><td>0</td></tr>
+        <tr><td><code>BandwidthRate</code></td><td>平均带宽限制，格式 <code>NKB</code>/<code>NMB</code>/<code>NGB</code></td><td>无限制</td></tr>
+        <tr><td><code>BandwidthBurst</code></td><td>突发带宽限制</td><td>无限制</td></tr>
+        <tr><td><code>HTTPSProxy</code></td><td>上游 HTTP 代理，格式 <code>host:port</code>（需外网代理时使用）</td><td>无</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== 出口国家映射 ==================== -->
+<section id="countries">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    出口国家映射一览
+  </h2>
+
+  <p>以下表格列出所有支持的国家代码与对应的 SocksExitUserMap 配置行。你可以根据需要选择部分国家复制到 torrc 中。</p>
+
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">全部 SocksExitUserMap 条目（一键复制）</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制全部条目</button></div>
+    <pre><code>SocksExitUserMap "cn={cn}"
+SocksExitUserMap "jp={jp}"
+SocksExitUserMap "kr={kr}"
+SocksExitUserMap "hk={hk}"
+SocksExitUserMap "tw={tw}"
+SocksExitUserMap "mo={mo}"
+SocksExitUserMap "sg={sg}"
+SocksExitUserMap "my={my}"
+SocksExitUserMap "th={th}"
+SocksExitUserMap "vn={vn}"
+SocksExitUserMap "ph={ph}"
+SocksExitUserMap "id={id}"
+SocksExitUserMap "kh={kh}"
+SocksExitUserMap "la={la}"
+SocksExitUserMap "mm={mm}"
+SocksExitUserMap "bn={bn}"
+SocksExitUserMap "in={in}"
+SocksExitUserMap "pk={pk}"
+SocksExitUserMap "bd={bd}"
+SocksExitUserMap "lk={lk}"
+SocksExitUserMap "np={np}"
+SocksExitUserMap "bt={bt}"
+SocksExitUserMap "mn={mn}"
+SocksExitUserMap "kz={kz}"
+SocksExitUserMap "uz={uz}"
+SocksExitUserMap "de={de}"
+SocksExitUserMap "fr={fr}"
+SocksExitUserMap "gb={gb}"
+SocksExitUserMap "nl={nl}"
+SocksExitUserMap "se={se}"
+SocksExitUserMap "no={no}"
+SocksExitUserMap "dk={dk}"
+SocksExitUserMap "fi={fi}"
+SocksExitUserMap "ch={ch}"
+SocksExitUserMap "at={at}"
+SocksExitUserMap "it={it}"
+SocksExitUserMap "es={es}"
+SocksExitUserMap "pt={pt}"
+SocksExitUserMap "be={be}"
+SocksExitUserMap "ie={ie}"
+SocksExitUserMap "is={is}"
+SocksExitUserMap "lu={lu}"
+SocksExitUserMap "pl={pl}"
+SocksExitUserMap "cz={cz}"
+SocksExitUserMap "hu={hu}"
+SocksExitUserMap "ro={ro}"
+SocksExitUserMap "bg={bg}"
+SocksExitUserMap "gr={gr}"
+SocksExitUserMap "cy={cy}"
+SocksExitUserMap "mt={mt}"
+SocksExitUserMap "si={si}"
+SocksExitUserMap "hr={hr}"
+SocksExitUserMap "sk={sk}"
+SocksExitUserMap "lt={lt}"
+SocksExitUserMap "lv={lv}"
+SocksExitUserMap "ee={ee}"
+SocksExitUserMap "rs={rs}"
+SocksExitUserMap "ua={ua}"
+SocksExitUserMap "ru={ru}"
+SocksExitUserMap "by={by}"
+SocksExitUserMap "md={md}"
+SocksExitUserMap "tr={tr}"
+SocksExitUserMap "us={us}"
+SocksExitUserMap "ca={ca}"
+SocksExitUserMap "mx={mx}"
+SocksExitUserMap "br={br}"
+SocksExitUserMap "ar={ar}"
+SocksExitUserMap "cl={cl}"
+SocksExitUserMap "co={co}"
+SocksExitUserMap "pe={pe}"
+SocksExitUserMap "ve={ve}"
+SocksExitUserMap "uy={uy}"
+SocksExitUserMap "ec={ec}"
+SocksExitUserMap "bo={bo}"
+SocksExitUserMap "py={py}"
+SocksExitUserMap "pa={pa}"
+SocksExitUserMap "cr={cr}"
+SocksExitUserMap "cu={cu}"
+SocksExitUserMap "do={do}"
+SocksExitUserMap "pr={pr}"
+SocksExitUserMap "au={au}"
+SocksExitUserMap "nz={nz}"
+SocksExitUserMap "fj={fj}"
+SocksExitUserMap "il={il}"
+SocksExitUserMap "sa={sa}"
+SocksExitUserMap "ae={ae}"
+SocksExitUserMap "qa={qa}"
+SocksExitUserMap "kw={kw}"
+SocksExitUserMap "om={om}"
+SocksExitUserMap "bh={bh}"
+SocksExitUserMap "jo={jo}"
+SocksExitUserMap "lb={lb}"
+SocksExitUserMap "iq={iq}"
+SocksExitUserMap "ir={ir}"
+SocksExitUserMap "az={az}"
+SocksExitUserMap "am={am}"
+SocksExitUserMap "ge={ge}"
+SocksExitUserMap "za={za}"
+SocksExitUserMap "ng={ng}"
+SocksExitUserMap "eg={eg}"
+SocksExitUserMap "ma={ma}"
+SocksExitUserMap "ke={ke}"
+SocksExitUserMap "gh={gh}"
+SocksExitUserMap "tz={tz}"
+SocksExitUserMap "et={et}"
+SocksExitUserMap "cm={cm}"
+SocksExitUserMap "ci={ci}"
+SocksExitUserMap "sn={sn}"
+SocksExitUserMap "cd={cd}"
+SocksExitUserMap "ug={ug}"
+SocksExitUserMap "zw={zw}"
+SocksExitUserMap "mz={mz}"
+SocksExitUserMap "dz={dz}"
+SocksExitUserMap "tn={tn}"
+SocksExitUserMap "na={na}"
+SocksExitUserMap "bw={bw}"
+SocksExitUserMap "mw={mw}"
+SocksExitUserMap "mg={mg}"
+SocksExitUserMap "rw={rw}"</code></pre>
+  </div>
+
+  <h3>国家代码与中文名对照表</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>大洲</th><th>代码</th><th>中文名</th><th>代码</th><th>中文名</th><th>代码</th><th>中文名</th><th>代码</th><th>中文名</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="7">亚洲</td><td>cn</td><td>🇨🇳&#8201;中国</td><td>jp</td><td>🇯🇵&#8201;日本</td><td>kr</td><td>🇰🇷&#8201;韩国</td><td>hk</td><td>🇭🇰&#8201;中国香港</td></tr>
+        <tr><td>tw</td><td>🇹🇼&#8201;中国台湾</td><td>mo</td><td>🇲🇴&#8201;中国澳门</td><td>sg</td><td>🇸🇬&#8201;新加坡</td><td>my</td><td>🇲🇾&#8201;马来西亚</td></tr>
+        <tr><td>th</td><td>🇹🇭&#8201;泰国</td><td>vn</td><td>🇻🇳&#8201;越南</td><td>ph</td><td>🇵🇭&#8201;菲律宾</td><td>id</td><td>🇮🇩&#8201;印度尼西亚</td></tr>
+        <tr><td>kh</td><td>🇰🇭&#8201;柬埔寨</td><td>la</td><td>🇱🇦&#8201;老挝</td><td>mm</td><td>🇲🇲&#8201;缅甸</td><td>bn</td><td>🇧🇳&#8201;文莱</td></tr>
+        <tr><td>in</td><td>🇮🇳&#8201;印度</td><td>pk</td><td>🇵🇰&#8201;巴基斯坦</td><td>bd</td><td>🇧🇩&#8201;孟加拉国</td><td>lk</td><td>🇱🇰&#8201;斯里兰卡</td></tr>
+        <tr><td>np</td><td>🇳🇵&#8201;尼泊尔</td><td>bt</td><td>🇧🇹&#8201;不丹</td><td>mn</td><td>🇲🇳&#8201;蒙古</td><td>kz</td><td>🇰🇿&#8201;哈萨克斯坦</td></tr>
+        <tr><td>uz</td><td>🇺🇿&#8201;乌兹别克斯坦</td><td colspan="6"></td></tr>
+        <tr><td rowspan="7">欧洲</td><td>de</td><td>🇩🇪&#8201;德国</td><td>fr</td><td>🇫🇷&#8201;法国</td><td>gb</td><td>🇬🇧&#8201;英国</td><td>nl</td><td>🇳🇱&#8201;荷兰</td></tr>
+        <tr><td>se</td><td>🇸🇪&#8201;瑞典</td><td>no</td><td>🇳🇴&#8201;挪威</td><td>dk</td><td>🇩🇰&#8201;丹麦</td><td>fi</td><td>🇫🇮&#8201;芬兰</td></tr>
+        <tr><td>ch</td><td>🇨🇭&#8201;瑞士</td><td>at</td><td>🇦🇹&#8201;奥地利</td><td>it</td><td>🇮🇹&#8201;意大利</td><td>es</td><td>🇪🇸&#8201;西班牙</td></tr>
+        <tr><td>pt</td><td>🇵🇹&#8201;葡萄牙</td><td>be</td><td>🇧🇪&#8201;比利时</td><td>ie</td><td>🇮🇪&#8201;爱尔兰</td><td>is</td><td>🇮🇸&#8201;冰岛</td></tr>
+        <tr><td>lu</td><td>🇱🇺&#8201;卢森堡</td><td>pl</td><td>🇵🇱&#8201;波兰</td><td>cz</td><td>🇨🇿&#8201;捷克</td><td>hu</td><td>🇭🇺&#8201;匈牙利</td></tr>
+        <tr><td>ro</td><td>🇷🇴&#8201;罗马尼亚</td><td>bg</td><td>🇧🇬&#8201;保加利亚</td><td>gr</td><td>🇬🇷&#8201;希腊</td><td>cy</td><td>🇨🇾&#8201;塞浦路斯</td></tr>
+        <tr><td>mt</td><td>🇲🇹&#8201;马耳他</td><td>si</td><td>🇸🇮&#8201;斯洛文尼亚</td><td>hr</td><td>🇭🇷&#8201;克罗地亚</td><td>sk</td><td>🇸🇰&#8201;斯洛伐克</td></tr>
+        <tr><td>欧洲</td><td>lt</td><td>🇱🇹&#8201;立陶宛</td><td>lv</td><td>🇱🇻&#8201;拉脱维亚</td><td>ee</td><td>🇪🇪&#8201;爱沙尼亚</td><td>rs</td><td>🇷🇸&#8201;塞尔维亚</td></tr>
+        <tr><td>欧洲</td><td>ua</td><td>🇺🇦&#8201;乌克兰</td><td>ru</td><td>🇷🇺&#8201;俄罗斯</td><td>by</td><td>🇧🇾&#8201;白俄罗斯</td><td>md</td><td>🇲🇩&#8201;摩尔多瓦</td></tr>
+        <tr><td>欧洲</td><td>tr</td><td>🇹🇷&#8201;土耳其</td><td colspan="6"></td></tr>
+        <tr><td>北美</td><td>us</td><td>🇺🇸&#8201;美国</td><td>ca</td><td>🇨🇦&#8201;加拿大</td><td>mx</td><td>🇲🇽&#8201;墨西哥</td><td colspan="2"></td></tr>
+        <tr><td rowspan="4">南美</td><td>br</td><td>🇧🇷&#8201;巴西</td><td>ar</td><td>🇦🇷&#8201;阿根廷</td><td>cl</td><td>🇨🇱&#8201;智利</td><td>co</td><td>🇨🇴&#8201;哥伦比亚</td></tr>
+        <tr><td>pe</td><td>🇵🇪&#8201;秘鲁</td><td>ve</td><td>🇻🇪&#8201;委内瑞拉</td><td>uy</td><td>🇺🇾&#8201;乌拉圭</td><td>ec</td><td>🇪🇨&#8201;厄瓜多尔</td></tr>
+        <tr><td>bo</td><td>🇧🇴&#8201;玻利维亚</td><td>py</td><td>🇵🇾&#8201;巴拉圭</td><td>pa</td><td>🇵🇦&#8201;巴拿马</td><td>cr</td><td>🇨🇷&#8201;哥斯达黎加</td></tr>
+        <tr><td>cu</td><td>🇨🇺&#8201;古巴</td><td>do</td><td>🇩🇴&#8201;多米尼加</td><td>pr</td><td>🇵🇷&#8201;波多黎各</td><td colspan="2"></td></tr>
+        <tr><td>大洋洲</td><td>au</td><td>🇦🇺&#8201;澳大利亚</td><td>nz</td><td>🇳🇿&#8201;新西兰</td><td>fj</td><td>🇫🇯&#8201;斐济</td><td colspan="2"></td></tr>
+        <tr><td rowspan="3">中东</td><td>il</td><td>🇮🇱&#8201;以色列</td><td>sa</td><td>🇸🇦&#8201;沙特阿拉伯</td><td>ae</td><td>🇦🇪&#8201;阿联酋</td><td>qa</td><td>🇶🇦&#8201;卡塔尔</td></tr>
+        <tr><td>kw</td><td>🇰🇼&#8201;科威特</td><td>om</td><td>🇴🇲&#8201;阿曼</td><td>bh</td><td>🇧🇭&#8201;巴林</td><td>jo</td><td>🇯🇴&#8201;约旦</td></tr>
+        <tr><td>lb</td><td>🇱🇧&#8201;黎巴嫩</td><td>iq</td><td>🇮🇶&#8201;伊拉克</td><td>ir</td><td>🇮🇷&#8201;伊朗</td><td colspan="2"></td></tr>
+        <tr><td>高加索</td><td>az</td><td>🇦🇿&#8201;阿塞拜疆</td><td>am</td><td>🇦🇲&#8201;亚美尼亚</td><td>ge</td><td>🇬🇪&#8201;格鲁吉亚</td><td colspan="2"></td></tr>
+        <tr><td rowspan="6">非洲</td><td>za</td><td>🇿🇦&#8201;南非</td><td>ng</td><td>🇳🇬&#8201;尼日利亚</td><td>eg</td><td>🇪🇬&#8201;埃及</td><td>ma</td><td>🇲🇦&#8201;摩洛哥</td></tr>
+        <tr><td>ke</td><td>🇰🇪&#8201;肯尼亚</td><td>gh</td><td>🇬🇭&#8201;加纳</td><td>tz</td><td>🇹🇿&#8201;坦桑尼亚</td><td>et</td><td>🇪🇹&#8201;埃塞俄比亚</td></tr>
+        <tr><td>cm</td><td>🇨🇲&#8201;喀麦隆</td><td>ci</td><td>🇨🇮&#8201;科特迪瓦</td><td>sn</td><td>🇸🇳&#8201;塞内加尔</td><td>cd</td><td>🇨🇩&#8201;刚果（金）</td></tr>
+        <tr><td>ug</td><td>🇺🇬&#8201;乌干达</td><td>zw</td><td>🇿🇼&#8201;津巴布韦</td><td>mz</td><td>🇲🇿&#8201;莫桑比克</td><td>dz</td><td>🇩🇿&#8201;阿尔及利亚</td></tr>
+        <tr><td>tn</td><td>🇹🇳&#8201;突尼斯</td><td>na</td><td>🇳🇦&#8201;纳米比亚</td><td>bw</td><td>🇧🇼&#8201;博茨瓦纳</td><td>mw</td><td>🇲🇼&#8201;马拉维</td></tr>
+        <tr><td>mg</td><td>🇲🇬&#8201;马达加斯加</td><td>rw</td><td>🇷🇼&#8201;卢旺达</td><td colspan="6"></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== 客户端示例 ==================== -->
+<section id="examples">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    客户端连接示例
+  </h2>
+
+  <p>以下示例中 <code>用户名:密码</code> 即 SOCKS5 认证凭据，用户名为要使用的国家代码小写字母。</p>
+
+  <h3>curl</h3>
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+    <pre><code># 通过美国出口
+curl --socks5-hostname -u "us:my_secret_password" 127.0.0.1:9050 https://check.torproject.org/api/ip
+
+# 通过日本出口
+curl --socks5-hostname -u "jp:my_secret_password" 127.0.0.1:9050 https://myip.ipip.net
+
+# 通过德国出口
+curl --socks5-hostname -u "de:my_secret_password" 127.0.0.1:9050 https://myip.ipip.net</code></pre>
+  </div>
+
+  <h3>wget</h3>
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+    <pre><code>wget -e "https_proxy=socks5h://us:my_secret_password@127.0.0.1:9050" -O - https://myip.ipip.net</code></pre>
+  </div>
+
+  <h3>SSH 隧道</h3>
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+    <pre><code>ssh -o ProxyCommand="ncat --proxy-type socks5 --proxy 127.0.0.1:9050 --proxy-auth us:my_secret_password %h %p" user@remote-host</code></pre>
+  </div>
+
+  <h3>Python (requests)</h3>
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">python</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+    <pre><code>import requests
+
+# 通过日本出口
+proxies = {"https": "socks5h://jp:my_secret_password@127.0.0.1:9050"}
+resp = requests.get("https://myip.ipip.net", proxies=proxies)
+print(resp.text)</code></pre>
+  </div>
+
+  <h3>Go</h3>
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">go</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+    <pre><code>package main
+
+import (
+    "fmt"
+    "net/http"
+    "golang.org/x/net/proxy"
+)
+
+func main() {
+    // 通过德国出口
+    dialer, err := proxy.SOCKS5("tcp", "127.0.0.1:9050",
+        &amp;proxy.Auth{User: "de", Password: "my_secret_password"},
+        proxy.Direct,
+    )
+    if err != nil {
+        panic(err)
+    }
+    client := &amp;http.Client{Transport: &amp;http.Transport{DialContext: dialer.Dial}}
+    resp, _ := client.Get("https://myip.ipip.net")
+    defer resp.Body.Close()
+    buf := make([]byte, 4096)
+    n, _ := resp.Body.Read(buf)
+    fmt.Println(string(buf[:n]))
+}</code></pre>
+  </div>
+
+  <h3>不指定国家（随机出口）</h3>
+  <div class="codeblock">
+    <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+    <pre><code># 不带用户名认证，使用随机出口（不触发 SocksExitByUser）
+curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/api/ip</code></pre>
+  </div>
+  <div class="tip tip-info">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <span>不提供 SOCKS5 用户名认证时，SocksExitByUser 不生效，流量走随机出口。只有通过用户名认证且用户名在 SocksExitUserMap 中有映射时才会指定国家出口。</span>
+  </div>
+</section>
+
+<!-- ==================== 常见问题 ==================== -->
+<section id="faq">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    常见问题
+  </h2>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      启动后提示 "Problem bootstrapping" 怎么办？
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-a">
+      <p>检查网络连接是否正常。如果需要代理才能访问外网，在 torrc 中添加上游代理配置：</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">torrc</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>HTTPSProxy 127.0.0.1:8080</code></pre>
+      </div>
+      <p>支持 <code>HTTPSProxy</code>、<code>HTTPProxy</code>、<code>Socks4Proxy</code>、<code>Socks5Proxy</code> 等格式。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      如何验证 Tor 是否正常工作？
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-a">
+      <p>启动后等待连接完成（看到 100% bootstrapped），然后：</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code># 访问 Tor 官方验证页面
+curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/api/ip
+
+# 使用 tor-resolve 工具测试 DNS
+./tor-resolve check.torproject.org</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      SOCKS5 用户名不在 SocksExitUserMap 中会怎样？
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-a">
+      <p>连接会被 <strong>拒绝</strong>。客户端必须使用在 SocksExitUserMap 中有映射的用户名，或者不提供认证（走随机出口）。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      一个用户名可以映射多个国家吗？
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-a">
+      <p>可以。routerset 语法支持多国映射，格式为 <code>"用户名={国家1,国家2,...}"</code>，例如：</p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">torrc</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>SocksExitUserMap "asia={jp,kr,sg,hk,tw,my,th}"
+SocksExitUserMap "europe={de,fr,gb,nl}"
+SocksExitUserMap "americas={us,ca,br}"</code></pre>
+      </div>
+      <p>Tor 会在这些国家中随机选择出口节点。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      哪些国家没有 Tor 出口节点？
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-a">
+      <p>部分国家在 Tor 网络中没有或极少出口节点，使用这些国家可能导致电路构建失败或超时。常见的包括：中国大陆（cn）、朝鲜（kp）、白俄罗斯（by）、土库曼斯坦（tm）等。</p>
+      <p>建议：不要设置 <code>StrictNodes 1</code>，这样在某个国家没有可用出口节点时 Tor 可能回落到其他节点。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      HashedControlPassword 和客户端明文密码的关系？
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-a">
+      <p>torrc 中的 <code>HashedControlPassword</code> 填写的是 <code>--hash-password</code> 生成的<strong>哈希值</strong>（如 <code>16:ABCDEF...</code>），而客户端程序（curl、Python 等）填写的是<strong>明文密码</strong>。Tor 会在验证时自动比对。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-q" onclick="toggleFaq(this)">
+      Windows 上如何修改 ed25519 密钥密码？
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-a">
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>.\tor.exe --keygen
+.\tor.exe --newpass</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- 返回顶部 -->
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<footer>
+  <p>Tor 0.4.9.11 指定国家出口版运行教程</p>
+  <p>本仓库地址：<a href="https://github.com/lmq8267/tor-0.4.9.11" target="_blank" rel="noopener">github.com/lmq8267/tor-0.4.9.11</a></p>
+  <p>Tor 官网：<a href="https://www.torproject.org/zh-CN/" target="_blank" rel="noopener">torproject.org</a></p>
+</footer>
+
+<script>
+// 复制代码
+function copyCode(btn) {
+  var codeBlock = btn.closest('.codeblock');
+  var code = codeBlock.querySelector('pre code');
+  var text = code.textContent || code.innerText;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.classList.add('copied');
+    var originalHTML = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>已复制';
+    setTimeout(function() {
+      btn.classList.remove('copied');
+      btn.innerHTML = originalHTML;
+    }, 2000);
+  }).catch(function() {
+    // 降级方案
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    btn.classList.add('copied');
+    var originalHTML = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>已复制';
+    setTimeout(function() {
+      btn.classList.remove('copied');
+      btn.innerHTML = originalHTML;
+    }, 2000);
+  });
+}
+
+// 选项卡切换
+function switchTab(e, tabId) {
+  var tabs = e.target.closest('.tabs');
+  tabs.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  e.target.classList.add('active');
+  var parent = tabs.parentElement;
+  parent.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  document.getElementById(tabId).classList.add('active');
+}
+
+// FAQ 折叠
+function toggleFaq(btn) {
+  var item = btn.closest('.faq-item');
+  item.classList.toggle('open');
+}
+
+// 导航高亮
+var navLinks = document.querySelectorAll('.nav-links a');
+var sections = document.querySelectorAll('section, .hero');
+function updateNav() {
+  var scrollY = window.scrollY + 80;
+  var current = '';
+  sections.forEach(function(sec) {
+    if (sec.id && sec.offsetTop <= scrollY) {
+      current = sec.id;
+    }
+  });
+  navLinks.forEach(function(link) {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+}
+
+// 返回顶部按钮
+var backTop = document.getElementById('backTop');
+function updateBackTop() {
+  if (window.scrollY > 400) {
+    backTop.classList.add('show');
+  } else {
+    backTop.classList.remove('show');
+  }
+}
+
+// 导航阴影
+var nav = document.getElementById('nav');
+function updateNavShadow() {
+  if (window.scrollY > 10) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+}
+
+window.addEventListener('scroll', function() {
+  updateNav();
+  updateBackTop();
+  updateNavShadow();
+}, {passive: true});
+
+updateNav();
+updateBackTop();
+</script>
+
+</body>
+</html>
