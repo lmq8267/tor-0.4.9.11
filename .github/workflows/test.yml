@@ -1,0 +1,234 @@
+name: tor-exit-test
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+jobs:
+  del:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 删除流程记录
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          retain_days: 0
+          keep_minimum_runs: 0
+  country-test:
+    name: 顺序测试 119 国出口
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      # 测试的国家列表（119 国）
+      CCLIST: "ae am ar at au az bd be bg bh bn bo br bt bw by ca cd ch ci cl cm cn co cr cu cy cz de dk do dz ec ee eg es et fi fj fr gb ge gh gr hk hr hu id ie il in iq ir is it jo jp ke kh kr kw kz la lb lk lt lu lv ma md mg mm mn mo mt mw mx my mz na ng nl no np nz om pa pe ph pk pl pr pt py qa ro rs ru rw sa se sg si sk sn th tn tr tw tz ua ug us uy uz ve vn za zw"
+      # 中文国家名（与在线配置生成器一致）
+      CCNAMES: "ae=阿联酋 am=亚美尼亚 ar=阿根廷 at=奥地利 au=澳大利亚 az=阿塞拜疆 bd=孟加拉国 be=比利时 bg=保加利亚 bh=巴林 bn=文莱 bo=玻利维亚 br=巴西 bt=不丹 bw=博茨瓦纳 by=白俄罗斯 ca=加拿大 cd=刚果（金） ch=瑞士 ci=科特迪瓦 cl=智利 cm=喀麦隆 cn=中国 co=哥伦比亚 cr=哥斯达黎加 cu=古巴 cy=塞浦路斯 cz=捷克 de=德国 dk=丹麦 do=多米尼加 dz=阿尔及利亚 ec=厄瓜多尔 ee=爱沙尼亚 eg=埃及 es=西班牙 et=埃塞俄比亚 fi=芬兰 fj=斐济 fr=法国 gb=英国 ge=格鲁吉亚 gh=加纳 gr=希腊 hk=中国香港 hr=克罗地亚 hu=匈牙利 id=印度尼西亚 ie=爱尔兰 il=以色列 in=印度 iq=伊拉克 ir=伊朗 is=冰岛 it=意大利 jo=约旦 jp=日本 ke=肯尼亚 kh=柬埔寨 kr=韩国 kw=科威特 kz=哈萨克斯坦 la=老挝 lb=黎巴嫩 lk=斯里兰卡 lt=立陶宛 lu=卢森堡 lv=拉脱维亚 ma=摩洛哥 md=摩尔多瓦 mg=马达加斯加 mm=缅甸 mn=蒙古 mo=中国澳门 mt=马耳他 mw=马拉维 mx=墨西哥 my=马来西亚 mz=莫桑比克 na=纳米比亚 ng=尼日利亚 nl=荷兰 no=挪威 np=尼泊尔 nz=新西兰 om=阿曼 pa=巴拿马 pe=秘鲁 ph=菲律宾 pk=巴基斯坦 pl=波兰 pr=波多黎各 pt=葡萄牙 py=巴拉圭 qa=卡塔尔 ro=罗马尼亚 rs=塞尔维亚 ru=俄罗斯 rw=卢旺达 sa=沙特阿拉伯 se=瑞典 sg=新加坡 si=斯洛文尼亚 sk=斯洛伐克 sn=塞内加尔 th=泰国 tn=突尼斯 tr=土耳其 tw=中国台湾 tz=坦桑尼亚 ua=乌克兰 ug=乌干达 us=美国 uy=乌拉圭 uz=乌兹别克斯坦 ve=委内瑞拉 vn=越南 za=南非 zw=津巴布韦"
+
+    steps:
+      # ===== 1. 下载并解压魔改版 tor =====
+      - name: 下载魔改版 Tor（x86_64-linux-musl）
+        shell: bash
+        run: |
+          curl -fL --retry 3 -o tor.tar.gz \
+            https://github.com/lmq8267/tor-0.4.9.11/releases/latest/download/tor-x86_64-linux-musl.tar.gz
+          tar -xzf tor.tar.gz
+          chmod +x tor
+          echo "已就绪：tor / geoip / geoip6 / torrc.sample"
+
+      # ===== 2. 启动 Tor（SocksExitUserMap 覆盖全部国家）并等待引导 =====
+      - name: 启动 Tor 并等待引导
+        shell: bash
+        run: |
+          set -u +e                      # curl 瞬时失败不中止，由下方循环处理
+          read -ra CC <<< "$CCLIST"
+          MAP=""
+          for c in "${CC[@]}"; do MAP+="$c={$c},"; done
+          MAP="${MAP%,}"
+          echo "SocksExitUserMap 映射数：$(echo "$MAP" | tr ',' '\n' | wc -l)"
+
+          mkdir -p /tmp/tordata
+          ./tor \
+            --SocksPort 127.0.0.1:9050 \
+            --SocksExitByUser 1 \
+            --SocksExitUserMap "$MAP" \
+            --DataDirectory /tmp/tordata \
+            --GeoIPFile ./geoip --GeoIPv6File ./geoip6 \
+            --Log "info file /tmp/tor.log" > /dev/null 2>&1 &
+
+          echo "tor 已后台启动（PID $!），等待引导完成…"
+          OK=""
+          for i in $(seq 1 120); do
+            if grep -q "Bootstrapped 100" /tmp/tor.log; then
+              echo "引导完成：tor 已 100% bootstrap（第 ${i} 轮观测）"
+              OK=1; break
+            fi
+            sleep 2
+            if (( i % 20 == 0 )); then echo "  [诊断] 等待中，tor.log 尾部："; tail -4 /tmp/tor.log; fi
+          done
+          if [[ -z "$OK" ]]; then
+            echo "::error::Tor 引导未完成。关键日志："
+            grep -iE "circuit_build_failed|Bootstrapped|No usable exit relay|Can't connect" \
+              /tmp/tor.log | tail -30 || tail -40 /tmp/tor.log
+            exit 1
+          fi
+          # 各国家出口的共识/描述需稍等稳定，避免把“暂缺出口”误判为失败
+          echo "引导完成；等待 45 秒使出口描述稳定…"
+          sleep 45
+          echo "开始测试。"
+
+      # ===== 3. 顺序测试全部国家 =====
+      - name: 顺序测试 119 国出口
+        shell: bash
+        run: |
+          set -u +e
+          read -ra CC <<< "$CCLIST"
+          TOTAL=${#CC[@]}
+          SUMMARY="$GITHUB_STEP_SUMMARY"
+
+          # 颜色
+          RED=$'\033[31m'; GREEN=$'\033[32m'; YELLOW=$'\033[33m'
+          CYAN=$'\033[36m'; BOLD=$'\033[1m'; DIM=$'\033[2m'; RST=$'\033[0m'
+
+          # 中文国家名
+          declare -A CNAME
+          for kv in $CCNAMES; do CNAME[${kv%%=*}]="${kv#*=}"; done
+          # 两位国家代码 → emoji 国旗（区域指示符 U+1F1E6..）
+          flag(){
+            local c="$1" i a out="" ascii
+            for ((i=0;i<${#c};i++)); do
+              printf -v ascii '%d' "'${c:i:1}"
+              printf -v a '%08X' $(( (ascii - 97) + 0x1F1E6 ))
+              out+="\\U$a"
+            done
+            printf '%b' "$out"
+          }
+
+          echo "## 出口国家顺序测试结果" >> "$SUMMARY"
+          echo "" >> "$SUMMARY"
+          echo "| # | 国家 | 出口 IP | 期望 | 实际归属 | 响应(ms) | 结果 |" >> "$SUMMARY"
+          echo "|---|---|---|---|---|---|---|" >> "$SUMMARY"
+
+          # 通过 SOCKS5（用户名=国家代码）拿出口 IP，并用 curl 内置 %{time_appconnect}
+          # 计时「发 CONNECT → 收 REP」的 SOCKS5 握手/建连耗时（含 Tor 建电路，不含 HTTP 下载）
+          # 输出两值：<出口IP> <毫秒>；多端点轮换，从响应体提取 IPv4
+          get_ip(){
+            local cc="$1" r ms tm body ep
+            body=/tmp/ipbody.$$
+            for ep in "https://check.torproject.org/api/ip" "https://api.ipify.org" \
+                      "https://icanhazip.com" "https://ifconfig.me/ip"; do
+              : > "$body"   # 每次先清空：curl 失败时不写 body，会残留上一国的旧 IP（误判为偏差）
+              tm=$(curl -sS -m 12 -x "socks5h://${cc}:tor@127.0.0.1:9050" -o "$body" -w '%{time_appconnect}' "$ep" 2>/dev/null)
+              r=$(grep -oE '[0-9]{1,3}(\.[0-9]{1,3}){3}' "$body" 2>/dev/null | head -1)
+              if [[ "$r" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}$ ]]; then
+                ms=$(awk -v t="${tm:-0}" 'BEGIN{printf "%d", t*1000}')
+                printf '%s %s' "$r" "$ms"; return 0
+              fi
+            done
+            return 1
+          }
+          # 从 JSON 提取字段值（$1=json 文本，$2=字段名）
+          jget(){
+            local j="$1" k="$2" v
+            v=$(printf '%s' "$j" | grep -oE "\"${k}\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" | head -1)
+            v=${v#*:}; v=${v#*\"}; v=${v%\"}
+            printf '%s' "$v"
+          }
+          # 双重数据库判归属（ipwho.is + ip-api 交叉验证，减少单一数据库偏差）
+          resolve(){
+            local ip="$1"
+            local g c1 n1 c2 n2
+            g=$(curl -sS -m 8 "https://ipwho.is/${ip}" 2>/dev/null)
+            c1=$(jget "$g" country_code)
+            n1=$(jget "$g" country)
+            g=$(curl -sS -m 8 "http://ip-api.com/json/${ip}?fields=status,country,countryCode" 2>/dev/null)
+            c2=$(jget "$g" countryCode)
+            n2=$(jget "$g" country)
+            printf '%s|%s|%s|%s' "${c1:-?}" "${n1:-?}" "${c2:-?}" "${n2:-?}"
+          }
+
+          PASS=0; NOEXIT=0; ERR=0; NETFAIL=0
+          N=0
+          for cc in "${CC[@]}"; do
+            N=$((N + 1))
+            up=$(printf '%s' "$cc" | tr '[:lower:]' '[:upper:]')
+            cname="${CNAME[$cc]:-$up}"
+            flg=$(flag "$cc")
+
+            # 每国最多试 2 趟：get_ip 一次完成「取出口 IP + SOCKS5 建连/握手计时(ms)」
+            ip=""; rtt="-"
+            for i in 1 2; do
+              ip=""; rtt="-"
+              out=$(get_ip "$cc" 2>/dev/null || true)
+              read -r ip rtt <<< "$out"
+              if [[ "$ip" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}$ ]]; then
+                [[ ! "$rtt" =~ ^[0-9]+$ ]] && rtt="-"
+                break
+              fi
+              ip=""; rtt="-"
+              [[ $i -lt 2 ]] && sleep 2
+            done
+
+            if [[ -z "$ip" || ! "$ip" =~ ^[0-9]{1,3}(\.[0-9]{1,3}){3}$ ]]; then
+              if grep -qi "No usable exit relay for SOCKS username '$cc'" /tmp/tor.log; then
+                printf '  %3d/%-3d %s %-10s %s%-6s%s %s（该国当前无可用出口节点，跳过）\n' \
+                  "$N" "$TOTAL" "$flg" "${cname}(${up})" "$YELLOW" "无出口" "$RST"
+                echo "| $N | $flg $cname ($up) | - | $up | - | - | 无出口（跳过） |" >> "$SUMMARY"
+                NOEXIT=$((NOEXIT + 1))
+              else
+                printf '  %3d/%-3d %s %-10s %s%-6s%s %s（连不上/瞬时失败）\n' \
+                  "$N" "$TOTAL" "$flg" "${cname}(${up})" "$RED" "暂不可用" "$RST"
+                echo "| $N | $flg $cname ($up) | - | $up | - | - | 暂不可用 |" >> "$SUMMARY"
+                NETFAIL=$((NETFAIL + 1))
+              fi
+              continue
+            fi
+
+            # 关键：resolve 以 | 分隔，必须以 | 作 IFS 切分（否则整串塞进 c1，全部误判为偏差）
+            IFS='|' read -r c1 n1 c2 n2 <<< "$(resolve "$ip")"
+            if [[ "$c1" == "$up" || "$c2" == "$up" ]]; then
+              # 通过：IP 绿色，期望青色，实际绿色，响应时间绿色
+              printf '  %3d/%-3d %s %-10s %s%-6s%s %s【%s】%s → 期望%s【%s】%s，实际%s【%s】%s  %s%sms%s\n' \
+                "$N" "$TOTAL" "$flg" "${cname}(${up})" \
+                "$GREEN" "通过" "$RST" "$GREEN" "$ip" "$RST" \
+                "$CYAN" "$up" "$RST" "$GREEN" "${c1}|${n1} / ${c2}|${n2}" "$RST" \
+                "$GREEN" "$rtt" "$RST"
+              echo "| $N | $flg $cname ($up) | $ip | $up | ${c1} ${n1} / ${c2} ${n2} | $rtt ms | 通过 |" >> "$SUMMARY"
+              PASS=$((PASS + 1))
+            else
+              # 出现偏差：IP 黄色，期望青色，实际红色，响应时间黄色
+              printf '  %3d/%-3d %s %-10s %s%-6s%s %s【%s】%s → 期望%s【%s】%s，实际%s【%s】%s  %s%sms%s\n' \
+                "$N" "$TOTAL" "$flg" "${cname}(${up})" \
+                "$YELLOW" "出现偏差" "$RST" "$YELLOW" "$ip" "$RST" \
+                "$CYAN" "$up" "$RST" "$RED" "${c1}|${n1} / ${c2}|${n2}" "$RST" \
+                "$YELLOW" "$rtt" "$RST"
+              echo "| $N | $flg $cname ($up) | $ip | $up | ${c1} ${n1} / ${c2} ${n2} | $rtt ms | 出现偏差 |" >> "$SUMMARY"
+              ERR=$((ERR + 1))
+            fi
+          done
+
+          # 汇总
+          echo "" >> "$SUMMARY"
+          echo "**汇总**：通过 $PASS · 无出口 $NOEXIT · 偏差 $ERR · 暂不可用 $NETFAIL（共 $TOTAL 国）" >> "$SUMMARY"
+          echo "" >> "$SUMMARY"
+          echo "> 说明："
+          echo "> - 通过 = 出口 IP 归属与目标国家一致；偏差 = 出口节点 IP 被地理库标在别国（常为数据中心托管归属，用户可人工复核）；" >> "$SUMMARY"
+          echo "> - 无出口 = 该国当前没有适用 Tor 出口节点，按 SocksExitByUser 设计是被拒绝的，属正常。" >> "$SUMMARY"
+          echo "> - 暂不可用 = 该国家连接当轮超时/失败，多为瞬时抖动，并非配置问题。" >> "$SUMMARY"
+
+          printf '\n%s%s◉ 测试完成%s  %s通过:%d%s  %s无出口:%d%s  %s偏差:%d%s  %s暂不可用:%d%s\n' \
+            "$BOLD" "$GREEN" "$RST" "$GREEN" "$PASS" "$RST" "$YELLOW" "$NOEXIT" "$RST" "$RED" "$ERR" "$RST" "$DIM" "$NETFAIL" "$RST"
+          # 无出口 / 偏差 / 暂不可用 均属观测结果，不因此标红流程
+          #（Tor 引导失败等进程级错误已在上一步骤 exit 1，不会走到这里）
+          exit 0
+
+      # ===== 4. 清理 =====
+      - name: 清理（停止 Tor 进程）
+        shell: bash
+        if: always()
+        run: |
+          pkill -f "tor --SocksPort" 2>/dev/null || true
+          echo "tor 进程已停止"

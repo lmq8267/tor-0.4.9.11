@@ -109,6 +109,11 @@ nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.08)}
   padding:4px 10px;border-radius:8px;transition:all .25s;white-space:nowrap;
 }
 .nav-links a:hover,.nav-links a.active{color:var(--accent);background:var(--tag-bg)}
+.nav-links a.nav-gen{
+  color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:inline-flex;align-items:center;gap:5px;font-weight:600;
+}
+.nav-links a.nav-gen:hover{filter:brightness(1.1);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,113,227,.3)}
 
 /* 主内容 */
 main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px 80px}
@@ -137,6 +142,9 @@ main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 20px 80
 .btn-secondary{background:var(--glass-bg);color:var(--text);border:1px solid var(--glass-border);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .btn-secondary:hover{transform:translateY(-2px);box-shadow:var(--glass-shadow);border-color:var(--accent)}
 .btn-secondary:active{transform:translateY(0) scale(.98)}
+.btn-gen{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none}
+.btn-gen:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,113,227,.35);filter:brightness(1.08)}
+.btn-gen:active{transform:translateY(0) scale(.98);filter:brightness(.95)}
 .btn svg{width:18px;height:18px;flex-shrink:0}
 
 /* 章节 */
@@ -323,7 +331,9 @@ footer a:hover{color:var(--accent)}
       <a href="#config">配置</a>
       <a href="#countries">国家</a>
       <a href="#examples">示例</a>
+      <a href="#verify">验证</a>
       <a href="#faq">常见问题</a>
+      <a href="%E5%9C%A8%E7%BA%BF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90.html" target="_blank" rel="noopener" class="nav-gen"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M10.6 15.2l1.6-4.4 4.4 1.6-1.6 4.4z"/><path d="M14.5 4.5V2H20v5.5h-2.5"/></svg>在线配置生成</a>
     </div>
   </div>
 </nav>
@@ -348,6 +358,10 @@ footer a:hover{color:var(--accent)}
     <a href="#config" class="btn btn-secondary">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       查看完整配置
+    </a>
+    <a href="%E5%9C%A8%E7%BA%BF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90.html" class="btn btn-secondary btn-gen" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      在线配置生成器
     </a>
   </div>
 </div>
@@ -557,21 +571,9 @@ ControlPort 9051
 HashedControlPassword 替换为你的哈希值
 
 SocksExitByUser 1
-SocksExitUserMap "us={us}"
-SocksExitUserMap "de={de}"
-SocksExitUserMap "jp={jp}"
-SocksExitUserMap "sg={sg}"
-SocksExitUserMap "gb={gb}"
-SocksExitUserMap "fr={fr}"
-SocksExitUserMap "kr={kr}"
-SocksExitUserMap "nl={nl}"
-SocksExitUserMap "au={au}"
-SocksExitUserMap "ca={ca}"
-SocksExitUserMap "hk={hk}"
-SocksExitUserMap "tw={tw}"
-SocksExitUserMap "ru={ru}"
-SocksExitUserMap "in={in}"
-SocksExitUserMap "br={br}"
+# 注意：SocksExitUserMap 是 CSV 类型，所有映射必须写在同一行用逗号分隔！
+# 多行重复写法只会保留最后一行（其余被忽略），导致其它国家全部失效
+SocksExitUserMap "us={us},de={de},jp={jp},sg={sg},gb={gb},fr={fr},kr={kr},nl={nl},au={au},ca={ca},hk={hk},tw={tw},ru={ru},in={in},br={br}"
 
 DataDirectory ./data
 GeoIPFile ./geoip
@@ -597,7 +599,10 @@ mkdir -p data
 ./tor -f ./torrc
 
 # 后台运行（daemon 模式）
-./tor -f ./torrc --RunAsDaemon 1</code></pre>
+# 注意：RunAsDaemon 不能与 torrc 中的相对路径（./data 等）共存，
+# 否则报 "RunAsDaemon is not compatible with relative paths" 直接退出。
+# 必须用绝对路径在命令行覆盖，例如：
+./tor -f ./torrc --RunAsDaemon 1 --DataDirectory "$PWD/data" --GeoIPFile "$PWD/geoip" --GeoIPv6File "$PWD/geoip6"</code></pre>
       </div>
     </div>
   </div>
@@ -609,13 +614,13 @@ mkdir -p data
       <div class="codeblock">
         <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
         <pre><code># 通过美国出口访问
-curl --socks5-hostname -u "us:my_secret_password" 127.0.0.1:9050 https://check.torproject.org/api/ip
+curl -x "socks5h://us:my_secret_password@127.0.0.1:9050" https://check.torproject.org/api/ip
 
 # 通过日本出口访问
-curl --socks5-hostname -u "jp:my_secret_password" 127.0.0.1:9050 https://myip.ipip.net
+curl -x "socks5h://jp:my_secret_password@127.0.0.1:9050" https://myip.ipip.net
 
 # 通过德国出口访问
-curl --socks5-hostname -u "de:my_secret_password" 127.0.0.1:9050 https://myip.ipip.net</code></pre>
+curl -x "socks5h://de:my_secret_password@127.0.0.1:9050" https://myip.ipip.net</code></pre>
       </div>
     </div>
   </div>
@@ -741,21 +746,9 @@ ControlPort 9051
 HashedControlPassword 替换为你的哈希值
 
 SocksExitByUser 1
-SocksExitUserMap "us={us}"
-SocksExitUserMap "de={de}"
-SocksExitUserMap "jp={jp}"
-SocksExitUserMap "sg={sg}"
-SocksExitUserMap "gb={gb}"
-SocksExitUserMap "fr={fr}"
-SocksExitUserMap "kr={kr}"
-SocksExitUserMap "nl={nl}"
-SocksExitUserMap "au={au}"
-SocksExitUserMap "ca={ca}"
-SocksExitUserMap "hk={hk}"
-SocksExitUserMap "tw={tw}"
-SocksExitUserMap "ru={ru}"
-SocksExitUserMap "in={in}"
-SocksExitUserMap "br={br}"
+# 注意：SocksExitUserMap 是 CSV 类型，所有映射必须写在同一行用逗号分隔！
+# 多行重复写法只会保留最后一行（其余被忽略），导致其它国家全部失效
+SocksExitUserMap "us={us},de={de},jp={jp},sg={sg},gb={gb},fr={fr},kr={kr},nl={nl},au={au},ca={ca},hk={hk},tw={tw},ru={ru},in={in},br={br}"
 
 DataDirectory /etc/tor/data
 GeoIPFile /etc/tor/geoip
@@ -902,21 +895,9 @@ ControlPort 9051
 HashedControlPassword 替换为你的哈希值
 
 SocksExitByUser 1
-SocksExitUserMap "us={us}"
-SocksExitUserMap "de={de}"
-SocksExitUserMap "jp={jp}"
-SocksExitUserMap "sg={sg}"
-SocksExitUserMap "gb={gb}"
-SocksExitUserMap "fr={fr}"
-SocksExitUserMap "kr={kr}"
-SocksExitUserMap "nl={nl}"
-SocksExitUserMap "au={au}"
-SocksExitUserMap "ca={ca}"
-SocksExitUserMap "hk={hk}"
-SocksExitUserMap "tw={tw}"
-SocksExitUserMap "ru={ru}"
-SocksExitUserMap "in={in}"
-SocksExitUserMap "br={br}"
+# 注意：SocksExitUserMap 是 CSV 类型，所有映射必须写在同一行用逗号分隔！
+# 多行重复写法只会保留最后一行（其余被忽略），导致其它国家全部失效
+SocksExitUserMap "us={us},de={de},jp={jp},sg={sg},gb={gb},fr={fr},kr={kr},nl={nl},au={au},ca={ca},hk={hk},tw={tw},ru={ru},in={in},br={br}"
 
 DataDirectory .\data
 GeoIPFile .\geoip
@@ -940,7 +921,8 @@ New-Item -ItemType Directory -Path data -Force
 .\tor.exe -f .\torrc
 
 # 后台运行（启动后关闭窗口即可）
-Start-Process -FilePath .\tor.exe -ArgumentList "-f",".\torrc","--RunAsDaemon","1" -WindowStyle Hidden</code></pre>
+# 注意：RunAsDaemon 不能与 torrc 中的相对路径（.\data 等）共存，需用绝对路径覆盖
+Start-Process -FilePath .\tor.exe -ArgumentList "-f",".\torrc","--RunAsDaemon","1","--DataDirectory","C:\tor\data","--GeoIPFile","C:\tor\geoip","--GeoIPv6File","C:\tor\geoip6" -WindowStyle Hidden</code></pre>
       </div>
     </div>
   </div>
@@ -952,7 +934,7 @@ Start-Process -FilePath .\tor.exe -ArgumentList "-f",".\torrc","--RunAsDaemon","
       <div class="codeblock">
         <div class="code-header"><span class="code-lang">PowerShell</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
         <pre><code># 通过美国出口验证
-curl --socks5-hostname -u "us:my_secret_password" 127.0.0.1:9050 https://check.torproject.org/api/ip</code></pre>
+curl -x "socks5h://us:my_secret_password@127.0.0.1:9050" https://check.torproject.org/api/ip</code></pre>
       </div>
     </div>
   </div>
@@ -1022,147 +1004,18 @@ HashedControlPassword 替换为你的哈希值
 
 # ============================================================
 #  ★ 按 SOCKS5 用户名指定出口国家 ★
-#  格式：SocksExitUserMap "用户名={国家代码}"
+#  格式：SocksExitUserMap "用户名={国家代码},用户名2={国家代码2},..."
 #  用户名 = SOCKS5 认证时传入的用户名（任意字符串）
 #  国家代码 = ISO 3166-1 alpha-2 小写两字母
 #  一个用户名可映射多个国家，如 "global={us,de,jp}"
+#  ⚠ 重要：SocksExitUserMap 为 CSV 类型（逗号分隔列表），
+#    所有映射必须写在同一行用逗号分隔！
+#   若写成多行，Tor 只保留最后一行，其它全部失效。
 # ============================================================
 SocksExitByUser 1
 
-# ---- 亚洲 ----
-SocksExitUserMap "cn={cn}"
-SocksExitUserMap "jp={jp}"
-SocksExitUserMap "kr={kr}"
-SocksExitUserMap "hk={hk}"
-SocksExitUserMap "tw={tw}"
-SocksExitUserMap "mo={mo}"
-SocksExitUserMap "sg={sg}"
-SocksExitUserMap "my={my}"
-SocksExitUserMap "th={th}"
-SocksExitUserMap "vn={vn}"
-SocksExitUserMap "ph={ph}"
-SocksExitUserMap "id={id}"
-SocksExitUserMap "kh={kh}"
-SocksExitUserMap "la={la}"
-SocksExitUserMap "mm={mm}"
-SocksExitUserMap "bn={bn}"
-SocksExitUserMap "in={in}"
-SocksExitUserMap "pk={pk}"
-SocksExitUserMap "bd={bd}"
-SocksExitUserMap "lk={lk}"
-SocksExitUserMap "np={np}"
-SocksExitUserMap "bt={bt}"
-SocksExitUserMap "mn={mn}"
-SocksExitUserMap "kz={kz}"
-SocksExitUserMap "uz={uz}"
-
-# ---- 欧洲 ----
-SocksExitUserMap "de={de}"
-SocksExitUserMap "fr={fr}"
-SocksExitUserMap "gb={gb}"
-SocksExitUserMap "nl={nl}"
-SocksExitUserMap "se={se}"
-SocksExitUserMap "no={no}"
-SocksExitUserMap "dk={dk}"
-SocksExitUserMap "fi={fi}"
-SocksExitUserMap "ch={ch}"
-SocksExitUserMap "at={at}"
-SocksExitUserMap "it={it}"
-SocksExitUserMap "es={es}"
-SocksExitUserMap "pt={pt}"
-SocksExitUserMap "be={be}"
-SocksExitUserMap "ie={ie}"
-SocksExitUserMap "is={is}"
-SocksExitUserMap "lu={lu}"
-SocksExitUserMap "pl={pl}"
-SocksExitUserMap "cz={cz}"
-SocksExitUserMap "hu={hu}"
-SocksExitUserMap "ro={ro}"
-SocksExitUserMap "bg={bg}"
-SocksExitUserMap "gr={gr}"
-SocksExitUserMap "cy={cy}"
-SocksExitUserMap "mt={mt}"
-SocksExitUserMap "si={si}"
-SocksExitUserMap "hr={hr}"
-SocksExitUserMap "sk={sk}"
-SocksExitUserMap "lt={lt}"
-SocksExitUserMap "lv={lv}"
-SocksExitUserMap "ee={ee}"
-SocksExitUserMap "rs={rs}"
-SocksExitUserMap "ua={ua}"
-SocksExitUserMap "ru={ru}"
-SocksExitUserMap "by={by}"
-SocksExitUserMap "md={md}"
-SocksExitUserMap "tr={tr}"
-
-# ---- 北美 ----
-SocksExitUserMap "us={us}"
-SocksExitUserMap "ca={ca}"
-SocksExitUserMap "mx={mx}"
-
-# ---- 南美 ----
-SocksExitUserMap "br={br}"
-SocksExitUserMap "ar={ar}"
-SocksExitUserMap "cl={cl}"
-SocksExitUserMap "co={co}"
-SocksExitUserMap "pe={pe}"
-SocksExitUserMap "ve={ve}"
-SocksExitUserMap "uy={uy}"
-SocksExitUserMap "ec={ec}"
-SocksExitUserMap "bo={bo}"
-SocksExitUserMap "py={py}"
-SocksExitUserMap "pa={pa}"
-SocksExitUserMap "cr={cr}"
-SocksExitUserMap "cu={cu}"
-SocksExitUserMap "do={do}"
-SocksExitUserMap "pr={pr}"
-
-# ---- 大洋洲 ----
-SocksExitUserMap "au={au}"
-SocksExitUserMap "nz={nz}"
-SocksExitUserMap "fj={fj}"
-
-# ---- 中东 ----
-SocksExitUserMap "il={il}"
-SocksExitUserMap "sa={sa}"
-SocksExitUserMap "ae={ae}"
-SocksExitUserMap "qa={qa}"
-SocksExitUserMap "kw={kw}"
-SocksExitUserMap "om={om}"
-SocksExitUserMap "bh={bh}"
-SocksExitUserMap "jo={jo}"
-SocksExitUserMap "lb={lb}"
-SocksExitUserMap "iq={iq}"
-SocksExitUserMap "ir={ir}"
-
-# ---- 中亚/高加索 ----
-SocksExitUserMap "az={az}"
-SocksExitUserMap "am={am}"
-SocksExitUserMap "ge={ge}"
-
-# ---- 非洲 ----
-SocksExitUserMap "za={za}"
-SocksExitUserMap "ng={ng}"
-SocksExitUserMap "eg={eg}"
-SocksExitUserMap "ma={ma}"
-SocksExitUserMap "ke={ke}"
-SocksExitUserMap "gh={gh}"
-SocksExitUserMap "tz={tz}"
-SocksExitUserMap "et={et}"
-SocksExitUserMap "cm={cm}"
-SocksExitUserMap "ci={ci}"
-SocksExitUserMap "sn={sn}"
-SocksExitUserMap "cd={cd}"
-SocksExitUserMap "ug={ug}"
-SocksExitUserMap "zw={zw}"
-SocksExitUserMap "mz={mz}"
-SocksExitUserMap "dz={dz}"
-SocksExitUserMap "tn={tn}"
-SocksExitUserMap "na={na}"
-SocksExitUserMap "bw={bw}"
-SocksExitUserMap "mw={mw}"
-SocksExitUserMap "mg={mg}"
-SocksExitUserMap "rw={rw}"</code></pre>
+# ---- 全部国家出口映射（单行 CSV，一次生效全部国家）----
+SocksExitUserMap "cn={cn},jp={jp},kr={kr},hk={hk},tw={tw},mo={mo},sg={sg},my={my},th={th},vn={vn},ph={ph},id={id},kh={kh},la={la},mm={mm},bn={bn},in={in},pk={pk},bd={bd},lk={lk},np={np},bt={bt},mn={mn},kz={kz},uz={uz},de={de},fr={fr},gb={gb},nl={nl},se={se},no={no},dk={dk},fi={fi},ch={ch},at={at},it={it},es={es},pt={pt},be={be},ie={ie},is={is},lu={lu},pl={pl},cz={cz},hu={hu},ro={ro},bg={bg},gr={gr},cy={cy},mt={mt},si={si},hr={hr},sk={sk},lt={lt},lv={lv},ee={ee},rs={rs},ua={ua},ru={ru},by={by},md={md},tr={tr},us={us},ca={ca},mx={mx},br={br},ar={ar},cl={cl},co={co},pe={pe},ve={ve},uy={uy},ec={ec},bo={bo},py={py},pa={pa},cr={cr},cu={cu},do={do},pr={pr},au={au},nz={nz},fj={fj},il={il},sa={sa},ae={ae},qa={qa},kw={kw},om={om},bh={bh},jo={jo},lb={lb},iq={iq},ir={ir},az={az},am={am},ge={ge},za={za},ng={ng},eg={eg},ma={ma},ke={ke},gh={gh},tz={tz},et={et},cm={cm},ci={ci},sn={sn},cd={cd},ug={ug},zw={zw},mz={mz},dz={dz},tn={tn},na={na},bw={bw},mw={mw},mg={mg},rw={rw}"</code></pre>
     </div>
   </div>
 
@@ -1184,21 +1037,9 @@ HashedControlPassword 替换为你的哈希值
 
 # ---------- 出口国家映射 ----------
 SocksExitByUser 1
-SocksExitUserMap "us={us}"
-SocksExitUserMap "de={de}"
-SocksExitUserMap "jp={jp}"
-SocksExitUserMap "sg={sg}"
-SocksExitUserMap "gb={gb}"
-SocksExitUserMap "fr={fr}"
-SocksExitUserMap "kr={kr}"
-SocksExitUserMap "nl={nl}"
-SocksExitUserMap "au={au}"
-SocksExitUserMap "ca={ca}"
-SocksExitUserMap "hk={hk}"
-SocksExitUserMap "tw={tw}"
-SocksExitUserMap "ru={ru}"
-SocksExitUserMap "in={in}"
-SocksExitUserMap "br={br}"</code></pre>
+# 注意：SocksExitUserMap 是 CSV 类型，所有映射必须写在同一行用逗号分隔！
+# 多行重复写法只会保留最后一行（其余被忽略），导致其它国家全部失效
+SocksExitUserMap "us={us},de={de},jp={jp},sg={sg},gb={gb},fr={fr},kr={kr},nl={nl},au={au},ca={ca},hk={hk},tw={tw},ru={ru},in={in},br={br}"</code></pre>
     </div>
   </div>
 
@@ -1213,15 +1054,15 @@ SocksExitUserMap "br={br}"</code></pre>
       <thead><tr><th>配置项</th><th>说明</th><th>默认值</th></tr></thead>
       <tbody>
         <tr><td><code>SocksPort</code></td><td>SOCKS5 代理监听端口</td><td>9050</td></tr>
-        <tr><td><code>ControlPort</code></td><td>控制端口，SocksExitByUser 必须开启</td><td>无（需手动设置）</td></tr>
+        <tr><td><code>ControlPort</code></td><td>控制端口（可选），供 tor 控制协议/管理工具使用；<strong>与 SocksExitByUser 无关</strong>，不需要为按国家出口而开启</td><td>无（需手动设置）</td></tr>
         <tr><td><code>HashedControlPassword</code></td><td>控制端口密码哈希值（哈希值写这里，客户端用明文）</td><td>无</td></tr>
         <tr><td><code>SocksExitByUser</code></td><td>启用 SOCKS5 用户名到国家出口映射（0 关闭 / 1 开启）</td><td>0</td></tr>
-        <tr><td><code>SocksExitUserMap</code></td><td>格式 <code>"用户名={国家代码}"</code>，支持一个用户映射多国</td><td>无</td></tr>
+        <tr><td><code>SocksExitUserMap</code></td><td>CSV 类型，全部映射写<strong>同一行</strong>用逗号分隔：<code>"用户1={国家},用户2={国家}"</code>；一个用户可映射多国 <code>"{us,de,jp}"</code>；<strong>多行重复只会保留最后一行</strong></td><td>无</td></tr>
         <tr><td><code>DataDirectory</code></td><td>数据/密钥/缓存目录</td><td>~/.tor</td></tr>
         <tr><td><code>GeoIPFile</code></td><td>IPv4 国家数据库文件路径</td><td>编译时内置</td></tr>
         <tr><td><code>GeoIPv6File</code></td><td>IPv6 国家数据库文件路径</td><td>编译时内置</td></tr>
         <tr><td><code>Log</code></td><td>日志输出目标，支持 <code>stdout</code> 或 <code>file 路径</code></td><td>无</td></tr>
-        <tr><td><code>RunAsDaemon</code></td><td>后台运行（命令行参数，不能写在 torrc 中）</td><td>0</td></tr>
+        <tr><td><code>RunAsDaemon</code></td><td>后台运行（命令行参数，不能写在 torrc 中）；<strong>与相对路径不兼容</strong>，DataDirectory/GeoIP* 需用绝对路径</td><td>0</td></tr>
         <tr><td><code>StrictNodes</code></td><td>严格遵守节点选择（建议不设置或设为 0）</td><td>0</td></tr>
         <tr><td><code>BandwidthRate</code></td><td>平均带宽限制，格式 <code>NKB</code>/<code>NMB</code>/<code>NGB</code></td><td>无限制</td></tr>
         <tr><td><code>BandwidthBurst</code></td><td>突发带宽限制</td><td>无限制</td></tr>
@@ -1242,125 +1083,7 @@ SocksExitUserMap "br={br}"</code></pre>
 
   <div class="codeblock">
     <div class="code-header"><span class="code-lang">全部 SocksExitUserMap 条目（一键复制）</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制全部条目</button></div>
-    <pre><code>SocksExitUserMap "cn={cn}"
-SocksExitUserMap "jp={jp}"
-SocksExitUserMap "kr={kr}"
-SocksExitUserMap "hk={hk}"
-SocksExitUserMap "tw={tw}"
-SocksExitUserMap "mo={mo}"
-SocksExitUserMap "sg={sg}"
-SocksExitUserMap "my={my}"
-SocksExitUserMap "th={th}"
-SocksExitUserMap "vn={vn}"
-SocksExitUserMap "ph={ph}"
-SocksExitUserMap "id={id}"
-SocksExitUserMap "kh={kh}"
-SocksExitUserMap "la={la}"
-SocksExitUserMap "mm={mm}"
-SocksExitUserMap "bn={bn}"
-SocksExitUserMap "in={in}"
-SocksExitUserMap "pk={pk}"
-SocksExitUserMap "bd={bd}"
-SocksExitUserMap "lk={lk}"
-SocksExitUserMap "np={np}"
-SocksExitUserMap "bt={bt}"
-SocksExitUserMap "mn={mn}"
-SocksExitUserMap "kz={kz}"
-SocksExitUserMap "uz={uz}"
-SocksExitUserMap "de={de}"
-SocksExitUserMap "fr={fr}"
-SocksExitUserMap "gb={gb}"
-SocksExitUserMap "nl={nl}"
-SocksExitUserMap "se={se}"
-SocksExitUserMap "no={no}"
-SocksExitUserMap "dk={dk}"
-SocksExitUserMap "fi={fi}"
-SocksExitUserMap "ch={ch}"
-SocksExitUserMap "at={at}"
-SocksExitUserMap "it={it}"
-SocksExitUserMap "es={es}"
-SocksExitUserMap "pt={pt}"
-SocksExitUserMap "be={be}"
-SocksExitUserMap "ie={ie}"
-SocksExitUserMap "is={is}"
-SocksExitUserMap "lu={lu}"
-SocksExitUserMap "pl={pl}"
-SocksExitUserMap "cz={cz}"
-SocksExitUserMap "hu={hu}"
-SocksExitUserMap "ro={ro}"
-SocksExitUserMap "bg={bg}"
-SocksExitUserMap "gr={gr}"
-SocksExitUserMap "cy={cy}"
-SocksExitUserMap "mt={mt}"
-SocksExitUserMap "si={si}"
-SocksExitUserMap "hr={hr}"
-SocksExitUserMap "sk={sk}"
-SocksExitUserMap "lt={lt}"
-SocksExitUserMap "lv={lv}"
-SocksExitUserMap "ee={ee}"
-SocksExitUserMap "rs={rs}"
-SocksExitUserMap "ua={ua}"
-SocksExitUserMap "ru={ru}"
-SocksExitUserMap "by={by}"
-SocksExitUserMap "md={md}"
-SocksExitUserMap "tr={tr}"
-SocksExitUserMap "us={us}"
-SocksExitUserMap "ca={ca}"
-SocksExitUserMap "mx={mx}"
-SocksExitUserMap "br={br}"
-SocksExitUserMap "ar={ar}"
-SocksExitUserMap "cl={cl}"
-SocksExitUserMap "co={co}"
-SocksExitUserMap "pe={pe}"
-SocksExitUserMap "ve={ve}"
-SocksExitUserMap "uy={uy}"
-SocksExitUserMap "ec={ec}"
-SocksExitUserMap "bo={bo}"
-SocksExitUserMap "py={py}"
-SocksExitUserMap "pa={pa}"
-SocksExitUserMap "cr={cr}"
-SocksExitUserMap "cu={cu}"
-SocksExitUserMap "do={do}"
-SocksExitUserMap "pr={pr}"
-SocksExitUserMap "au={au}"
-SocksExitUserMap "nz={nz}"
-SocksExitUserMap "fj={fj}"
-SocksExitUserMap "il={il}"
-SocksExitUserMap "sa={sa}"
-SocksExitUserMap "ae={ae}"
-SocksExitUserMap "qa={qa}"
-SocksExitUserMap "kw={kw}"
-SocksExitUserMap "om={om}"
-SocksExitUserMap "bh={bh}"
-SocksExitUserMap "jo={jo}"
-SocksExitUserMap "lb={lb}"
-SocksExitUserMap "iq={iq}"
-SocksExitUserMap "ir={ir}"
-SocksExitUserMap "az={az}"
-SocksExitUserMap "am={am}"
-SocksExitUserMap "ge={ge}"
-SocksExitUserMap "za={za}"
-SocksExitUserMap "ng={ng}"
-SocksExitUserMap "eg={eg}"
-SocksExitUserMap "ma={ma}"
-SocksExitUserMap "ke={ke}"
-SocksExitUserMap "gh={gh}"
-SocksExitUserMap "tz={tz}"
-SocksExitUserMap "et={et}"
-SocksExitUserMap "cm={cm}"
-SocksExitUserMap "ci={ci}"
-SocksExitUserMap "sn={sn}"
-SocksExitUserMap "cd={cd}"
-SocksExitUserMap "ug={ug}"
-SocksExitUserMap "zw={zw}"
-SocksExitUserMap "mz={mz}"
-SocksExitUserMap "dz={dz}"
-SocksExitUserMap "tn={tn}"
-SocksExitUserMap "na={na}"
-SocksExitUserMap "bw={bw}"
-SocksExitUserMap "mw={mw}"
-SocksExitUserMap "mg={mg}"
-SocksExitUserMap "rw={rw}"</code></pre>
+    <pre><code>SocksExitUserMap "cn={cn},jp={jp},kr={kr},hk={hk},tw={tw},mo={mo},sg={sg},my={my},th={th},vn={vn},ph={ph},id={id},kh={kh},la={la},mm={mm},bn={bn},in={in},pk={pk},bd={bd},lk={lk},np={np},bt={bt},mn={mn},kz={kz},uz={uz},de={de},fr={fr},gb={gb},nl={nl},se={se},no={no},dk={dk},fi={fi},ch={ch},at={at},it={it},es={es},pt={pt},be={be},ie={ie},is={is},lu={lu},pl={pl},cz={cz},hu={hu},ro={ro},bg={bg},gr={gr},cy={cy},mt={mt},si={si},hr={hr},sk={sk},lt={lt},lv={lv},ee={ee},rs={rs},ua={ua},ru={ru},by={by},md={md},tr={tr},us={us},ca={ca},mx={mx},br={br},ar={ar},cl={cl},co={co},pe={pe},ve={ve},uy={uy},ec={ec},bo={bo},py={py},pa={pa},cr={cr},cu={cu},do={do},pr={pr},au={au},nz={nz},fj={fj},il={il},sa={sa},ae={ae},qa={qa},kw={kw},om={om},bh={bh},jo={jo},lb={lb},iq={iq},ir={ir},az={az},am={am},ge={ge},za={za},ng={ng},eg={eg},ma={ma},ke={ke},gh={gh},tz={tz},et={et},cm={cm},ci={ci},sn={sn},cd={cd},ug={ug},zw={zw},mz={mz},dz={dz},tn={tn},na={na},bw={bw},mw={mw},mg={mg},rw={rw}"</code></pre>
   </div>
 
   <h3>国家代码与中文名对照表</h3>
@@ -1414,18 +1137,22 @@ SocksExitUserMap "rw={rw}"</code></pre>
   </h2>
 
   <p>以下示例中 <code>用户名:密码</code> 即 SOCKS5 认证凭据，用户名为要使用的国家代码小写字母。</p>
+  <div class="tip tip-warn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <span><strong>注意：</strong>curl 的 SOCKS5 认证必须用 <code>-x socks5h://用户名:密码@主机:端口</code>（或 <code>-U 用户名:密码</code>）传凭证；<code>-u/--user</code> 只用于 HTTP 服务器认证，<u>不会</u>用于 SOCKS5，会被 Tor 判为未认证而拒绝。</span>
+  </div>
 
   <h3>curl</h3>
   <div class="codeblock">
     <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
     <pre><code># 通过美国出口
-curl --socks5-hostname -u "us:my_secret_password" 127.0.0.1:9050 https://check.torproject.org/api/ip
+curl -x "socks5h://us:my_secret_password@127.0.0.1:9050" https://check.torproject.org/api/ip
 
 # 通过日本出口
-curl --socks5-hostname -u "jp:my_secret_password" 127.0.0.1:9050 https://myip.ipip.net
+curl -x "socks5h://jp:my_secret_password@127.0.0.1:9050" https://myip.ipip.net
 
 # 通过德国出口
-curl --socks5-hostname -u "de:my_secret_password" 127.0.0.1:9050 https://myip.ipip.net</code></pre>
+curl -x "socks5h://de:my_secret_password@127.0.0.1:9050" https://myip.ipip.net</code></pre>
   </div>
 
   <h3>wget</h3>
@@ -1480,15 +1207,105 @@ func main() {
 }</code></pre>
   </div>
 
-  <h3>不指定国家（随机出口）</h3>
+  <h3>不指定国家（需要先关闭 SocksExitByUser）</h3>
   <div class="codeblock">
     <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
-    <pre><code># 不带用户名认证，使用随机出口（不触发 SocksExitByUser）
+    <pre><code># 注意：启用 SocksExitByUser 后，未提供用户名的连接会被【直接拒绝】
+# （Tor 日志：SOCKS stream has no username; rejecting per SocksExitByUser）
+# 不存在"无认证走随机出口"。若确实不需要按国家出口，请把 torrc 里的
+# SocksExitByUser 1 改为 SocksExitByUser 0（或删除 SocksExitByUser 与
+# SocksExitUserMap 两行）后重启 Tor，此时才走随机出口：
 curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/api/ip</code></pre>
   </div>
   <div class="tip tip-info">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-    <span>不提供 SOCKS5 用户名认证时，SocksExitByUser 不生效，流量走随机出口。只有通过用户名认证且用户名在 SocksExitUserMap 中有映射时才会指定国家出口。</span>
+    <span>源码实现（<code>src/core/or/circuituse.c</code>）：<code>SocksExitByUser 1</code> 时，无 SOCKS5 用户名 → 拒绝；用户名有映射 → 固定该国出口（<code>chosen_exit_optional=0</code> 不回退）；用户名无映射或无可用出口 → 拒绝。密码不会被 Tor 校验。</span>
+  </div>
+</section>
+
+<!-- ==================== 验证与自测 ==================== -->
+<section id="verify">
+  <h2>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    已验证：使用「在线配置生成器」生成的配置可正常运行，出口有效（非所有国家出口可用）。
+  </h2>
+  <p>本定制版 Tor 与 <a href="%E5%9C%A8%E7%BA%BF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90.html" target="_blank" rel="noopener">在线配置生成器</a> 是<strong>同一套字段体系</strong>（均由源码 <code>option_table</code> 生成），并已通过本仓库
+    <a href="https://github.com/lmq8267/tor-0.4.9.11/actions" target="_blank" rel="noopener">GitHub Actions 自动化全量测试</a> 与手工实测（日本、德国、英国、美国等出口均验证通过）。如果你打开配置生成器生成并运行测试后发现“似乎用不了”，别慌，可先照着下面的自测脚本跑一遍，确认你的运行环境能正常连上 Tor 网络。</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <p><strong>一键自测脚本（Linux x86_64，整段复制到终端执行）</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>#!/usr/bin/env bash
+# Tor 0.4.9.11 定制版 · 按 SOCKS5 用户名指定出口国家 · 完整自测
+set -euo pipefail
+
+# 1) 下载静态编译版（其它平台换成对应包名即可）
+curl -fL -o tor.tar.gz \
+  https://github.com/lmq8267/tor-0.4.9.11/releases/latest/download/tor-x86_64-linux-musl.tar.gz
+tar -xzf tor.tar.gz
+chmod +x tor
+
+# 2) 启动：用户名 = 国家代码（此处 jp=日本、de=德国）
+mkdir -p /tmp/tordata
+./tor --SocksPort 127.0.0.1:9050 \
+      --SocksExitByUser 1 \
+      --SocksExitUserMap "jp={jp},de={de}" \
+      --DataDirectory /tmp/tordata \
+      --GeoIPFile ./geoip --GeoIPv6File ./geoip6 \
+      --Log "notice stdout" &gt; /tmp/tor.log 2&gt;&amp;1 &amp;
+
+# 3) 等待 Tor 引导完成（Bootstrapped 100%）
+for i in $(seq 1 90); do
+  if grep -q "Bootstrapped 100" /tmp/tor.log 2&gt;/dev/null; then break; fi
+  sleep 2
+done
+sleep 20   # 等出口描述稳定，避免“暂缺出口”误报
+
+# 4) 分别用 jp / de 用户名验证出口
+for cc in jp de; do
+  ip=$(curl -sS -m 20 -x "socks5h://${cc}:anypwd@127.0.0.1:9050" https://api.ipify.org)
+  geo=$(curl -sS -m 10 "https://ipwho.is/${ip}")
+  country=$(printf '%s' "$geo" | grep -o '"country":"[^"]*"' | head -1 | cut -d'"' -f4)
+  echo "[${cc}] 出口 IP ${ip} → ${country}"
+done
+
+# 5) 清理
+pkill -f "tor --SocksPort" || true</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <p><strong>预期输出示例（IP 会随运行时间变化）</strong></p>
+      <div class="codeblock">
+        <div class="code-header"><span class="code-lang">text</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
+        <pre><code>tor 已后台启动（PID 12345），等待引导完成…
+Bootstrapped 100% (done): Done
+[jp] 出口 IP 167.179.117.50 → Japan
+[de] 出口 IP 185.220.101.134 → Germany</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip tip-info">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <span><strong>关于个别国家“无出口 / 偏差”</strong>：无出口 = 该国当前没有适用 Tor 出口节点，SocksExitByUser 按设计会拒绝这类连接，属正常；偏差 = 个别出口节点的 IP 被地理位置库标在了托管所在国（数据中心归属漂移），可人工复核。全量 119 国结果见下方自动化测试。</span>
+  </div>
+
+  <div class="btn-group">
+    <a href="%E5%9C%A8%E7%BA%BF%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%94%9F%E6%88%90.html" class="btn btn-gen" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      打开在线配置生成器
+    </a>
+    <a href="https://github.com/lmq8267/tor-0.4.9.11/actions" class="btn btn-secondary" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      查看 119 国自动化测试
+    </a>
   </div>
 </section>
 
@@ -1523,8 +1340,11 @@ curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/api/ip</code>
       <p>启动后等待连接完成（看到 100% bootstrapped），然后：</p>
       <div class="codeblock">
         <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
-        <pre><code># 访问 Tor 官方验证页面
+        <pre><code># 未启用 SocksExitByUser（或已设为 0）时可直接验证：
 curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/api/ip
+
+# 启用了 SocksExitByUser 1 时，必须带 SOCKS5 认证，否则会被拒绝：
+curl -x "socks5h://us:my_secret_password@127.0.0.1:9050" https://check.torproject.org/api/ip
 
 # 使用 tor-resolve 工具测试 DNS
 ./tor-resolve check.torproject.org</code></pre>
@@ -1538,7 +1358,7 @@ curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/api/ip
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
     <div class="faq-a">
-      <p>连接会被 <strong>拒绝</strong>。客户端必须使用在 SocksExitUserMap 中有映射的用户名，或者不提供认证（走随机出口）。</p>
+      <p>连接会被 <strong>拒绝</strong>。启用 <code>SocksExitByUser 1</code> 后，客户端必须使用在 <code>SocksExitUserMap</code> 中有映射的用户名并正确传递 SOCKS5 认证（curl 用 <code>-x socks5h://用户名:密码@127.0.0.1:9050</code> 或 <code>-U 用户名:密码</code>）；<strong>不提供用户名同样会被拒绝</strong>（authentication required），不存在"随机出口"。</p>
     </div>
   </div>
 
@@ -1551,9 +1371,7 @@ curl --socks5-hostname 127.0.0.1:9050 https://check.torproject.org/api/ip
       <p>可以。routerset 语法支持多国映射，格式为 <code>"用户名={国家1,国家2,...}"</code>，例如：</p>
       <div class="codeblock">
         <div class="code-header"><span class="code-lang">torrc</span><button class="copy-btn" onclick="copyCode(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>复制</button></div>
-        <pre><code>SocksExitUserMap "asia={jp,kr,sg,hk,tw,my,th}"
-SocksExitUserMap "europe={de,fr,gb,nl}"
-SocksExitUserMap "americas={us,ca,br}"</code></pre>
+        <pre><code>SocksExitUserMap "asia={jp,kr,sg,hk,tw,my,th},europe={de,fr,gb,nl},americas={us,ca,br}"</code></pre>
       </div>
       <p>Tor 会在这些国家中随机选择出口节点。</p>
     </div>

@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tor 0.4.9.11 在线配置生成器</title>
+<link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,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6f/jls//yC6f/8gun//ILp//yC6f/8gun//HLZ7sxyubKQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACqAKoDyC2eyMgvn//qstv/9dnu/8o5o//02O3/yjej//bg8f/modP/23fA//79/v/Xarr/yC6f/8gun//ILp//yC6f/8gun//ILZ7MvwB/BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMktnlrHLp/+3oPF//7+/v/Ybbz/3YHF//TX7P/JMqD//ff7//TW7P/LOqT//fn8//Xa7v/IL5//yC6f/8gun//ILp//yC6f/8gun/7HK55XAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxyyevMkzof/56vX/+OXz/8gxoP/02e3/7bvg/81DqP/+/v7//fj7/8k0ov/z0+v//v7+/9Vftf/ILp//yC6f/8gun//ILp//yC6f/8csnbgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMwAmQXHLJ701WC2///////prtr/z0qs//7+/v/prtn/0lSw///////+/v7/0E6t/+mv2v//////5JnQ/8gun//ILp//yC6f/8gun//ILp//yC2f8pkAmQUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAySqfGMgtn/3df8T//////+KSzf/Ybbz//////+u23f/UXLT////////////WZbj/45jQ///////st97/yC6f/8gun//ILp//yC6f/8gun//HLZ7+xCecGgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMKqEexy2e/t6Fx///////4pXO/9pzv///////8s7o/9Retf///////////9dpuf/kmtH//////+qy2//ILp//yC6f/8gun//ILp//yC6f/8ctnv7ILZocAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL8fjxDILZ782nS+///////rtt3/1F61///////89fr/01my///+/v///v//0lSw/+u33f//////4pTN/8gun//ILp//yC6f/8gun//ILp//xy2e+MYcjQkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMctntzNRKn//vv9//rv9//MP6b/+/L5///////ficj//PT6//z2+//KOKP/+en0//7+/v/UX7X/yC6f/8gun//ILp//yC6f/8gun//HLZ7LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAyC2fiMgun//rs9z//////+GQzP/lndL///////34/P/+/f7/78bk/9ZmuP/+/v7/9+Lx/8gwoP/ILp//yC6f/8gun//ILp//yC6f/8YrnHUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADLKKMZyC2e78w/p//45fP//fn8/9lyvv/01uz////////////dgMT/8Mjl///+///dgMX/yC6f/8gun//ILp//yC6f/8gun//ILZ/qwx6WEQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADHLJ1cyC2f/dBPrv/35fL//fr8/+/E5P//////+/L5/9x9w//+/v7/8c3o/8gwoP/ILp//yC6f/8gun//ILp//xy2e/sUqnVkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADHLZ58xy2e/sw/p//wx+X////////////67Pb/+u33//vx+P/PSqv/yC6f/8gun//ILp//yC6f/8ctnv7GLJ1+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADGLZ5fxy2f88kyoP/uv+H////////////+/v7/23rC/8gun//ILp//yC6f/8gun//HLZ74xyudaQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADFLJkoxyyex8w/p//78vn///////HL5//ILp//yC6f/8gu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n//Zcb7/+ev1//rv9//UX7X/zD6m//fk8v/hkMv/yC+f//LS6v/+/f7/3HvC/8s9pf/y0er//v7+/+y84P/IMaD/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8ctnvjJLJ9tfwB/AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMkooRPHLZ/Gxy6f/s1DqP/z1Or//v7+/+u03f/IMaD/5JrQ//z2+//adL//yTKg//rt9v//////6rDb/8kyof/nptb//v3+//vx+P/WZLj/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun/7ILZ7ExiWXGwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMUrnkfILZ73yC6f/+GQzP/+/f7//Pb6/9JUsP/PS6z/9d3v//vx+P/UX7X/zD+n//36/P//////9t3v/8gwoP/egsX//Pb7//79/v/moNP/yTSi/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILZ72xyqcTgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMctnqTHLZ7+yzyl//rw+P//////7sLj/8gvn//cfsP//PX6//rs9v/QTq7/0lax//79/v///////Pn8/8s/pv/WY7f/+uv2//7+/v/z1ev/zkWp/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//HLZ7+xy2epAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wC/BMcsneTILp//2nO+///////+/v7/34fI/8kzof/oqdf//v7+//jq9P/ORqr/12i5/////////////v7+/9Rftf/PS6z/9+Lx///////89fr/01my/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2f4r8AvwQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAySqfGMcsnvrILp//5Z/T///////+/P3/1mO3/8s6pP/wyOX///////nr9f/OSKv/2nO//////////////////9x+w//LOqT/9Njt///////+/v7/23nB/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xiyf+sQnnBoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxSicLMctn/3ILp//67Xd///////89vv/0lWx/8w+pv/12e7///////rt9//RUa//3HvC/////////////////+KUzf/IMaD/89Pr/////////v//4Y7L/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2f/cYoozIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzCieMsctnv7IL5//7bvg///////89/v/0ley/8w/p//13e////////vx+P/VYLb/3H3D/////////////////+OXz//JM6H/89Tr///////+/v7/3obH/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2e/sksnDQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAzSuhKcctnv3ILp//6rPc///////+/f7/12q6/8w9pv/z1ev///////33+//cesL/2nW//////////////////9+Hx//MP6b/9dvu///////+/f7/2G+8/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2e/MQroCMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAxhybEsgtnvjILp//45bO///////+/v7/45fP/8o4o//uwOL///////7+/v/modP/1WO3///+/v////////7//9Zouf/SVrH/+Obz///////78vn/0VSw/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy6e7r8fnwgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wD/Acgun9LILp//1WC1//77/f//////9Njs/8o3o//lndL//vz9///////02Oz/0liy//v0+v///////ff7/81Bp//becH/+/P5//7+/v/y0er/zUSp/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//yC2euwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMYsnYPHLZ7+yTSh//LR6f///////vz9/9t3wP/Xabr/+u32///////+/P3/6KvY//nr9f//////8tHq/8k0of/nptb//v3+//79/v/mpNX/yTWi/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//HLZ/9xiyfbQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMUsnyjILZ/tyC6f/9Vitv/89fr///////be8P/PTa3/67fe/////////////vz9//7+/v/+/v7/4ZDM/8xAp//23vD//v7+//z0+v/Xa7v/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8gun//GLZ7fxSyZKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALIZmQrHLJ6hyC2e/Mk1ov/nqNf//fr9//78/f/nqdf/0VSw//Xd7//+/v7////////////67/f/0lex/92Dxf/+/f7///7///LO6f/KN6P/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8gtnvzIK56RshmZCgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADHLp08xi2e38gun//PSqv/7sDh//7+/v/89/v/6azZ/9t6wf/56/b///////7+/v/uwOL/01uz//jl8///////+/D4/9Vit//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8csn+PFK5k1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/AH8CxyueV8ctnvvILp//zD2l/+qy2//+/f7//v3+//np9f/9+Pz///////35/P/gjMr/7Lvf//7+/v/+/P3/34rJ/8gvn//ILp//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2d/McsnVx/AH8CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMksnnLHLZ7xxy2e/sk1ov/km9H/+/H4//////////////////z3+//vxOT//PT6//79/v/tvOD/zD6m/8gun//ILp//yC6f/8gun//ILp//yC6f/8ctnv7HLZ7xxy2efAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL8fnwjIK550xyye6cgun//KN6P/3X/E//nq9f/////////////+/////v////////np9f/UXrT/yC6f/8gun//ILp//yC6f/8gun//ILp//yC6f/8ctnvLILJ55vyqUDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMM5kFxy6dPMgtn9vHLp/+yC+f/9douf/89Pr//////////////////v7+/92Dxv/IL5//yC6f/8gun//ILp//yC6f/8gun//ILp//xy2e68gtoU/UKqoGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMZgUAzHsjAL9fCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==">
+<style>
+/* ============ 设计变量（液态玻璃 + 跟随系统主题） ============ */
+:root{
+  --radius: 18px;
+  --gap: 18px;
+  --tp: .20s ease;
+  --font: -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+  --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
+}
+:root, html[data-theme="light"]{
+  --text: #1d2740;
+  --text-soft: #55607a;
+  --glass: rgba(255,255,255,.58);
+  --glass-strong: rgba(255,255,255,.72);
+  --stroke: rgba(30,42,80,.14);
+  --accent: #3b82f6;
+  --accent-2: #6366f1;
+  --accent-grad: linear-gradient(135deg,#3b82f6,#6366f1);
+  --code-bg: rgba(255,255,255,.72);
+  --chip-bg: rgba(59,130,246,.12);
+  --field-bg: rgba(255,255,255,.66);
+  --shadow: 0 12px 40px rgba(23,34,66,.16);
+  --ok: #10b981;
+  --warn: #f59e0b;
+}
+html[data-theme="dark"]{
+  --text: #e7ecf6;
+  --text-soft: #99a5c2;
+  --glass: rgba(16,22,36,.58);
+  --glass-strong: rgba(16,22,36,.74);
+  --stroke: rgba(190,205,240,.14);
+  --accent: #5b9bff;
+  --accent-2: #8b8cf8;
+  --accent-grad: linear-gradient(135deg,#3b82f6,#7c6cf0);
+  --code-bg: rgba(8,12,22,.72);
+  --chip-bg: rgba(91,155,255,.16);
+  --field-bg: rgba(255,255,255,.06);
+  --shadow: 0 14px 46px rgba(0,0,0,.5);
+  --ok: #34d399;
+  --warn: #fbbf24;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font);
+  color:var(--text);
+  min-height:100vh;
+  background:
+    radial-gradient(1100px 520px at 88% -6%, rgba(99,102,241,.28), transparent 60%),
+    radial-gradient(900px 560px at -8% 108%, rgba(14,165,233,.24), transparent 62%),
+    linear-gradient(160deg,#eef2f9 0%,#e2e9f6 100%);
+  background-attachment:fixed;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+html[data-theme="dark"] body{
+  background:
+    radial-gradient(1100px 520px at 88% -6%, rgba(99,102,241,.22), transparent 60%),
+    radial-gradient(900px 560px at -8% 108%, rgba(14,165,233,.18), transparent 62%),
+    linear-gradient(160deg,#0c1122 0%,#0a0f1e 100%);
+}
+/* 所有输入禁止 iOS 自动缩放 */
+input,select,textarea{font-size:16px;}
+button{font-family:inherit;cursor:pointer;}
+
+/* ============ 头部 ============ */
+header{padding:30px 20px 8px;}
+.hwrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand .logo{
+  width:40px;height:40px;border-radius:12px;background:var(--accent-grad);
+  display:grid;place-items:center;color:#fff;box-shadow:var(--shadow);flex:none;
+}
+header h1{font-size:22px;font-weight:700;}
+header p.sub{font-size:13px;color:var(--text-soft);margin-top:2px;}
+
+/* ============ 通用玻璃卡片/按钮/字段 ============ */
+.glass{
+  background:var(--glass);
+  -webkit-backdrop-filter:blur(18px) saturate(1.6);
+  backdrop-filter:blur(18px) saturate(1.6);
+  border:1px solid var(--stroke);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.card{padding:20px;margin-bottom:var(--gap);}
+.card h2{
+  font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;
+  margin-bottom:14px;letter-spacing:.2px;
+  flex-wrap:wrap;white-space:nowrap;overflow:hidden;
+}
+.card h2 .ic{width:26px;height:26px;border-radius:8px;background:var(--chip-bg);display:grid;place-items:center;color:var(--accent);flex:none;}
+.card h2 small{
+  font-weight:400;color:var(--text-soft);font-size:12px;
+  flex-basis:100%;max-width:100%;margin-left:0;white-space:normal;line-height:1.5;
+}
+.desc{font-size:12.5px;color:var(--text-soft);margin:-6px 0 12px;}
+
+.field{margin-bottom:13px;}
+.field label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.field label .req{color:var(--accent);}
+.field label .hint{margin-left:auto;font-size:11px;color:var(--text-soft);font-weight:400;}
+.field input[type=text],
+.field input[type=password],
+.field input[type=number],
+.field select{
+  width:100%;padding:9px 12px;border-radius:12px;border:1px solid var(--stroke);
+  background:var(--field-bg);color:var(--text);outline:none;transition:var(--tp);
+}
+.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.18);}
+.inrow{display:flex;gap:10px;}
+.inrow>*{flex:1;}
+
+/* 开关 */
+.switch{position:relative;width:38px;height:22px;flex:none;margin-left:auto;display:inline-block;}
+.switch input{opacity:0;width:0;height:0;}
+.switch .slider{
+  position:absolute;inset:0;border-radius:22px;background:rgba(120,130,160,.35);
+  transition:var(--tp);border:1px solid var(--stroke);
+}
+.switch .slider:before{
+  content:"";position:absolute;width:16px;height:16px;left:2px;top:2px;border-radius:50%;
+  background:#fff;transition:var(--tp);box-shadow:0 1px 3px rgba(0,0,0,.3);
+}
+.switch input:checked + .slider{background:var(--accent-grad);}
+.switch input:checked + .slider:before{transform:translateX(16px);}
+.switch input:focus-visible + .slider{box-shadow:0 0 0 3px rgba(59,130,246,.3);}
+
+/* 按钮 */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;border:none;border-radius:12px;
+  padding:9px 16px;font-size:13.5px;font-weight:600;color:#fff;
+  background:var(--accent-grad);box-shadow:0 6px 18px rgba(59,130,246,.32);
+  transition:transform var(--tp),box-shadow var(--tp),filter var(--tp);
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 10px 24px rgba(59,130,246,.4);}
+.btn:active{transform:scale(.96);}
+.btn.ghost{background:rgba(120,130,160,.14);color:var(--text);box-shadow:none;border:1px solid var(--stroke);}
+.btn.ghost:hover{filter:none;background:rgba(120,130,160,.22);}
+.btn.ok{background:linear-gradient(135deg,#10b981,#0ea5e9);box-shadow:0 6px 18px rgba(16,185,129,.3);}
+.btn svg{width:15px;height:15px;}
+.iconbtn{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+  background:var(--field-bg);border:1px solid var(--stroke);color:var(--text);
+  transition:transform var(--tp),background var(--tp);
+}
+.iconbtn:hover{transform:translateY(-1px) rotate(4deg);background:var(--chip-bg);}
+.iconbtn:active{transform:scale(.92);}
+
+/* ============ 布局 ============ */
+main{max-width:1180px;margin:0 auto;padding:16px 20px 46px;}
+.layout{display:grid;grid-template-columns:1fr 1.02fr;gap:var(--gap);align-items:start;}
+@media (max-width:960px){.layout{grid-template-columns:1fr;}}
+
+/* ============ 国家多选（下拉大框 + 勾选框） ============ */
+.cp-wrap{position:relative;z-index:80;}
+.cp-trigger{
+  min-height:44px;border:1px solid var(--stroke);border-radius:13px;background:var(--field-bg);
+  padding:6px 8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;cursor:pointer;
+  transition:var(--tp);
+}
+.cp-trigger:hover{border-color:var(--accent);}
+.cp-trigger:focus-visible{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.18);}
+.cp-ph{color:var(--text-soft);font-size:13px;padding:4px 6px;}
+.chip{
+  display:inline-flex;align-items:center;gap:5px;background:var(--chip-bg);border:1px solid var(--stroke);
+  padding:3px 5px 3px 6px;border-radius:20px;font-size:12px;transition:var(--tp);
+}
+.chip img,.chip .badge{width:16px;height:12px;border-radius:2px;object-fit:cover;flex:none;}
+.chip .badge{background:var(--accent-grad);color:#fff;font-size:8px;font-weight:700;display:grid;place-items:center;letter-spacing:.5px;}
+.chip .x{
+  width:16px;height:16px;border-radius:50%;border:none;background:rgba(120,130,160,.22);color:var(--text);
+  display:grid;place-items:center;transition:var(--tp);
+}
+.chip .x:hover{background:#ef4444;color:#fff;transform:scale(1.12);}
+.cp-panel{
+  position:fixed;z-index:2000;min-width:260px;
+  border-radius:15px;overflow:hidden;
+  background:var(--glass-strong);
+  -webkit-backdrop-filter:blur(22px) saturate(1.7);backdrop-filter:blur(22px) saturate(1.7);
+  border:1px solid var(--stroke);box-shadow:var(--shadow);
+  display:none;
+}
+/* 面板打开时会移到 body 下（避开卡片 backdrop-filter 建立的 containing block），用 .show 控制*/
+.cp-panel.show{display:block;animation:pop .16s ease;}
+@keyframes pop{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+.cp-search{padding:10px 10px 6px;}
+.cp-search input{
+  width:100%;padding:9px 12px 9px 34px;border-radius:11px;border:1px solid var(--stroke);
+  background:var(--field-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='%238b93a8' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.5' y2='16.5'/%3E%3C/svg%3E") no-repeat 10px center;
+  color:var(--text);outline:none;transition:var(--tp);
+}
+.cp-search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,.16);}
+/* 全选 / 全不选 工具条 */
+.cp-tools{display:flex;gap:8px;padding:2px 10px 7px;}
+.cp-tools button{
+  flex:1;padding:6px 10px;border-radius:9px;border:1px solid var(--stroke);
+  background:var(--field-bg);color:var(--accent);font-size:12px;font-weight:600;
+  cursor:pointer;transition:var(--tp);
+}
+.cp-tools button:hover{background:var(--chip-bg);border-color:var(--accent);transform:translateY(-1px);}
+.cp-tools button:active{transform:scale(.95);}
+.cp-list{max-height:280px;overflow-y:auto;padding:4px 8px 10px;}
+.cp-item{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:10px;cursor:pointer;transition:var(--tp);}
+.cp-item:hover{background:var(--chip-bg);}
+.cp-item input{width:16px;height:16px;accent-color:var(--accent);cursor:pointer;flex:none;}
+.cp-item img,.cp-item .badge{width:22px;height:15px;border-radius:3px;object-fit:cover;flex:none;}
+.cp-item .badge{background:var(--accent-grad);color:#fff;font-size:9px;font-weight:700;display:grid;place-items:center;letter-spacing:.5px;}
+.cp-item .nm{font-size:13px;flex:1;}
+.cp-item .cc{font-size:11px;color:var(--text-soft);font-family:var(--mono);}
+.cp-empty{padding:16px;text-align:center;color:var(--text-soft);font-size:13px;}
+
+/* ============ 右侧输出（桌面端吸顶，始终位于可视区域） ============ */
+/* 把 sticky 放在 grid 子项 aside 上：配合 .layout 的 align-items:start，
+   吸附范围 = 整行高度（左栏滚动全程），因此左栏滚动时右侧始终固定在顶部 */
+aside.right{
+  position:sticky;top:16px;
+}
+aside.right .out-sticky{
+  height:calc(100vh - 32px);
+  display:flex;flex-direction:column;
+}
+.out-head{display:flex;align-items:center;gap:10px;padding:12px 14px;margin-bottom:var(--gap);flex:none;}
+.out-head .titles{flex:1;min-width:0;}
+.out-head .titles b{font-size:14px;display:block;}
+.out-head .titles span{font-size:11.5px;color:var(--text-soft);}
+pre#output{
+  background:var(--code-bg);border:1px solid var(--stroke);border-radius:var(--radius);
+  padding:16px 18px;margin:0;overflow:auto;flex:1;min-height:0;max-height:none;
+  font-family:var(--mono);font-size:12.8px;line-height:1.7;color:var(--text);
+  white-space:pre;box-shadow:var(--shadow);
+}
+pre#output .cm{color:var(--text-soft);}
+pre#output .cm.warn{color:var(--warn);}
+pre#output .sec{color:var(--accent);font-weight:600;}
+.copy-flash{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);z-index:99;padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;color:#fff;background:var(--accent-grad);box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity var(--tp);}
+
+/* 回到顶部 */
+.back-top{
+  position:fixed;right:18px;bottom:26px;width:46px;height:46px;border-radius:50%;
+  border:1px solid var(--stroke);background:var(--accent-grad);color:#fff;
+  display:grid;place-items:center;box-shadow:var(--shadow);z-index:90;
+  opacity:0;pointer-events:none;transition:opacity var(--tp),transform var(--tp),filter var(--tp);
+}
+.back-top.show{opacity:1;pointer-events:auto;}
+.back-top:hover{transform:translateY(-3px);filter:brightness(1.1);}
+.back-top:active{transform:scale(.92);}
+@media (max-width:540px){.back-top{right:12px;bottom:14px;width:42px;height:42px;}}
+
+/* 折叠 */
+/* 左侧分区提升层级，确保国家下拉不被后续卡片遮挡 */
+section.left{position:relative;z-index:10;}
+details.card{overflow:visible;}
+details.card[open] .body{overflow:visible;}
+details.card summary{list-style:none;cursor:pointer;display:flex;align-items:center;font-size:15px;font-weight:600;gap:8px;margin-bottom:6px;flex-wrap:wrap;white-space:nowrap;overflow:hidden;}
+details.card summary::-webkit-details-marker{display:none;}
+details.card summary small{margin-left:0;flex-basis:100%;max-width:100%;white-space:normal;line-height:1.5;}
+details.card summary .arr{margin-left:auto;transition:transform var(--tp);color:var(--text-soft);}
+details.card[open] summary .arr{transform:rotate(180deg);}
+details.card .body{padding-top:8px;}
+
+@media (max-width:960px){
+  aside.right{position:static;}
+  aside.right .out-sticky{height:auto;}
+  pre#output{max-height:60vh;}
+}
+@media (max-width:540px){
+  header h1{font-size:19px;}
+  .card{padding:16px;}
+  pre#output{font-size:12px;max-height:60vh;}
+  .inrow{flex-direction:column;gap:0;}
+  .out-head .btn{padding:8px 10px;font-size:12px;gap:5px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <div class="brand">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10A15.3 15.3 0 0 1 12 2z"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+      </div>
+      <div>
+        <h1>Tor 0.4.9.11 在线配置生成器</h1>
+        <p class="sub">按 SOCKS5 用户名指定出口国家 · 定制版 · 基于源码 option_table 生成</p>
+      </div>
+    </div>
+    <a class="iconbtn" href="https://lmq8267.github.io/tor-0.4.9.11/index.html" title="返回运行教程首页" aria-label="返回运行教程首页">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+    <button class="iconbtn" id="themeToggle" title="切换浅色 / 深色主题" aria-label="切换主题">
+      <svg id="iconSun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <svg id="iconMoon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="layout">
+
+    <!-- ==================== 左侧：配置选项 ==================== -->
+    <section class="left">
+
+      <div class="card glass">
+        <h2><span class="ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>1 · SOCKS5 代理 <small>配置项：SocksPort</small></h2>
+        <div class="desc">SOCKS5 代理监听端口。勾选「对外提供」将监听 0.0.0.0供局域网设备连接，不勾选则 监听 127.0.0.1 仅本机可用；</div>
+        <div class="field">
+          <label>端口号 <span class="hint">默认 9050</span></label>
+          <input type="number" id="socksPort" min="1" max="65535" value="9050">
+        </div>
+        <div class="field">
+          <label for="pubSwitch">对外提供（0.0.0.0）</label>
+          <span class="switch"><input type="checkbox" id="pubSwitch" checked><span class="slider"></span></span>
+        </div>
+      </div>
+
+      <div class="card glass">
+        <h2><span class="ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-7l-2-3H5a2 2 0 0 0-2 2z"/></svg></span>2 · 数据目录与 GeoIP <small>配置项：DataDirectory / GeoIPFile / GeoIPv6File</small></h2>
+        <div class="desc">数据目录保存密钥、缓存与状态，GeoIP 离线IP地址库文件用于把出口节点按国家匹配。</div>
+        <div class="field">
+          <label>DataDirectory <span class="hint">建议 /etc/tor/data 需先创建: mkdir -p</span></label>
+          <input type="text" id="dataDir" value="/etc/tor/data" spellcheck="false">
+        </div>
+        <div class="field">
+          <label>GeoIPFile <span class="hint">建议 /etc/tor/geoip</span></label>
+          <input type="text" id="geoIp" value="/etc/tor/geoip" spellcheck="false">
+        </div>
+        <div class="field">
+          <label>GeoIPv6File <span class="hint">建议 /etc/tor/geoip6</span></label>
+          <input type="text" id="geoIp6" value="/etc/tor/geoip6" spellcheck="false">
+        </div>
+      </div>
+
+      <div class="card glass">
+        <h2><span class="ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span>3 · 日志 <small>配置项：Log</small></h2>
+        <div class="desc">日志级别与输出目标。级别越高信息越少：debug &lt; info &lt; notice &lt; warn。</div>
+        <div class="inrow">
+          <div class="field">
+            <label>级别</label>
+            <select id="logLevel">
+              <option value="debug">debug</option>
+              <option value="info">info</option>
+              <option value="notice" selected>notice</option>
+              <option value="warn">warn</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>输出目标</label>
+            <select id="logTarget">
+              <option value="stdout" selected>stdout（终端）</option>
+              <option value="file">file（写入文件）</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" id="logFileWrap" style="display:none">
+          <label>日志文件路径</label>
+          <input type="text" id="logFile" value="/var/log/tor/notices.log" spellcheck="false">
+        </div>
+      </div>
+
+      <div class="card glass">
+        <h2><span class="ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></span>4 · 控制端口 <small>配置项：ControlPort / HashedControlPassword</small></h2>
+        <div class="field">
+          <label for="ctrlOn">启用控制端口 <span class="hint">可选，与按国家出口无关</span></label>
+          <span class="switch"><input type="checkbox" id="ctrlOn"><span class="slider"></span></span>
+        </div>
+        <div id="ctrlBody">
+          <div class="field">
+            <label>ControlPort <span class="hint">默认 9051</span></label>
+            <input type="number" id="ctrlPort" min="1" max="65535" value="9051">
+          </div>
+          <div class="field">
+            <label>明文密码 <span class="req">*</span><span class="hint">聚焦显示明文</span></label>
+            <input type="password" id="ctrlPw" placeholder="输入控制端口密码，浏览器自动生成 16: 哈希" autocomplete="new-password" spellcheck="false">
+          </div>
+          <div class="field">
+            <label>HashedControlPassword <span class="hint">自动生成（RFC2440 S2K）</span></label>
+            <input type="text" id="ctrlHash" value="" spellcheck="false" placeholder="输入上方密码即自动填充 16:…（也可手动粘贴已有哈希）">
+          </div>
+          <div class="desc">浏览器在本地按 tor 的 RFC2440 S2K（SHA-1 加盐迭代）算法即时计算哈希。<br>与 <code>./tor --hash-password "密码"</code> 的输出一致，无需命令行。<br>客户端（curl、Python 等）提交的是<strong>明文密码</strong>，Tor 自动比对哈希。</div>
+        </div>
+      </div>
+
+      <div class="card glass">
+        <h2><span class="ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>5 · ★ 按 SOCKS5 用户名指定出口国家 <small>定制：SocksExitByUser / SocksExitUserMap</small></h2>
+        <div class="desc">下方勾选的国家将生成 <code>SocksExitUserMap</code> 映射（CSV 单行）。<br>使用 curl / wget 时以 <code>用户名:密码</code> 提供 SOCKS5 认证，用户名 = 国家代码，即定向从该国出口。<br>启用后未提供用户名的连接会被<strong>直接拒绝</strong>。</div>
+        <div class="field">
+          <label for="byUserOn">启用 SocksExitByUser</label>
+          <span class="switch"><input type="checkbox" id="byUserOn" checked><span class="slider"></span></span>
+        </div>
+        <div class="field">
+          <label>选择出口国家 <span class="hint">点下方大框展开勾选，共 119 国</span></label>
+          <div class="cp-wrap" id="cpWrap">
+            <div class="cp-trigger" id="cpTrigger" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false">
+              <span class="cp-ph" id="cpPh" style="display:none">点击选择出口国家…</span>
+              <span id="cpChips"></span>
+            </div>
+            <div class="cp-panel" id="cpPanel">
+              <div class="cp-search"><input type="text" id="cpSearch" placeholder="搜索国家名称或代码…" autocomplete="off"></div>
+              <div class="cp-tools">
+                <button type="button" id="cpSelAll" title="勾选全部 119 国">全选</button>
+                <button type="button" id="cpSelNone" title="取消全部勾选">全不选</button>
+              </div>
+              <div class="cp-list" id="cpList"></div>
+            </div>
+          </div>
+        </div>
+        <div class="desc" id="countTip"></div>
+      </div>
+
+      <details class="card glass" id="sec6">
+        <summary>
+          <span class="ic" style="width:26px;height:26px;border-radius:8px;background:var(--chip-bg);display:grid;place-items:center;color:var(--accent);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 8v4l3 3M12 3a9 9 0 1 0 9 9"/></svg></span>
+          6 · 高级选项 <small style="font-weight:400;color:var(--text-soft);font-size:12px;margin-left:8px">StrictNodes / 带宽 / 上游代理</small>
+          <svg class="arr" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="body">
+          <div class="field">
+            <label for="strictOn">StrictNodes（严格遵守节点）<span class="hint">建议关闭</span></label>
+            <span class="switch"><input type="checkbox" id="strictOn"><span class="slider"></span></span>
+          </div>
+          <div class="field">
+            <label for="bwOn">限制带宽（BandwidthRate / Burst）</label>
+            <span class="switch"><input type="checkbox" id="bwOn"><span class="slider"></span></span>
+          </div>
+          <div id="bwBody">
+            <div class="inrow">
+              <div class="field"><label>平均带宽 Rate</label><input type="text" id="bwRate" value="60 MB" spellcheck="false"></div>
+              <div class="field"><label>突发带宽 Burst</label><input type="text" id="bwBurst" value="100 MB" spellcheck="false"></div>
+            </div>
+            <div class="desc">格式：<code>NKB</code> / <code>NMB</code> / <code>NGB</code>，如 <code>60 MB</code>、<code>600 KB</code>。</div>
+          </div>
+          <div class="field">
+            <label>上游代理（需要外网代理时）</label>
+            <select id="proxyType">
+              <option value="none" selected>不使用</option>
+              <option value="HTTPSProxy">HTTPSProxy（HTTPS 代理）</option>
+              <option value="HTTPProxy">HTTPProxy（HTTP 代理）</option>
+              <option value="Socks4Proxy">Socks4Proxy</option>
+              <option value="Socks5Proxy">Socks5Proxy</option>
+            </select>
+          </div>
+          <div id="proxyBody" style="display:none">
+            <div class="inrow">
+              <div class="field" style="flex:2"><label>地址 host:port</label><input type="text" id="proxyAddr" value="127.0.0.1:8080" spellcheck="false"></div>
+              <div id="proxyCred" style="display:none">
+                <div class="field"><label>用户名</label><input type="text" id="proxyUser" spellcheck="false"></div>
+              </div>
+            </div>
+            <div class="field" id="proxyPassWrap" style="display:none"><label>密码（SOCKS5/代理认证）</label><input type="password" id="proxyPass" autocomplete="new-password" placeholder="可留空"></div>
+          </div>
+        </div>
+      </details>
+
+      <div class="card glass">
+        <h2><span class="ic"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span>使用提示 <small>命令行参数（不写入 torrc）</small></h2>
+        <div class="desc" style="line-height:1.7">
+          · <code>RunAsDaemon 1</code> 是<strong>命令行参数</strong>，不要写进本配置文件；后台运行请执行（注意绝对路径）：<br>
+          <code style="word-break:break-all">./tor -f ./torrc --RunAsDaemon 1 --DataDirectory /etc/tor/data --GeoIPFile /etc/tor/geoip --GeoIPv6File /etc/tor/geoip6</code><br>
+          · 控制端口密码：在「4 · 控制端口 → 明文密码」输入后，浏览器<strong>本地即时生成</strong> tor 兼容哈希（RFC2440 S2K，与 <code>./tor --hash-password "密码"</code> 输出一致），无需命令行。<br>
+          · 注释写法：torrc 支持行尾 <code>#</code> 注释（写在参数同一行即可，也可独立成行）；本生成器每项参数后都带中文注释。<br>
+          · 启动后验证（curl 必须用 SOCKS5 认证传用户名，且用 <code>-x socks5h://</code> 或 <code>-U</code>，不能用 <code>-u</code>）：<br>
+          <code>curl -x "socks5h://us:my_secret_password@127.0.0.1:9050" https://check.torproject.org/api/ip</code>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== 右侧：实时输出 ==================== -->
+    <aside class="right">
+      <div class="out-sticky">
+        <div class="glass out-head">
+          <div class="titles">
+            <b>torrc 配置文件</b>
+            <span id="stat">实时生成中…</span>
+          </div>
+          <button class="btn ghost" id="restoreBtn" title="恢复为默认配置并清除本地保存">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+            还原
+          </button>
+          <button class="btn ghost" id="copyBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            复制
+          </button>
+          <button class="btn ok" id="dlBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            下载
+          </button>
+        </div>
+        <pre id="output"></pre>
+      </div>
+    </aside>
+
+  </div>
+</main>
+
+<div class="copy-flash" id="flash">已复制到剪贴板</div>
+
+<button class="back-top" id="backTop" title="回到顶部" aria-label="回到顶部">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg>
+</button>
+
+<script>
+"use strict";
+/* ==================== 国家数据（119 国，顺序 = 大洲分组） ==================== */
+var COUNTRIES = [{"c":"ae","n":"阿联酋"},{"c":"am","n":"亚美尼亚"},{"c":"ar","n":"阿根廷"},{"c":"at","n":"奥地利"},{"c":"au","n":"澳大利亚"},{"c":"az","n":"阿塞拜疆"},{"c":"bd","n":"孟加拉国"},{"c":"be","n":"比利时"},{"c":"bg","n":"保加利亚"},{"c":"bh","n":"巴林"},{"c":"bn","n":"文莱"},{"c":"bo","n":"玻利维亚"},{"c":"br","n":"巴西"},{"c":"bt","n":"不丹"},{"c":"bw","n":"博茨瓦纳"},{"c":"by","n":"白俄罗斯"},{"c":"ca","n":"加拿大"},{"c":"cd","n":"刚果（金）"},{"c":"ch","n":"瑞士"},{"c":"ci","n":"科特迪瓦"},{"c":"cl","n":"智利"},{"c":"cm","n":"喀麦隆"},{"c":"cn","n":"中国"},{"c":"co","n":"哥伦比亚"},{"c":"cr","n":"哥斯达黎加"},{"c":"cu","n":"古巴"},{"c":"cy","n":"塞浦路斯"},{"c":"cz","n":"捷克"},{"c":"de","n":"德国"},{"c":"dk","n":"丹麦"},{"c":"do","n":"多米尼加"},{"c":"dz","n":"阿尔及利亚"},{"c":"ec","n":"厄瓜多尔"},{"c":"ee","n":"爱沙尼亚"},{"c":"eg","n":"埃及"},{"c":"es","n":"西班牙"},{"c":"et","n":"埃塞俄比亚"},{"c":"fi","n":"芬兰"},{"c":"fj","n":"斐济"},{"c":"fr","n":"法国"},{"c":"gb","n":"英国"},{"c":"ge","n":"格鲁吉亚"},{"c":"gh","n":"加纳"},{"c":"gr","n":"希腊"},{"c":"hk","n":"中国香港"},{"c":"hr","n":"克罗地亚"},{"c":"hu","n":"匈牙利"},{"c":"id","n":"印度尼西亚"},{"c":"ie","n":"爱尔兰"},{"c":"il","n":"以色列"},{"c":"in","n":"印度"},{"c":"iq","n":"伊拉克"},{"c":"ir","n":"伊朗"},{"c":"is","n":"冰岛"},{"c":"it","n":"意大利"},{"c":"jo","n":"约旦"},{"c":"jp","n":"日本"},{"c":"ke","n":"肯尼亚"},{"c":"kh","n":"柬埔寨"},{"c":"kr","n":"韩国"},{"c":"kw","n":"科威特"},{"c":"kz","n":"哈萨克斯坦"},{"c":"la","n":"老挝"},{"c":"lb","n":"黎巴嫩"},{"c":"lk","n":"斯里兰卡"},{"c":"lt","n":"立陶宛"},{"c":"lu","n":"卢森堡"},{"c":"lv","n":"拉脱维亚"},{"c":"ma","n":"摩洛哥"},{"c":"md","n":"摩尔多瓦"},{"c":"mg","n":"马达加斯加"},{"c":"mm","n":"缅甸"},{"c":"mn","n":"蒙古"},{"c":"mo","n":"中国澳门"},{"c":"mt","n":"马耳他"},{"c":"mw","n":"马拉维"},{"c":"mx","n":"墨西哥"},{"c":"my","n":"马来西亚"},{"c":"mz","n":"莫桑比克"},{"c":"na","n":"纳米比亚"},{"c":"ng","n":"尼日利亚"},{"c":"nl","n":"荷兰"},{"c":"no","n":"挪威"},{"c":"np","n":"尼泊尔"},{"c":"nz","n":"新西兰"},{"c":"om","n":"阿曼"},{"c":"pa","n":"巴拿马"},{"c":"pe","n":"秘鲁"},{"c":"ph","n":"菲律宾"},{"c":"pk","n":"巴基斯坦"},{"c":"pl","n":"波兰"},{"c":"pr","n":"波多黎各"},{"c":"pt","n":"葡萄牙"},{"c":"py","n":"巴拉圭"},{"c":"qa","n":"卡塔尔"},{"c":"ro","n":"罗马尼亚"},{"c":"rs","n":"塞尔维亚"},{"c":"ru","n":"俄罗斯"},{"c":"rw","n":"卢旺达"},{"c":"sa","n":"沙特阿拉伯"},{"c":"se","n":"瑞典"},{"c":"sg","n":"新加坡"},{"c":"si","n":"斯洛文尼亚"},{"c":"sk","n":"斯洛伐克"},{"c":"sn","n":"塞内加尔"},{"c":"th","n":"泰国"},{"c":"tn","n":"突尼斯"},{"c":"tr","n":"土耳其"},{"c":"tw","n":"中国台湾"},{"c":"tz","n":"坦桑尼亚"},{"c":"ua","n":"乌克兰"},{"c":"ug","n":"乌干达"},{"c":"us","n":"美国"},{"c":"uy","n":"乌拉圭"},{"c":"uz","n":"乌兹别克斯坦"},{"c":"ve","n":"委内瑞拉"},{"c":"vn","n":"越南"},{"c":"za","n":"南非"},{"c":"zw","n":"津巴布韦"}];
+var CN = {}; COUNTRIES.forEach(function(d){ CN[d.c]=d.n; });
+function flagUrl(c){ return "https://flagcdn.com/w20/" + c + ".png"; }
+function flagEl(c, cls){
+  var i = document.createElement("img");
+  i.className = cls || ""; i.loading = "lazy"; i.alt = "";
+  i.onerror = function(){
+    var b = document.createElement("span"); b.className = "badge"; b.textContent = c.toUpperCase();
+    i.replaceWith(b);
+  };
+  i.src = flagUrl(c);
+  return i;
+}
+
+/* ==================== 状态 ==================== */
+var S = {
+  countries: ["us","de","jp"], byUserOn: true,
+  strictOn:false, bwOn:false, ctrlOn:false
+};
+
+/* ==================== 元素快捷 ==================== */
+function $(id){ return document.getElementById(id); }
+
+/* ==================== 国家多选组件 ==================== */
+var cpWrap=$("cpWrap"), cpTrigger=$("cpTrigger"), cpPanel=$("cpPanel"), cpList=$("cpList"), cpSearch=$("cpSearch"), cpChips=$("cpChips"), cpPh=$("cpPh");
+
+function renderChips(){
+  cpChips.innerHTML="";
+  if(!S.countries.length){ cpPh.style.display="block"; return; }
+  cpPh.style.display="none";
+  S.countries.forEach(function(c){
+    var chip=document.createElement("span"); chip.className="chip";
+    chip.appendChild(flagEl(c,""));
+    var nm=document.createElement("span"); nm.textContent=CN[c]||c; chip.appendChild(nm);
+    var x=document.createElement("button"); x.className="x"; x.type="button"; x.setAttribute("aria-label","移除");
+    x.innerHTML='<svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+    x.onclick=function(e){ e.stopPropagation(); S.countries=S.countries.filter(function(xc){return xc!==c;}); renderChips(); renderList(); build(); };
+    chip.appendChild(x);
+    cpChips.appendChild(chip);
+  });
+}
+function renderList(){
+  var kw=(cpSearch.value||"").trim().toLowerCase();
+  cpList.innerHTML="";
+  var shown=0;
+  COUNTRIES.forEach(function(d){
+    if(kw && d.n.toLowerCase().indexOf(kw)<0 && d.c.toLowerCase().indexOf(kw)<0) return;
+    shown++;
+    var lbl=document.createElement("label"); lbl.className="cp-item";
+    var cb=document.createElement("input"); cb.type="checkbox"; cb.checked=S.countries.indexOf(d.c)>=0;
+    cb.addEventListener("change", function(){
+      if(cb.checked){ if(S.countries.indexOf(d.c)<0) S.countries.push(d.c); }
+      else { S.countries=S.countries.filter(function(x){return x!==d.c;}); }
+      renderChips(); build();
+    });
+    lbl.appendChild(cb);
+    lbl.appendChild(flagEl(d.c,""));
+    var nm=document.createElement("span"); nm.className="nm"; nm.textContent=d.n; lbl.appendChild(nm);
+    var cc=document.createElement("code"); cc.className="cc"; cc.textContent=d.c; lbl.appendChild(cc);
+    cpList.appendChild(lbl);
+  });
+  if(!shown){ var e=document.createElement("div"); e.className="cp-empty"; e.textContent="未找到匹配的国家"; cpList.appendChild(e); }
+}
+/* 全选 / 全不选 */
+function selAll(){ COUNTRIES.forEach(function(d){ if(S.countries.indexOf(d.c)<0) S.countries.push(d.c); }); renderList(); renderChips(); build(); }
+function selNone(){ S.countries=[]; renderList(); renderChips(); build(); }
+function setOpen(v){
+  if(v) document.body.appendChild(cpPanel); /* 移到 body 下：fixed 锚定视口，避免被卡片 backdrop-filter 层级遮挡 */
+  cpWrap.classList.toggle("open", v);
+  cpTrigger.setAttribute("aria-expanded", v ? "true" : "false");
+  cpPanel.classList.toggle("show", v);
+  if(v){
+    var r=cpTrigger.getBoundingClientRect();
+    cpPanel.style.left=Math.max(8, Math.min(r.left, window.innerWidth-320))+"px";
+    cpPanel.style.top=(r.bottom+8)+"px";
+    cpPanel.style.width=Math.min(r.width, 340)+"px";
+  }
+}
+window.addEventListener("scroll", function(){ if(cpWrap.classList.contains("open")) setOpen(false); }, {passive:true});
+window.addEventListener("resize", function(){ if(cpWrap.classList.contains("open")) setOpen(false); });
+cpTrigger.addEventListener("click", function(e){ e.stopPropagation(); setOpen(!cpWrap.classList.contains("open")); });
+cpTrigger.addEventListener("keydown", function(e){
+  if(e.key==="Enter"||e.key===" "){ e.preventDefault(); setOpen(!cpWrap.classList.contains("open")); }
+  if(e.key==="Escape") setOpen(false);
+});
+document.addEventListener("mousedown", function(e){
+  /* 面板已移到 body 下，需同时判断面板内部：点击国家勾选、搜索等都不关闭 */
+  if(!cpWrap.contains(e.target) && !cpPanel.contains(e.target)) setOpen(false);
+});
+cpSearch.addEventListener("click", function(e){ e.stopPropagation(); });
+cpSearch.addEventListener("input", renderList);
+$("cpSelAll").addEventListener("click", selAll);
+$("cpSelNone").addEventListener("click", selNone);
+
+/* ==================== 主题 ==================== */
+var themeToggle=$("themeToggle"), iconSun=$("iconSun"), iconMoon=$("iconMoon");
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme", t);
+  localStorage.setItem("torcfg-theme", t);
+  iconSun.style.display = t==="dark" ? "block" : "none";
+  iconMoon.style.display = t==="dark" ? "none" : "block";
+}
+var saved=localStorage.getItem("torcfg-theme");
+var autoDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+applyTheme(saved || (autoDark ? "dark" : "light"));
+themeToggle.addEventListener("click", function(){
+  var cur=document.documentElement.getAttribute("data-theme");
+  applyTheme(cur==="dark" ? "light" : "dark");
+});
+
+/* ==================== 控制端口密码：浏览器本地生成 tor 哈希（RFC2440 S2K / SHA-1） ==================== */
+/* 纯 JS SHA-1（与 Node crypto / tor 输出一致，已用 tor --hash-password 验证） */
+function rotl(x,n){ return ((x<<n)|(x>>>(32-n)))>>>0; }
+function sha1x(bytes){
+  var l=bytes.length, ml=l+9; ml+=(64-(ml%64))%64;
+  var m=new Uint8Array(ml); m.set(bytes,0); m[l]=0x80;
+  var bits=l*8, v=ml-8;
+  for(var i=0;i<4;i++){ m[v+i]=0; m[v+4+i]=(bits>>>((3-i)*8))&0xff; }
+  var h0=0x67452301, h1=0xEFCDAB89, h2=0x98BADCFE, h3=0x10325476, h4=0xC3D2E1F0, w=new Array(80);
+  for(var off=0; off<ml; off+=64){
+    for(var j=0;j<16;j++) w[j]=((m[off+4*j]<<24)|(m[off+4*j+1]<<16)|(m[off+4*j+2]<<8)|m[off+4*j+3])>>>0;
+    for(j=16;j<80;j++) w[j]=rotl(((w[j-3]^w[j-8]^w[j-14]^w[j-16])>>>0), 1);
+    var a=h0, b=h1, c=h2, d=h3, e=h4;
+    for(j=0;j<80;j++){
+      var f, k;
+      if(j<20){ f=(b&c)|((~b)&d); k=0x5A827999; }
+      else if(j<40){ f=b^c^d; k=0x6ED9EBA1; }
+      else if(j<60){ f=(b&c)|(b&d)|(c&d); k=0x8F1BBCDC; }
+      else { f=b^c^d; k=0xCA62C1D6; }
+      var t=(rotl(a,5)+f+e+k+w[j])>>>0;
+      e=d; d=c; c=rotl(b,30); b=a; a=t;
+    }
+    h0=(h0+a)>>>0; h1=(h1+b)>>>0; h2=(h2+c)>>>0; h3=(h3+d)>>>0; h4=(h4+e)>>>0;
+  }
+  var out=new Uint8Array(20), hs=[h0,h1,h2,h3,h4];
+  for(i=0;i<5;i++){ out[4*i]=(hs[i]>>>24)&0xff; out[4*i+1]=(hs[i]>>>16)&0xff; out[4*i+2]=(hs[i]>>>8)&0xff; out[4*i+3]=hs[i]&0xff; }
+  return out;
+}
+function toHex(u){ var s=""; for(var i=0;i<u.length;i++){ s+=((u[i]>>4)&15).toString(16); s+=(u[i]&15).toString(16); } return s; }
+function utf8b(str){ if(typeof TextEncoder!=="undefined" && TextEncoder){ return new TextEncoder().encode(str); } var u=unescape(encodeURIComponent(str)),a=new Uint8Array(u.length); for(var i=0;i<u.length;i++) a[i]=u.charCodeAt(i); return a; }
+/* tor --hash-password 同款：8字节盐 + 1字节迭代(c=96) + RFC2440 S2K，输出 "16:"+hex(29字节) */
+function torHash(secret){
+  var salt=new Uint8Array(8); if(window.crypto && crypto.getRandomValues) crypto.getRandomValues(salt);
+  else for(var i=0;i<8;i++) salt[i]=Math.floor(Math.random()*256);
+  var c=96, pwd=utf8b(secret), unit=new Uint8Array(8+pwd.length);
+  unit.set(salt); unit.set(pwd,8);
+  var count=(16+(c&15))<<((c>>4)+6), total=new Uint8Array(count), filled=0;
+  while(filled<count){ var take=Math.min(unit.length,count-filled); total.set(unit.subarray(0,take),filled); filled+=take; }
+  var d=sha1x(total), out=new Uint8Array(29);
+  out.set(salt,0); out[8]=c; out.set(d,9);
+  return "16:"+toHex(out);
+}
+/* 明文密码 → 实时生成哈希 */
+$("ctrlPw").addEventListener("input", function(){
+  $("ctrlHash").value = this.value ? torHash(this.value) : "";
+  build();
+});
+$("ctrlHash").addEventListener("input", build);
+
+/* ==================== 密码框：聚焦明文 / 失焦密码 ==================== */
+["ctrlPw","proxyPass"].forEach(function(id){
+  var el=$(id);
+  el.addEventListener("focus", function(){ el.type="text"; });
+  el.addEventListener("blur",  function(){ el.type="password"; });
+});
+
+/* ==================== 可显隐 ==================== */
+$("ctrlOn").addEventListener("change", function(){ $("ctrlBody").style.display=this.checked?"":"none"; build(); });
+$("bwOn").addEventListener("change", function(){ $("bwBody").style.display=this.checked?"":"none"; build(); });
+$("logTarget").addEventListener("change", function(){ $("logFileWrap").style.display=this.value==="file"?"":"none"; build(); });
+$("proxyType").addEventListener("change", function(){
+  var v=this.value;
+  $("proxyBody").style.display=v==="none"?"none":"";
+  $("proxyCred").style.display=(v==="HTTPProxy"||v==="HTTPSProxy"||v==="Socks5Proxy")?"":"none";
+  $("proxyPassWrap").style.display=v==="Socks5Proxy"?"":"none";
+  build();
+});
+
+/* 绑定全部输入控件 */
+["socksPort","dataDir","geoIp","geoIp6","logLevel","logFile","ctrlPort","ctrlHash","bwRate","bwBurst","proxyAddr","proxyUser","proxyPass"].forEach(function(id){
+  $(id).addEventListener("input", build);
+});
+["pubSwitch","byUserOn","strictOn"].forEach(function(id){
+  $(id).addEventListener("change", build);
+});
+
+/* ==================== 配置持久化：实时保存 / 刷新恢复 / 还原默认 ==================== */
+var CFG_KEY="torrc-cfg";
+/* 出厂默认值（与页面 HTML 初始一致；日志默认放 /var） */
+var DEFAULTS={
+  socksPort:"9050", pubSwitch:true,
+  dataDir:"/etc/tor/data", geoIp:"/etc/tor/geoip", geoIp6:"/etc/tor/geoip6",
+  logLevel:"notice", logTarget:"stdout", logFile:"/var/log/tor/notices.log",
+  ctrlOn:false, ctrlPort:"9051", ctrlPw:"", ctrlHash:"",
+  countries:["us","de","jp"], byUserOn:true, strictOn:false,
+  bwOn:false, bwRate:"60 MB", bwBurst:"100 MB",
+  proxyType:"none", proxyAddr:"127.0.0.1:8080", proxyUser:"", proxyPass:"",
+  sec6Open:false
+};
+/* 采集当前全部配置为字符串 */
+function collectState(){
+  return JSON.stringify({
+    socksPort:$("socksPort").value, pubSwitch:$("pubSwitch").checked,
+    dataDir:$("dataDir").value, geoIp:$("geoIp").value, geoIp6:$("geoIp6").value,
+    logLevel:$("logLevel").value, logTarget:$("logTarget").value, logFile:$("logFile").value,
+    ctrlOn:$("ctrlOn").checked, ctrlPort:$("ctrlPort").value,
+    ctrlPw:$("ctrlPw").value, ctrlHash:$("ctrlHash").value,
+    countries:S.countries, byUserOn:$("byUserOn").checked, strictOn:$("strictOn").checked,
+    bwOn:$("bwOn").checked, bwRate:$("bwRate").value, bwBurst:$("bwBurst").value,
+    proxyType:$("proxyType").value, proxyAddr:$("proxyAddr").value,
+    proxyUser:$("proxyUser").value, proxyPass:$("proxyPass").value,
+    sec6Open:$("sec6").open
+  });
+}
+/* 写入本地（隐私/禁用时静默失败） */
+function saveState(){
+  try{ localStorage.setItem(CFG_KEY, collectState()); }catch(e){}
+}
+/* 将一组配置应用到界面并刷新（缺失字段自动回退默认值，兼容旧版本本地数据） */
+function applyState(st){
+  var s={}, k;
+  for(k in DEFAULTS) s[k]=DEFAULTS[k];
+  if(st) for(k in DEFAULTS) if(st[k]!==undefined) s[k]=st[k];
+  $("socksPort").value=s.socksPort; $("pubSwitch").checked=!!s.pubSwitch;
+  $("dataDir").value=s.dataDir; $("geoIp").value=s.geoIp; $("geoIp6").value=s.geoIp6;
+  $("logLevel").value=s.logLevel; $("logTarget").value=s.logTarget; $("logFile").value=s.logFile;
+  $("ctrlOn").checked=!!s.ctrlOn; $("ctrlPort").value=s.ctrlPort;
+  $("ctrlPw").value=s.ctrlPw||""; $("ctrlHash").value=s.ctrlHash||"";
+  S.countries=(s.countries||[]).slice();
+  $("byUserOn").checked=!!s.byUserOn; $("strictOn").checked=!!s.strictOn;
+  $("bwOn").checked=!!s.bwOn; $("bwRate").value=s.bwRate; $("bwBurst").value=s.bwBurst;
+  $("proxyType").value=s.proxyType; $("proxyAddr").value=s.proxyAddr;
+  $("proxyUser").value=s.proxyUser; $("proxyPass").value=s.proxyPass;
+  $("sec6").open=!!s.sec6Open;
+  /* 同步各可显隐区块显示状态 */
+  $("ctrlBody").style.display=$("ctrlOn").checked?"":"none";
+  $("bwBody").style.display=$("bwOn").checked?"":"none";
+  $("logFileWrap").style.display=$("logTarget").value==="file"?"":"none";
+  var pt=$("proxyType").value;
+  $("proxyBody").style.display=pt==="none"?"none":"";
+  $("proxyCred").style.display=(pt==="HTTPProxy"||pt==="HTTPSProxy"||pt==="Socks5Proxy")?"":"none";
+  $("proxyPassWrap").style.display=pt==="Socks5Proxy"?"":"none";
+  renderChips(); renderList(); build();
+}
+/* 加载时恢复：有本地保存返回 true（已内部渲染） */
+function restoreState(){
+  var raw=null; try{ raw=localStorage.getItem(CFG_KEY); }catch(e){}
+  if(!raw) return false;
+  try{
+    var st=JSON.parse(raw);
+    if(st && typeof st==="object"){ applyState(st); return true; }
+  }catch(e){}
+  return false;
+}
+
+/* ==================== 生成 torrc（每行均含中文注释） ==================== */
+function pad(k){ var target=36; while(k.length<target) k+=" "; return k; }
+function build(){
+  var L=[];
+  L.push("# ============================================================");
+  L.push("# Tor 0.4.9.11 按 SOCKS5 用户名指定出口国家（定制版）配置文件");
+  L.push("# 本文件由「在线配置生成器」实时生成 · 所有配置行均含中文注释");
+  L.push("#");
+  L.push("#  ⚠ 注意：");
+  L.push("#  1) SocksExitUserMap 是 CSV 类型（逗号分隔列表），所有映射必须写在");
+  L.push("#     同一行用逗号分隔；如写成多行，Tor 只保留最后一行，其余全部失效。");
+  L.push("#  2) --hash-password 、--RunAsDaemon 等是命令行参数，不能写入本文件。");
+  L.push("#     后台运行需绝对路径，示例：");
+  L.push("#     ./tor -f ./torrc --RunAsDaemon 1 --DataDirectory /etc/tor/data \\");
+  L.push("#         --GeoIPFile /etc/tor/geoip --GeoIPv6File /etc/tor/geoip6");
+  L.push("# ============================================================");
+  L.push("");
+
+  // 1 SOCKS5
+  L.push("# ---------- 1. SOCKS5 代理 ----------");
+  var port=$("socksPort").value.trim()||"9050";
+  var pub=$("pubSwitch").checked;
+  var socksVal=pub?("0.0.0.0:"+port):String(port);
+  L.push(pad("SocksPort "+socksVal)+"# SOCKS5 代理监听端口"+(pub?"；0.0.0.0 监听，可供局域网/其它设备连接":"；仅本机可用"));
+  L.push("");
+
+  // 2 数据（绝对路径；相对路径给出警告）
+  L.push("# ---------- 2. 数据目录与 GeoIP（建议绝对路径） ----------");
+  function isAbs(v){ return v && (v.charAt(0)==="/" || v.charAt(0)==="~" || /^[A-Za-z]:[\\/]/.test(v) || v.indexOf("\\\\")===0); }
+  function pathWarn(v){ return isAbs(v) ? "" : "# ⚠ 注意：相对路径与 RunAsDaemon 不兼容，请改用绝对路径"; }
+  var DD=$("dataDir").value.trim()||"/etc/tor/data";
+  L.push(pad("DataDirectory "+DD)+"# 数据/密钥/缓存目录（首次运行前 mkdir -p）");
+  var GI=$("geoIp").value.trim()||"/etc/tor/geoip";
+  L.push(pad("GeoIPFile "+GI)+"# IPv4 国家数据库文件路径");
+  var G6=$("geoIp6").value.trim()||"/etc/tor/geoip6";
+  L.push(pad("GeoIPv6File "+G6)+"# IPv6 国家数据库文件路径");
+  ["DataDirectory "+DD,"GeoIPFile "+GI,"GeoIPv6File "+G6].forEach(function(k){ var w=pathWarn(k.replace(/^\S+\s+/,"")); if(w) L.push(w); });
+  L.push("");
+
+  // 3 日志
+  L.push("# ---------- 3. 日志 ----------");
+  var lvl=$("logLevel").value, tgt=$("logTarget").value;
+  var logFileVal=$("logFile").value.trim()||"/var/log/tor/notices.log";
+  var logLine="Log "+lvl+(tgt==="file"?(" file "+logFileVal):" stdout");
+  L.push(pad(logLine)+"# 日志级别与输出目标；级别 debug<info<notice<warn"+(tgt==="file"?"；写入日志文件（建议绝对路径）":"；输出到终端"));
+  L.push("");
+
+  // 4 控制端口（始终呈现，未启用输出 ControlPort 0）
+  L.push("# ---------- 4. 控制端口 ----------");
+  if($("ctrlOn").checked){
+    var hp=$("ctrlHash").value.trim();
+    L.push(pad("ControlPort "+($("ctrlPort").value.trim()||"9051"))+"# Tor 控制协议端口（供管理工具使用，与按国家出口无关）");
+    if(hp){ L.push(pad("HashedControlPassword "+hp)+"# 控制端口密码哈希值（由 ./tor --hash-password \"密码\" 生成），客户端提交明文自动比对"); }
+    else{ L.push("# HashedControlPassword 替换为你的哈希值   # 未填写；用 ./tor --hash-password \"密码\" 生成后替换"); }
+  } else {
+    var cport=$("ctrlPort").value.trim()||"9051";
+    L.push(pad("ControlPort 0")+"# 未启用控制端口（0 = 不监听；如需启用改为 "+cport+" 并填写 HashedControlPassword）");
+  }
+  L.push("");
+
+  // 5 按国家出口
+  L.push("# ---------- 5. ★ 按 SOCKS5 用户名指定出口国家（定制功能）★ ----------");
+  if($("byUserOn").checked){
+    L.push(pad("SocksExitByUser 1")+"# 启用按用户名指定出口国家（0 关闭 / 1 开启）；开启后未提供用户名的连接会被直接拒绝");
+    if(S.countries.length){
+      var map = S.countries.map(function(c){return c+"={"+c+"}";}).join(",");
+      L.push(pad("SocksExitUserMap \""+map+"\"")+"# CSV 单行：用户名={国家代码}；curl -x socks5h://us:密码@127.0.0.1:9050 即走美国出口");
+    } else {
+      L.push("# ⚠ 未选择任何出口国家：SocksExitUserMap 行已省略，请在上方勾选国家后重新生成");
+    }
+  } else {
+    L.push(pad("SocksExitByUser 0")+"# 未启用按国家出口；如需启用改为 1 并在上方勾选出口国家");
+  }
+  L.push("");
+
+  // 6 高级（所有参数均呈现；未启用项用注释说明，不省略）
+  var adv=[];
+  if($("strictOn").checked) adv.push(pad("StrictNodes 1")+"# 严格使用所选节点（0 关闭 / 1 开启；开启后小国出口不足可能无可用节点）");
+  else adv.push(pad("StrictNodes 0")+"# 未启用严格要求节点（默认 0，建议保持关闭）");
+  if($("bwOn").checked){
+    adv.push(pad("BandwidthRate "+($("bwRate").value.trim()||"60 MB"))+"# 平均带宽限制（NKB/NMB/NGB）");
+    adv.push(pad("BandwidthBurst "+($("bwBurst").value.trim()||"100 MB"))+"# 突发带宽上限");
+  } else {
+    adv.push("# BandwidthRate / BandwidthBurst 未限制（tor 默认各 1 GB；需要时可勾选后生成）");
+  }
+  var pt=$("proxyType").value;
+  if(pt!=="none"){
+    var a=$("proxyAddr").value.trim()||"127.0.0.1:8080";
+    var user=$("proxyUser").value.trim(), pass=$("proxyPass").value.trim();
+    var t = pt.toLowerCase();
+    if(t==="httpsproxy")  adv.push(pad("HTTPSProxy "+a)+"# 上游 HTTPS 代理（外网受限时使用）");
+    else if(t==="httpproxy") adv.push(pad("HTTPProxy "+a)+"# 上游 HTTP 代理");
+    else if(t==="socks4proxy") adv.push(pad("Socks4Proxy "+a)+"# 上游 SOCKS4 代理");
+    else {
+      adv.push(pad("Socks5Proxy "+a)+"# 上游 SOCKS5 代理");
+      if(user) adv.push(pad("Socks5ProxyUsername "+user)+"# 上游 SOCKS5 代理用户名");
+      if(pass) adv.push(pad("Socks5ProxyPassword "+pass)+"# 上游 SOCKS5 代理密码");
+    }
+  } else {
+    adv.push("# 上游代理未使用（HTTPSProxy / HTTPProxy / Socks4Proxy / Socks5Proxy 均未配置）");
+  }
+  L.push("# ---------- 6. 高级选项 ----------");
+  adv.forEach(function(x){L.push(x);});
+  L.push("");
+
+  var out=L.join("\n");
+  $("output").innerHTML = renderHighlight(out);
+  var lines=out.split("\n").length;
+  var n = S.countries.length;
+  $("stat").textContent = lines + " 行 · 已选 " + n + " 国 · 复制或下载即用";
+  $("countTip").innerHTML = n
+    ? ("已选 " + n + " 国：" + S.countries.map(function(c){return CN[c];}).join("、") + "<br>生成的用户名即国家代码（" + S.countries[0] + " 等），密码任意且 Tor 不校验。")
+    : "尚未选择任何国家，将不生成 SocksExitUserMap。";
+  saveState(); /* 每次生成即实时保存本地，刷新不丢失 */
+  return out;
+}
+
+/* 简易着色：注释灰色、提示金色、段标蓝色、其余默认 */
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function renderHighlight(src){
+  var out="", lines=src.split("\n");
+  for(var i=0;i<lines.length;i++){
+    var line=esc(lines[i]);
+    var cls="";
+    if(/^# ----------/.test(line)) { cls="sec"; }
+    else if(/^# ⚠|^# ![#]* *SocksExitUserMap/.test(line)) { cls="warn"; }
+    else if(/^#/.test(line)) { cls="cm"; }
+    out+='<span class="'+cls+'">'+line+'</span>\n';
+  }
+  return out;
+}
+
+/* ==================== 复制 / 下载 ==================== */
+var flashTimer=null;
+function flash(msg){
+  $("flash").textContent=msg||"已复制";
+  $("flash").style.opacity=1;
+  clearTimeout(flashTimer);
+  flashTimer=setTimeout(function(){ $("flash").style.opacity=0; },1600);
+}
+$("copyBtn").addEventListener("click", function(){
+  var text=build();
+  function done(){ flash("已复制到剪贴板"); }
+  function fallback(){
+    var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select(); try{ document.execCommand("copy"); done(); }catch(e){ flash("复制失败，请手动选中复制"); }
+    document.body.removeChild(ta);
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, fallback); }
+  else fallback();
+});
+$("dlBtn").addEventListener("click", function(){
+  var text=build();
+  var blob=new Blob([text],{type:"text/plain;charset=utf-8"});
+  var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="torrc";
+  document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },300);
+  flash("配置文件已下载（torrc）");
+});
+
+/* ==================== 还原默认 ==================== */
+$("restoreBtn").addEventListener("click", function(){
+  if(!window.confirm("确定要将所有配置恢复为默认值并清除本地保存？")) return;
+  try{ localStorage.removeItem(CFG_KEY); }catch(e){}
+  applyState(DEFAULTS);
+  flash("已还原为默认配置");
+});
+
+/* ==================== 回到顶部 + 开关点击代理 ==================== */
+(function(){
+  var backTop=$("backTop");
+  window.addEventListener("scroll", function(){
+    var y=(window.pageYOffset||document.documentElement.scrollTop||0);
+    backTop.classList.toggle("show", y>380);
+  }, {passive:true});
+  backTop.addEventListener("click", function(){ window.scrollTo({top:0,behavior:"smooth"}); });
+
+  // 彩色开关（.switch）点击滑块也可拨动：切换内部 checkbox 并触发 change
+  document.querySelectorAll(".switch").forEach(function(sw){
+    sw.addEventListener("click", function(ev){
+      ev.preventDefault();
+      var inp=sw.querySelector("input");
+      if(!inp) return;
+      inp.checked=!inp.checked;
+      if(inp.dispatchEvent) inp.dispatchEvent(new Event("change",{bubbles:true}));
+    });
+  });
+})();
+
+/* ==================== 初始化：优先恢复本地保存的配置，否则用默认值 ==================== */
+if(!restoreState()){
+  renderChips();
+  renderList();
+  build();
+}
+</script>
+</body>
+</html>
